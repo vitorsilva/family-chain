@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree -L 2 -I 'node_modules|.git')"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
