@@ -405,4 +405,112 @@ While the critique suggested removing one language, I decided to keep both becau
 
 ---
 
-*Last Updated: 2025-10-19*
+## Session: 2025-10-21
+
+### Week 1 Progress - Environment Setup and First Smart Contract
+
+**Q10: Starting Week 1 of FamilyChain Course** 🚀 **COURSE START**
+- **Context:** Beginning the 30-week FamilyChain blockchain development course
+- **Learning Style Documented:** Added teaching approach to CLAUDE.md
+  - Hands-on learner (developer background)
+  - Self-directed execution (user runs commands, Claude guides)
+  - Interactive dialogue (questions welcomed)
+  - Using PowerShell on Windows
+  - Using VS Code with extensions
+  - Active recall for basic commands (sparingly)
+
+**Classes Completed:**
+
+✅ **Class 1.1: Environment Setup**
+- Git 2.38.1 ✅
+- Node.js v22.14.0 ✅
+- npm 11.6.2 ✅
+- VS Code extensions configured (Solidity, Hardhat Solidity, Prettier, ESLint)
+- Created `.vscode/extensions.json` for project recommendations
+
+✅ **Class 1.2: Blockchain Architecture Theory**
+- Learned blockchain fundamentals (blocks, chains, consensus)
+- Bitcoin vs Ethereum differences
+- Gas mechanism and purpose
+- Wallets and cryptographic keys
+- Smart contracts vs traditional applications
+- DeFi basics (Uniswap, staking, multi-sig, DAOs)
+- Testnets vs mainnet
+- **User demonstrated strong comprehension** - explained gas, immutability, and Bitcoin vs Ethereum correctly
+
+✅ **Class 1.3: Plan First Smart Contract**
+- Created `blockchain/` folder structure
+- Initialized npm project
+- **Wrote HelloFamily.sol contract independently!**
+  - State variables: `greeting`, `owner`
+  - Constructor with initial greeting
+  - Access control using `require()`
+  - `view` function for reading greeting
+  - Event emission for `GreetingChanged`
+  - Code quality: Production-ready for first contract!
+
+**HelloFamily.sol Code (Written by User):**
+```solidity
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.28;
+
+contract HelloFamily {
+  string public greeting;
+  address public owner;
+
+  event GreetingChanged(string newGreeting, address changedBy);
+
+  constructor(string memory _greeting) {
+    greeting = _greeting;
+    owner = msg.sender;
+  }
+
+  function setGreeting(string memory _greeting) public {
+    require(msg.sender == owner, "Only the owner can set the greeting");
+    greeting = _greeting;
+    emit GreetingChanged(_greeting, msg.sender);
+  }
+
+  function greet() public view returns (string memory) {
+    return greeting;
+  }
+}
+```
+
+**Technical Issue Encountered:**
+- **Problem:** Hardhat 3 Beta has compatibility issues with Node.js 22 on Windows
+  - Error: `ERR_DLOPEN_FAILED` when running `npx hardhat compile`
+  - Native module (`edr.win32-x64-msvc.node`) failed to load
+- **Decision:** Switch to Hardhat 2.22.0 (stable, production-ready)
+- **Rationale:**
+  - Hardhat 3 is beta (rough edges expected)
+  - Learning fundamentals (Hardhat 2 vs 3 differences don't matter)
+  - All tutorials/documentation use Hardhat 2
+  - Can upgrade to Hardhat 3 later when stable
+
+**Current Status:**
+- About to delete `blockchain/` folder and restart with Hardhat 2
+- HelloFamily.sol code saved above (will recreate after Hardhat 2 setup)
+- Need to close VS Code to release file locks on `node_modules`
+
+**Next Steps (When Resuming):**
+1. Delete `blockchain/` folder via File Explorer (VS Code closed)
+2. Recreate `blockchain/` folder
+3. Initialize npm project
+4. Install Hardhat 2.22.0
+5. Run `npx hardhat init` (choose TypeScript + Mocha + Ethers.js)
+6. Recreate `HelloFamily.sol` contract
+7. Compile with `npx hardhat compile`
+8. Write tests for HelloFamily
+9. Deploy to Sepolia testnet (Week 1 Early Win!)
+
+**Key Learnings:**
+- User learns best by doing and asking questions
+- Successfully wrote first smart contract independently
+- Understood Solidity concepts (state, functions, events, access control)
+- Encountered real-world development issue (version compatibility)
+- Made pragmatic decision (stable vs bleeding-edge)
+
+---
+
+*Last Updated: 2025-10-21*
