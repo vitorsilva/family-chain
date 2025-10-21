@@ -1,0 +1,31 @@
+{
+  "recommendations": [
+    // Essential for Solidity development
+    "juanblanco.solidity",
+    "nomicfoundation.hardhat-solidity",
+
+    // Code quality and formatting
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+
+    // Git enhancements
+    "eamodio.gitlens",
+
+    // API testing (for Week 13+)
+    "rangav.vscode-thunder-client",
+
+    // Database management (for Week 4+)
+    "ckolkman.vscode-postgres",
+
+    // Language support for later weeks
+    "golang.go",           // Week 11: Go development
+    "ms-python.python",    // Week 17: Python development
+
+    // Docker support (for Week 29)
+    "ms-azuretools.vscode-docker",
+
+    // Useful general extensions
+    "streetsidesoftware.code-spell-checker",
+    "usernamehw.errorlens"  // Shows errors inline
+  ]
+}
