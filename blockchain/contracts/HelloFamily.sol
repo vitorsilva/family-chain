@@ -13,6 +13,7 @@ contract HelloFamily {
     }
 
     function setGreeting(string memory _greeting) public {
+        // Only the owner can change the greeting
         require(msg.sender == owner, "Only owner can set greeting");
         greeting = _greeting;
         emit GreetingChanged(_greeting, msg.sender);
