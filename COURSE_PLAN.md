@@ -140,9 +140,17 @@ By completing this course, you will be able to:
 
 - **Class 1.1:** Minimal Development Environment Setup
   - Install Git and create GitHub account
-  - Set up VS Code with essential extensions
-  - Install Node.js (needed for blockchain CLI interactions)
-  - Basic terminal/command line navigation
+  - Set up VS Code with essential extensions (Solidity, Hardhat Solidity, Prettier, ESLint)
+  - Install Node.js v22.14.0+ (needed for blockchain CLI interactions)
+  - Install Hardhat 3.0.8+ via `npx hardhat --init`
+  - Basic terminal/command line navigation (PowerShell on Windows)
+
+  **Version Requirements:**
+  - Node.js: v22.14.0 or higher
+  - npm: 11.6.2 or higher
+  - Hardhat: 3.0.8 or higher ⚠️ **NOT Hardhat 2.x**
+
+  **Important:** Hardhat 3 has breaking changes from 2.x - use `build` not `compile`, keystore not .env
 
 - **Class 1.2:** Introduction to Blockchain Architecture
   - How blockchains work (blocks, chains, consensus)
@@ -220,11 +228,11 @@ By completing this course, you will be able to:
   - Transaction history
   - Block explorers
 
-- **Class 3.4:** Introduction to Hardhat
-  - **SETUP:** Install Hardhat
-  - Initialize Hardhat project
-  - Project structure overview
-  - Compile your first contract
+- **Class 3.4:** Hardhat Project Exploration
+  - Hardhat project structure overview (already installed in Week 1)
+  - Understanding artifacts and cache folders
+  - Build your first contract with `npx hardhat build`
+  - Introduction to Hardhat tasks and plugins
 
 **Reading:**
 - Bitcoin Book: Chapter 4 (Keys - Private and Public Keys)
@@ -1207,13 +1215,17 @@ By completing this course, you will be able to:
 ### Software Installation Timeline
 
 **Week 1:**
-- Git, VS Code, Node.js
+- Git
+- VS Code (with Solidity, Hardhat Solidity, Prettier, ESLint extensions)
+- Node.js v22.14.0+
+- npm 11.6.2+
+- Hardhat 3.0.8+ (via `npx hardhat --init`)
 
 **Week 2:**
 - Geth (Ethereum client)
 
 **Week 3:**
-- Hardhat, Solidity compiler
+- (Hardhat already installed in Week 1)
 
 **Week 4:**
 - PostgreSQL, Redis
@@ -1233,11 +1245,42 @@ By completing this course, you will be able to:
 **Week 29:**
 - Docker
 
+### Tool Versions & Documentation (Updated Week 1)
+
+**⚠️ IMPORTANT: Version Matters!**
+This course uses specific versions with breaking changes from older tutorials. Always check documentation for YOUR version!
+
+**Current Project Versions:**
+| Tool | Version | Documentation | Notes |
+|------|---------|--------------|-------|
+| Node.js | v22.14.0+ | https://nodejs.org/docs/latest-v22.x/api/ | LTS version |
+| npm | 11.6.2+ | https://docs.npmjs.com/ | Included with Node.js |
+| Hardhat | 3.0.8+ | https://hardhat.org/docs/getting-started | ⚠️ v3 has breaking changes from v2! |
+| ethers.js | 6.15.0 | https://docs.ethers.org/v6/ | ⚠️ v6 API different from v5 |
+| Solidity | ^0.8.28 | https://docs.soliditylang.org/en/v0.8.28/ | Latest stable |
+| TypeScript | ~5.8.0 | https://www.typescriptlang.org/docs/ | Required for Hardhat 3 tests |
+| Mocha | 11.7.4 | https://mochajs.org/ | Test framework |
+| Chai | 5.3.3 | https://www.chaijs.com/ | Assertion library |
+
+**Critical Hardhat 3 Breaking Changes:**
+- ⚠️ **Build command:** `npx hardhat build` (NOT `compile`)
+- ⚠️ **Config secrets:** Use `npx hardhat keystore` (NOT `.env` files)
+- ⚠️ **Test files:** Must be TypeScript `.ts` (NOT `.js`)
+- ⚠️ **Config variables:** Use `configVariable()` (NOT `dotenv`)
+
+**Why These Versions Matter:**
+- Most online tutorials use Hardhat 2.x - commands won't work!
+- ethers.js v5 and v6 have different APIs - code examples may break
+- Hardhat 3 requires TypeScript for tests - JavaScript won't run
+
 ### Free Documentation Resources
-- Node.js, Go, Python (official docs)
+- Node.js (official docs - v22.x): https://nodejs.org/docs/latest-v22.x/api/
+- Hardhat 3 (official docs): https://hardhat.org/docs/getting-started
+- ethers.js v6 (official docs): https://docs.ethers.org/v6/
+- Solidity (official docs): https://docs.soliditylang.org/en/v0.8.28/
+- TypeScript (official handbook): https://www.typescriptlang.org/docs/
 - PostgreSQL, Redis documentation
 - Ethereum.org tutorials
-- Hardhat documentation
 - React documentation
 - Portuguese bank sandbox access (free registration)
 - Bitcoin Book (included in `/assets/bitcoinbook-develop/`)

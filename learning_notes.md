@@ -513,4 +513,185 @@ contract HelloFamily {
 
 ---
 
-*Last Updated: 2025-10-21*
+## Session: 2025-10-22
+
+### Week 1 Completion - Hardhat 3 Success & First Deployment
+
+**Q11: Completing Week 1 with Hardhat 3** 🚀 **WEEK 1 COMPLETE**
+
+**Context:** Resumed Week 1 after previous Hardhat 3 compatibility issues
+
+**Decision: Successfully switched to Hardhat 3**
+- **Previous Issue:** Hardhat 3 Beta had native module loading errors on Windows with Node.js 22
+- **Resolution:** Issue resolved - Hardhat 3 now works perfectly
+- **Key Learning:** Hardhat 3 uses `npx hardhat build` (not `compile`)
+- **Root Cause Identified:** User discovered the command difference in documentation
+
+**Hardhat 3 Setup Completed:**
+- Installed Hardhat 3 via `npx hardhat --init`
+- Chose TypeScript + Mocha testing setup
+- Example contracts (Counter.sol) compiled and tested successfully
+- Both Solidity tests and Mocha tests working
+
+**HelloFamily.sol Contract (Recreated from memory):**
+```solidity
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.28;
+
+contract HelloFamily {
+    string public greeting;
+    address public owner;
+
+    event GreetingChanged(string newGreeting, address changedBy);
+
+    constructor(string memory _greeting) {
+        greeting = _greeting;
+        owner = msg.sender;
+    }
+
+    function setGreeting(string memory _greeting) public {
+        require(msg.sender == owner, "Only owner can set greeting");
+        greeting = _greeting;
+        emit GreetingChanged(_greeting, msg.sender);
+    }
+}
+```
+
+**Key Improvements Made:**
+- Removed redundant getter functions (public variables auto-generate getters)
+- Added `address changedBy` to GreetingChanged event for better tracking
+
+**Testing Framework - TypeScript Required:**
+- **Discovery:** Tests must be written in TypeScript (.ts), not JavaScript (.js)
+- Created `test/HelloFamily.ts` with comprehensive test suite
+- All 5 tests passing:
+  1. ✅ Should return the correct greeting message
+  2. ✅ Owner is set correctly
+  3. ✅ Owner can change the greeting
+  4. ✅ Non-owner CANNOT change the greeting
+  5. ✅ Event is emitted when greeting changes
+
+**Key Testing Concepts Learned:**
+- **ethers.getContractFactory()**: Factory pattern for contract deployment
+- **HelloFamily.deploy()**: Creates new contract instance on blockchain
+- **Hardhat's test blockchain**: Temporary in-memory blockchain for tests
+- **await pattern**: All blockchain operations are async (view and transactions)
+- **ethers.getSigners()**: Hardhat provides ~20 pre-made test accounts
+- **Default signer**: Hardhat uses first signer (account 0) for deployment by default
+- **.connect(account)**: Specifies which account calls a function
+- **View functions vs Transactions**: Reading is free/fast, writing costs gas/takes time
+- **Testing access control**: Using multiple signers to test authorization
+
+**User Understanding Highlights:**
+- Connected factory pattern to previous knowledge
+- Understood ethers as "bridge between JavaScript and blockchain"
+- Grasped async/await necessity for blockchain interactions
+- Questioned redundant getters (public variables) - excellent attention to detail
+- Debugged test file extension issue independently (.js → .ts)
+- Asked security-critical questions about wallet safety
+
+**Deployment to Sepolia Testnet:**
+
+**Deployment Script Created:**
+- `scripts/deploy.ts` with deployment logic
+- Prints deployed contract address for Etherscan verification
+
+**Wallet Security Setup:**
+- Generated new testnet-only wallet via ethers.Wallet.createRandom()
+- **Security awareness:** User asked about wallet safety before proceeding
+- Explained private key security (never share, can't be changed)
+- Created `.env.example` for documentation (professional best practice - user's idea!)
+- Added `.env` to `.gitignore` (user proactively secured secrets)
+
+**Hardhat 3 Configuration Variables:**
+- **Discovery:** Hardhat 3 uses `configVariable()` instead of dotenv
+- **User found solution:** Read Hardhat docs, discovered `keystore` command
+- Used `npx hardhat keystore set --dev SEPOLIA_PRIVATE_KEY`
+- Used `npx hardhat keystore set --dev --force SEPOLIA_RPC_URL`
+- **More secure than .env:** Encrypted storage on local machine
+- Deleted `.env` file (not needed with keystore)
+- Updated `.env.example` to document keystore approach
+
+**Getting Testnet ETH:**
+- Tried Alchemy faucet (requires 0.001 mainnet ETH - blocked)
+- Tried Infura faucet (requires MetaMask - deferred for Week 6)
+- **Success:** Used Google Cloud POW faucet (proof-of-work)
+- Verified receipt on Etherscan transaction explorer
+- Checked balance via ethers JSON-RPC provider
+
+**RPC Provider Issues:**
+- `rpc.sepolia.org` returned 522 error (server down)
+- Switched to `https://ethereum-sepolia-rpc.publicnode.com` (working)
+
+**Deployment Success! 🎉**
+- **Contract Address:** `0x21581Db891aAb5cB99d6002Aaa83C6c480960267`
+- **Network:** Sepolia Testnet
+- **Deployment Command:** `npx hardhat run scripts/deploy.ts --network sepolia`
+- **Result:** Live smart contract on public blockchain!
+- **Etherscan:** https://sepolia.etherscan.io/address/0x21581Db891aAb5cB99d6002Aaa83C6c480960267
+
+**Contract Verification:**
+- Attempted to interact with contract on Etherscan
+- **Discovery:** "Read Contract" tab requires verification
+- Verification uploads source code to Etherscan for readable interface
+- **Decision:** Deferred contract verification to future session
+
+**Week 1 Achievements:**
+✅ Development environment setup (Git, Node.js, VS Code, Hardhat 3)
+✅ Blockchain theory fundamentals understood
+✅ Hardhat 3 project initialized with TypeScript
+✅ HelloFamily.sol smart contract written from memory
+✅ Comprehensive test suite (5 tests, all passing)
+✅ Secure wallet management (keystore approach)
+✅ Testnet ETH acquired via POW faucet
+✅ Deployed to Sepolia testnet successfully
+✅ **Week 1 Early Win Achieved!** 🚀
+
+**Technical Skills Demonstrated:**
+- Independent problem-solving (found keystore command in docs)
+- Security-conscious development (wallet safety, .gitignore, .env.example)
+- Debugging (test file extension, RPC provider issues)
+- Reading documentation (Hardhat 3 docs, faucet research)
+- Professional best practices (.env.example, source control)
+- Active learning (questioning, explaining concepts back)
+
+**Key Technical Decisions:**
+1. **Hardhat 3 over Hardhat 2:** Bleeding-edge but now stable
+2. **TypeScript for tests:** Required by Hardhat 3 setup
+3. **Keystore over .env:** More secure, Hardhat 3 recommended approach
+4. **Public RPC provider:** Good for learning, will use Infura/Alchemy later
+5. **POW faucet:** Most reliable free option for testnet ETH
+
+**Next Steps (Before Week 2):**
+- 📖 **COMPLETE WEEK 1 READING** (User will do this before next session):
+  - Bitcoin Book: Chapter 1 (Introduction), Chapter 2 (How Bitcoin Works - Bitcoin Overview)
+  - Ethereum Book: Chapter 1 (What Is Ethereum), Chapter 2 (Intro)
+  - ⚠️ **REMINDER FOR NEXT SESSION: Ask if reading was completed!**
+
+**Next Steps (Week 2):**
+- Install and run Geth (Ethereum client)
+- Sync to Sepolia testnet
+- Understand node operations and monitoring
+- Get more testnet ETH from faucets
+- Learn about RPC endpoints and JSON-RPC
+
+**Questions to Explore Later:**
+- [ ] How to verify contracts on Etherscan (programmatically)
+- [ ] Should we use Infura/Alchemy for production RPC (instead of public nodes)?
+- [ ] When to introduce MetaMask (currently planned for Week 6)
+
+**Documentation Updates (Post-Session):**
+- **Issue Identified:** Documentation was referencing outdated Hardhat 2.x commands and patterns
+- **User Feedback:** "Make sure to always look up the documentation whose version is more similar to the one we are using"
+- **Actions Taken:**
+  - Updated CLAUDE.md with exact tool versions (Node.js v22.14.0, Hardhat 3.0.8, ethers.js 6.15.0, etc.)
+  - Added "Current Project Versions" section with documentation links
+  - Fixed all Hardhat commands (`build` not `compile`, `keystore` not `.env`)
+  - Updated COURSE_PLAN.md with version requirements and breaking changes
+  - Added comprehensive "Tool Versions & Documentation" table
+  - Highlighted Hardhat 3 breaking changes with ⚠️ warnings
+- **Result:** Documentation now accurately reflects Hardhat 3.0.8 + ethers.js v6 + TypeScript workflow
+
+---
+
+*Last Updated: 2025-10-22*

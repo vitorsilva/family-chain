@@ -52,15 +52,35 @@ Claude: [adapts based on response]
 
 ### Just-in-Time Installation Philosophy
 Don't install everything upfront! Each week specifies what to install when needed. See COURSE_PLAN.md for the installation timeline:
-- Week 1: Git, VS Code, Node.js
+- Week 1: Git, VS Code, Node.js v22.14.0+, Hardhat 3.0.8
 - Week 2: Geth (Ethereum client)
-- Week 3: Hardhat, Solidity compiler
+- Week 3: (Hardhat already installed in Week 1)
 - Week 4: PostgreSQL, Redis
 - Week 6: React/Next.js
 - Week 11: Go
 - Week 15: PSD2 sandbox credentials (start early - takes time!)
 - Week 17: Python
 - Week 29: Docker
+
+### Current Project Versions (as of Week 1)
+**Core Tools:**
+- Node.js: v22.14.0
+- npm: 11.6.2
+- Hardhat: 3.0.8 ⚠️ **Breaking changes from Hardhat 2.x**
+- ethers.js: 6.15.0 ⚠️ **v6 has different API from v5**
+- TypeScript: ~5.8.0
+- Solidity: ^0.8.28
+
+**Documentation Links:**
+- Hardhat 3 Docs: https://hardhat.org/docs/getting-started (⚠️ Most tutorials use Hardhat 2.x - commands are different!)
+- ethers.js v6 Docs: https://docs.ethers.org/v6/
+- Solidity Docs: https://docs.soliditylang.org/en/v0.8.28/
+
+**Key Hardhat 3 Breaking Changes:**
+- ⚠️ Use `npx hardhat build` NOT `npx hardhat compile`
+- ⚠️ Use `npx hardhat keystore` for secrets NOT `.env` files
+- ⚠️ Tests must be TypeScript (.ts) NOT JavaScript (.js)
+- ⚠️ Uses `configVariable()` for config NOT `dotenv`
 
 ### Key Commands
 
@@ -73,16 +93,18 @@ geth --sepolia --http --http.api eth,net,web3 --datadir ./data/geth
 bitcoind -testnet -datadir=./data/bitcoin
 ```
 
-#### Smart Contract Development (Hardhat)
+#### Smart Contract Development (Hardhat 3)
 ```bash
-# Compile contracts
-npx hardhat compile
+# ⚠️ HARDHAT 3 COMMANDS (different from Hardhat 2.x!)
+
+# Build contracts (NOT compile!)
+npx hardhat build
 
 # Run tests
 npx hardhat test
 
 # Run single test file
-npx hardhat test test/FamilyAllowance.test.ts
+npx hardhat test test/HelloFamily.test.ts
 
 # Deploy to testnet
 npx hardhat run scripts/deploy.ts --network sepolia
@@ -92,6 +114,15 @@ npx hardhat verify --network sepolia DEPLOYED_CONTRACT_ADDRESS "constructor args
 
 # Run local node
 npx hardhat node
+
+# Set configuration variables (secure keystore, NOT .env!)
+npx hardhat keystore set --dev VARIABLE_NAME
+
+# Force update existing variable
+npx hardhat keystore set --dev --force VARIABLE_NAME
+
+# List all keystore variables
+npx hardhat keystore list
 ```
 
 #### Database Operations
