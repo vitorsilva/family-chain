@@ -45,6 +45,33 @@ A decentralized family finance platform with features like:
 
 ---
 
+## 📖 Learning Guides
+
+This course includes **comprehensive, hands-on learning guides** for each week's classes. These guides are created **at the end of each week** to document what was learned and serve as reference material.
+
+**📚 [View All Learning Guides](docs/README.md)** - Master index with complete list
+
+### What's Included in Each Guide:
+- ✅ Clear learning objectives and key concepts
+- ✅ Step-by-step hands-on activities (PowerShell commands for Windows)
+- ✅ Expected outputs so you know if you're on track
+- ✅ Troubleshooting for common issues
+- ✅ Self-assessment quizzes with answers
+- ✅ References to Bitcoin Book and Ethereum Book chapters
+- ✅ Teaching notes for Claude Code guidance
+
+**When to Use Learning Guides:**
+- **During the week:** Work interactively with Claude Code, ask questions
+- **After the week:** Review the guide to consolidate learning
+- **For reference:** Return to guides when you need to refresh concepts
+
+**Currently Available:**
+- ✅ Week 1 (Classes 1.1, 1.2, 1.3) - Environment, Theory, First Contract
+- ✅ Week 27 (Class 27.1) - Mutation Testing
+- 🔜 Additional guides created as you progress through the course
+
+---
+
 ## 🎓 Learning Outcomes
 
 By completing this course, you will be able to:
@@ -172,6 +199,44 @@ By completing this course, you will be able to:
 **Deliverable:** Development environment ready + blockchain concept understanding
 
 **Early Win:** Deploy a "Hello Family" smart contract to testnet by end of week
+
+**Learning Guides:**
+- 📖 [Class 1.1: Environment Setup](docs/week1-class1.1-environment-setup.md)
+- 📖 [Class 1.2: Blockchain Theory](docs/week1-class1.2-blockchain-theory.md)
+- 📖 [Class 1.3: First Smart Contract](docs/week1-class1.3-first-smart-contract.md)
+
+**Week 1 Completion Checklist:**
+
+Before moving to Week 2, complete the self-assessment:
+
+- [ ] **Class 1.1 Quiz:** Complete all questions in Environment Setup guide
+  - Can you explain what Git is and why you need it?
+  - What's the difference between Node.js and npm?
+  - Why does version compatibility matter?
+
+- [ ] **Class 1.2 Quiz:** Complete all questions in Blockchain Theory guide
+  - Can you explain how blockchains work in your own words?
+  - What's the difference between Bitcoin and Ethereum?
+  - Why does gas exist on Ethereum?
+  - What happens if you lose your private key?
+
+- [ ] **Class 1.3 Quiz:** Complete all questions in First Smart Contract guide
+  - What does the constructor do?
+  - Why do we use `require()` in setGreeting?
+  - What's the difference between `view` and regular functions?
+  - Why emit events?
+
+- [ ] **Deliverables Verified:**
+  - ✅ All tools installed and verified
+  - ✅ HelloFamily.sol deployed to Sepolia
+  - ✅ All 5 tests passing
+  - ✅ Contract address recorded
+
+- [ ] **Reading Completed:**
+  - ✅ Bitcoin Book: Chapters 1-2
+  - ✅ Ethereum Book: Chapters 1-2
+
+**If you can answer all self-assessment questions confidently, you're ready for Week 2!**
 
 ---
 
@@ -411,6 +476,25 @@ By completing this course, you will be able to:
 
 **Deliverable:** Fully integrated Phase 1 codebase with documentation
 
+**Phase 1 Self-Assessment Review:**
+
+Use this buffer week to review all self-assessment quizzes from Weeks 1-7:
+
+- [ ] **Week 1:** Environment, blockchain theory, first smart contract
+- [ ] **Week 2:** Ethereum node operations, testnet interactions
+- [ ] **Week 3:** Wallets, transactions, blockchain queries
+- [ ] **Week 4:** Database design, PostgreSQL, Redis
+- [ ] **Week 5:** Smart contract foundations (Part 1)
+- [ ] **Week 6:** Gas optimization, security basics, frontend
+- [ ] **Week 7:** Web3 integration, event listening
+
+**Comprehension Check:**
+- Can you explain Phase 1 concepts to someone else?
+- Have you completed all Phase 1 reading assignments?
+- Are all Phase 1 deliverables working?
+
+**If any concepts are unclear, this is the week to clarify them before Phase 2!**
+
 ---
 
 ### **PHASE 2: CORE PLATFORM** (Weeks 9-16)
@@ -590,6 +674,23 @@ By completing this course, you will be able to:
   - Document API endpoints
 
 **Deliverable:** Fully integrated microservices architecture
+
+**Phase 2 (Part 1) Self-Assessment Review:**
+
+Use this buffer week to review all self-assessment quizzes from Weeks 9-13:
+
+- [ ] **Week 9:** Allowance smart contract
+- [ ] **Week 10:** Allowance dashboard and UI
+- [ ] **Week 11:** Go fundamentals for blockchain
+- [ ] **Week 12:** Go event listener and price oracle
+- [ ] **Week 13:** API gateway development
+
+**Comprehension Check:**
+- Can you explain how the microservices architecture works?
+- Do you understand Go's role in the system?
+- Can you trace a transaction from frontend to blockchain?
+
+**If any concepts are unclear, this is the week to clarify them before PSD2 integration!**
 
 ---
 
@@ -810,6 +911,23 @@ By completing this course, you will be able to:
 
 **Deliverable:** Fully integrated advanced features
 
+**Phase 3 (Part 1) Self-Assessment Review:**
+
+Use this buffer week to review all self-assessment quizzes from Weeks 17-20:
+
+- [ ] **Week 17:** Python fundamentals for analytics
+- [ ] **Week 18:** Banking analytics features
+- [ ] **Week 19:** Multi-signature wallet implementation
+- [ ] **Week 20:** Family governance DAO
+
+**Comprehension Check:**
+- Can you explain how Python analytics work with blockchain data?
+- Do you understand multi-sig patterns and security benefits?
+- Can you explain DAO governance and voting mechanisms?
+- Can you trace the flow from DAO vote to bank payment?
+
+**If any concepts are unclear, this is the week to clarify them before token economy!**
+
 ---
 
 #### Week 22: Token Economy & Rewards
@@ -982,6 +1100,7 @@ By completing this course, you will be able to:
   - Smart contract audit tools (Slither, Mythril)
   - Running security scans
   - Manual code review checklist
+  - Introduction to mutation testing (validates test quality - deep dive in Week 27)
   - Penetration testing basics
 
 **Reading:**
@@ -998,11 +1117,23 @@ By completing this course, you will be able to:
 **Duration:** 1 week
 **Goal:** Comprehensive test coverage across all components
 
-- **Class 27.1:** Unit Testing Across Languages
+- **Class 27.1:** Unit Testing Across Languages + Mutation Testing (Extended: 4-5 hours)
   - JavaScript/TypeScript testing (Jest, Mocha)
   - Go testing patterns
   - Python testing (pytest)
   - Smart contract testing (Hardhat)
+  - **Mutation Testing for Solidity:**
+    - Understanding test quality vs code coverage
+    - What is mutation testing? (testing your tests)
+    - Manual mutation exercise with weak vs strong tests
+    - Installing mutation testing tools (Gambit recommended)
+    - Running mutation tests on FamilyAllowance contract
+    - Interpreting mutation reports and scores
+    - Common mutation operators (arithmetic, relational, logical, require deletions)
+    - Identifying and fixing surviving mutants
+    - Full project mutation analysis with automated reporting
+    - Target mutation score: 80%+ for critical contracts
+    - Integration into development workflow
 
 - **Class 27.2:** Integration Testing
   - Testing microservices together
@@ -1022,7 +1153,34 @@ By completing this course, you will be able to:
   - Identifying bottlenecks
   - Performance monitoring setup
 
-**Deliverable:** Test suite with >80% coverage
+**Deliverable:** Test suite with >80% code coverage + mutation test reports with >80% mutation score for critical contracts (FamilyWallet, FamilySavingsPot, FamilyLoan)
+
+**Learning Guides:**
+- 📖 [Class 27.1: Unit Testing + Mutation Testing](docs/week27-class27.1-mutation-testing.md)
+
+**Week 27 Completion Checklist:**
+
+Before moving to Week 28, complete the self-assessment:
+
+- [ ] **Class 27.1 Quiz:** Complete all questions in Mutation Testing guide
+  - What's the difference between code coverage and mutation score?
+  - What does a "surviving mutant" indicate?
+  - Name three common mutation operators for Solidity
+  - Why might a test have 100% coverage but catch zero bugs?
+  - What's a reasonable mutation score target for critical financial contracts?
+
+- [ ] **Deliverables Verified:**
+  - ✅ Mutation testing tool installed (Gambit)
+  - ✅ Mutation reports generated for all contracts
+  - ✅ Average mutation score >80% for critical contracts
+  - ✅ Improved test suites documented
+
+- [ ] **Test Suite Quality:**
+  - ✅ FamilyWallet mutation score >80%
+  - ✅ FamilySavingsPot mutation score >80%
+  - ✅ FamilyLoan mutation score >80%
+
+**If you can answer all self-assessment questions confidently, you're ready for Week 28!**
 
 ---
 
@@ -1039,6 +1197,29 @@ By completing this course, you will be able to:
   - Prepare deployment scripts
 
 **Deliverable:** Production-ready codebase
+
+**Phase 4 Pre-Production Self-Assessment Review:**
+
+Use this buffer week to review all self-assessment quizzes from Weeks 25-27:
+
+- [ ] **Week 25:** Lending and credit system
+- [ ] **Week 26:** Security and auditing
+- [ ] **Week 27:** Testing strategies (including mutation testing)
+
+**Final Comprehension Check:**
+- Can you explain all major components of the FamilyChain system?
+- Do you understand security patterns and potential vulnerabilities?
+- Can you articulate testing strategies and quality metrics?
+- Are you confident explaining this project in technical interviews?
+
+**Production Readiness:**
+- [ ] All tests passing (>80% coverage, >80% mutation score)
+- [ ] Security audit completed with fixes applied
+- [ ] Documentation complete
+- [ ] Performance optimization done
+- [ ] Ready for deployment
+
+**If any concepts are unclear, this is the LAST week to clarify them before production!**
 
 ---
 
@@ -1196,7 +1377,7 @@ By completing this course, you will be able to:
 ### Milestone 4 (Week 30): Production Ready
 ✅ Lending system complete
 ✅ Security audit passed and fixes applied
-✅ Comprehensive test coverage (>80%)
+✅ Comprehensive test coverage (>80% code coverage + >80% mutation score)
 ✅ Deployed to production with CI/CD
 ✅ Portuguese compliance documentation complete
 ✅ Portfolio-ready project
@@ -1241,6 +1422,9 @@ By completing this course, you will be able to:
 
 **Week 17:**
 - Python
+
+**Week 27:**
+- Gambit (mutation testing for Solidity) - requires Rust/Cargo
 
 **Week 29:**
 - Docker
@@ -1317,7 +1501,7 @@ This project demonstrates:
 - **Cutting-edge tech** (blockchain + Open Banking is rare combo)
 - **DeFi expertise** (tokens, staking, multi-chain deployment, MEV protection)
 - **Multi-chain deployment** (Ethereum + Layer 2 solutions)
-- **Production-ready code** (testing, CI/CD, monitoring)
+- **Production-ready code** (comprehensive testing with mutation testing, CI/CD, monitoring)
 - **EU market knowledge** (PSD2, GDPR compliance)
 - **Junior blockchain developer skills** ready for the job market
 

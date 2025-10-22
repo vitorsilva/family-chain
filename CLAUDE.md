@@ -48,6 +48,219 @@ Claude: [adapts based on response]
 
 **This teaching style ensures the user builds deep understanding through active participation rather than passive consumption.**
 
+## Learning Guides
+
+### Philosophy: Document After Doing
+
+**Learning guides are created at the END of each week**, not before. This ensures:
+- Content reflects actual experience, not assumptions
+- Troubleshooting includes real issues encountered
+- Time estimates are accurate
+- Best practices are battle-tested
+
+### When to Create Learning Guides
+
+**Timeline:**
+```
+Week N (Mon-Fri): Complete the work with Claude Code guidance
+    ↓
+Weekend: Review what was learned
+    ↓
+Week N+1 (Start): Create comprehensive learning guide for Week N
+    ↓
+Result: Guide reflects reality, captures insights, documents challenges
+```
+
+### Learning Guide Structure
+
+Each guide must include:
+
+1. **Overview** (Duration, Prerequisites, Why This Matters)
+2. **Learning Objectives** (3-7 clear, measurable outcomes)
+3. **Key Concepts** (Explanations with examples, tables, analogies)
+4. **Hands-On Activities** (Step-by-step with PowerShell commands)
+5. **Expected Outputs** (So learner knows if correct)
+6. **Deliverables** (Clear success criteria)
+7. **Common Issues & Solutions** (Troubleshooting based on actual experience)
+8. **Self-Assessment Quiz** (5-10 questions with expandable answers)
+9. **Key Takeaways** (Summary of essential concepts)
+10. **Next Steps** (What comes next in the course)
+11. **Teaching Notes** (Instructions for Claude Code on guidance approach)
+12. **Reading References** (Relevant chapters from Bitcoin/Ethereum books)
+
+### File Naming Convention
+
+**Format:** `weekXX-classX.X-topic-name.md`
+
+**Examples:**
+- `week1-class1.1-environment-setup.md`
+- `week1-class1.2-blockchain-theory.md`
+- `week27-class27.1-mutation-testing.md`
+
+**Location:** All learning guides in `docs/` folder
+
+### Reading Material Integration
+
+All learning guides should reference relevant chapters from:
+
+**Bitcoin Book** (`/assets/bitcoinbook-develop/`)
+- Use for: Blockchain fundamentals, transactions, keys, wallets, network architecture, security
+- Example references:
+  - Week 1: Ch 1 (Introduction), Ch 2 (How Bitcoin Works)
+  - Week 3: Ch 4 (Keys), Ch 5 (Wallets)
+  - Week 8: Ch 8 (Signatures - Multi-signature)
+
+**Ethereum Book** (`/assets/ethereumbook-develop/`)
+- Use for: Ethereum-specific concepts, Solidity, smart contracts, DApps, security
+- Example references:
+  - Week 1: Ch 1 (What Is Ethereum), Ch 2 (Intro)
+  - Week 5: Ch 7 (Smart Contracts and Solidity)
+  - Week 8: Ch 12 (DApps)
+
+**Reading Strategy:**
+Include at end of each guide with format:
+```markdown
+**Reading References:**
+- Bitcoin Book: Chapter X (Topic), Chapter Y (Topic)
+- Ethereum Book: Chapter X (Topic), Chapter Y (Topic)
+```
+
+### Creating Learning Guides with Claude Code
+
+When the user says "Let's create the learning guide for Week X":
+
+1. **Review learning_notes.md** for that week's session notes
+2. **Identify actual activities completed** (not theoretical)
+3. **Document real commands used** (exact PowerShell syntax)
+4. **Include actual error messages** encountered and solutions
+5. **Note actual time taken** for each activity
+6. **Reference relevant book chapters** from Bitcoin/Ethereum books
+7. **Write self-assessment questions** testing key concepts
+8. **Add troubleshooting** for issues that occurred
+9. **Follow the naming convention** strictly
+10. **Update docs/README.md** master index
+11. **Update COURSE_PLAN.md** with link to new guide
+
+### Master Index
+
+All learning guides are indexed in: **`docs/README.md`**
+
+This master index includes:
+- Complete list of all available guides
+- Status (✅ Complete or 🔜 Pending)
+- Duration estimates
+- Learning outcomes summary
+- Course progress tracking
+
+Update this file whenever a new learning guide is created.
+
+### Using Learning Guides During Teaching
+
+When guiding the user through course material:
+
+1. **Reference guides for structure** - But adapt to user's pace
+2. **Don't rigidly follow guides** - They're reference, not script
+3. **Use troubleshooting sections** - When user encounters issues
+4. **Point to self-assessments** - To check understanding
+5. **Link to book chapters** - For deeper reading
+6. **Adapt to user questions** - Interactive dialogue over rigid curriculum
+
+**Remember:** Learning guides document what happened. Teaching is interactive and adaptive.
+
+### Self-Assessment at End of Week
+
+**Every week includes self-assessment quizzes** to verify understanding before progressing.
+
+**When to Complete Self-Assessment:**
+
+```
+Week Start → Learn concepts interactively with Claude Code
+    ↓
+During Week → Complete hands-on activities
+    ↓
+Week End → Review learning guides
+    ↓
+Week End → Complete self-assessment quizzes
+    ↓
+All Questions Answered → Ready for next week
+```
+
+**Self-Assessment Structure:**
+
+Each week in COURSE_PLAN.md includes a **"Week X Completion Checklist"** with:
+
+1. **Class Quizzes** - 2-4 key questions per class from learning guides
+2. **Deliverables Verified** - Concrete checkboxes for completed work
+3. **Reading Completed** - Bitcoin/Ethereum book chapters
+4. **Readiness Statement** - "If you can answer all questions confidently, you're ready for Week X+1!"
+
+**Example (Week 1):**
+```markdown
+**Week 1 Completion Checklist:**
+
+- [ ] Class 1.1 Quiz: Complete all questions in Environment Setup guide
+- [ ] Class 1.2 Quiz: Complete all questions in Blockchain Theory guide
+- [ ] Class 1.3 Quiz: Complete all questions in First Smart Contract guide
+- [ ] Deliverables Verified: All tools installed, contract deployed, tests passing
+- [ ] Reading Completed: Bitcoin Book Ch 1-2, Ethereum Book Ch 1-2
+```
+
+**Buffer Week Self-Assessment:**
+
+Buffer weeks (8, 14, 21, 28) include **phase-wide review**:
+- Review all self-assessment quizzes from multiple weeks
+- Comprehension check across integrated topics
+- Verify all deliverables for the phase
+
+**How Claude Code Should Use Self-Assessment:**
+
+1. **At Week Start:** Remind user of previous week's self-assessment completion
+2. **During Week:** Reference self-assessment questions when teaching concepts
+3. **At Week End:** Prompt user to complete checklist before moving forward
+4. **If Struggling:** Use self-assessment questions to identify knowledge gaps
+
+**Self-Assessment Questions in Learning Guides:**
+
+Every learning guide includes a **"Self-Assessment Quiz"** section with:
+- 5-10 questions testing key concepts
+- Expandable `<details>` tags with answers
+- Mix of explanation, application, and integration questions
+
+**Example from guides:**
+```markdown
+## ✅ Self-Assessment Quiz
+
+1. **What does the constructor do?**
+   <details>
+   <summary>Answer</summary>
+   Runs once when contract is deployed. Sets initial state.
+   </details>
+
+2. **Why do we use `require()` in setGreeting?**
+   <details>
+   <summary>Answer</summary>
+   To enforce access control. Only owner can change greeting.
+   </details>
+```
+
+**Best Practices:**
+
+✅ **Do:**
+- Prompt user to complete self-assessment at week end
+- Use questions to check understanding during teaching
+- Encourage user to explain concepts in their own words
+- Celebrate completion of self-assessments
+
+❌ **Don't:**
+- Give answers immediately (let user think first)
+- Skip self-assessment even if user seems confident
+- Move to next week without checklist completion
+- Use self-assessment as "test" (it's learning tool, not exam)
+
+**Template Available:**
+
+For reference: `docs/week-completion-checklist-template.md`
+
 ## Development Environment
 
 ### Just-in-Time Installation Philosophy
