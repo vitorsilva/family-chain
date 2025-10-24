@@ -1517,7 +1517,7 @@ Employers will see you can:
 ## 📝 Next Steps
 
 1. **Star this repo** and set it as public
-2. **Create a learning log** - Track weekly progress (use `learning_notes.md`)
+2. **Create a learning log** - Track weekly progress (use `docs/weekN-learning-notes.md`)
 3. **Start Week 1** - Environment setup and blockchain theory
 4. **Join communities** - Find study buddies in blockchain developer communities
 5. **Share your journey** - Blog/tweet about what you're building

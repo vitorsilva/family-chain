@@ -194,7 +194,7 @@ weekXX-classX.X-topic-name.md
    - Review the learning guide
    - Complete self-assessment quizzes
    - Verify all deliverables achieved
-   - Document your own insights in `learning_notes.md`
+   - Document your own insights in `docs/weekN-learning-notes.md`
 
 ### For Claude Code (Teaching):
 
@@ -284,7 +284,7 @@ When creating a new learning guide:
 - [ ] Write self-assessment questions with answers
 - [ ] Add to this master index
 - [ ] Update COURSE_PLAN.md with learning guide link
-- [ ] Update learning_notes.md with any insights
+- [ ] Update `docs/weekN-learning-notes.md` with session insights
 
 ---
 
@@ -309,7 +309,7 @@ A learning guide is considered **complete** when it includes:
 
 As you progress through the course:
 
-1. **Document challenges** in `learning_notes.md`
+1. **Document challenges** in `docs/weekN-learning-notes.md`
 2. **Note time taken** for each activity
 3. **Save error messages** you encountered
 4. **Record what worked** vs what didn't
@@ -323,7 +323,8 @@ These notes become the foundation for creating comprehensive learning guides.
 
 - **[COURSE_PLAN.md](../COURSE_PLAN.md)** - Complete 30-week course structure
 - **[CLAUDE.md](../CLAUDE.md)** - Project overview and teaching approach
-- **[learning_notes.md](../learning_notes.md)** - Session-by-session progress notes
+- **[learning_notes.md](../learning_notes.md)** - Master index with pre-course planning
+- **[week1-learning-notes.md](week1-learning-notes.md)** - Week 1 session notes
 - **[Bitcoin Book](../assets/bitcoinbook-develop/)** - Blockchain fundamentals
 - **[Ethereum Book](../assets/ethereumbook-develop/)** - Ethereum development
 
@@ -332,15 +333,15 @@ These notes become the foundation for creating comprehensive learning guides.
 ## 📧 Feedback & Improvements
 
 As you use these guides:
-- Note unclear sections in `learning_notes.md`
+- Note unclear sections in `docs/weekN-learning-notes.md`
 - Suggest improvements for future iterations
 - Document additional troubleshooting tips discovered
 - Share insights with others learning blockchain development
 
 ---
 
-**Last Updated:** 2025-10-22
-**Course Progress:** Week 1 Complete (✅) | Weeks 2-30 In Progress (🔜)
+**Last Updated:** 2025-10-24
+**Course Progress:** Week 1 FULLY Complete (✅ including self-assessment) | Week 2 Ready to Start (🔜)
 **Total Learning Guides:** 4 of ~80 planned
 
 ---

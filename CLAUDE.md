@@ -129,7 +129,7 @@ Include at end of each guide with format:
 
 When the user says "Let's create the learning guide for Week X":
 
-1. **Review learning_notes.md** for that week's session notes
+1. **Review docs/weekX-learning-notes.md** for that week's session notes
 2. **Identify actual activities completed** (not theoretical)
 3. **Document real commands used** (exact PowerShell syntax)
 4. **Include actual error messages** encountered and solutions
@@ -733,7 +733,8 @@ The course includes 4 buffer weeks for consolidation, catch-up, and integration:
 
 ### Key Documentation
 - `first_thought.md`: Original project ideation and pivot to family finance
-- `learning_notes.md`: Questions, decisions, and insights during development
+- `learning_notes.md`: Master index with pre-course planning and course structure decisions
+- `docs/weekN-learning-notes.md`: Week-by-week session notes and learning insights
 - `course_critique.md`: Professional course builder review and recommendations (led to 30-week restructure)
 
 ## Development Phases (30 Weeks)
