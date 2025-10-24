@@ -125,7 +125,84 @@ Include at end of each guide with format:
 - Ethereum Book: Chapter X (Topic), Chapter Y (Topic)
 ```
 
-### Creating Learning Guides with Claude Code
+### Preparing Classes Before a New Week
+
+**IMPORTANT:** Before the user starts a new week, prepare the class documents to guide the learning process.
+
+When the user says "Let's prepare for Week X" or "What's next in the course?":
+
+1. **Review COURSE_PLAN.md** to identify Week X classes and goals
+2. **Ask clarification questions** if needed:
+   - Which aspects to emphasize?
+   - Any specific concerns or interests?
+   - Preferred depth level for certain topics?
+3. **Create class documents** for each class in Week X:
+   - File naming: `docs/weekX-classX.Y-topic-name.md`
+   - Example: `docs/week2-class2.1-installing-geth.md`
+   - Example: `docs/week2-class2.2-node-operations.md`
+4. **Use your expertise** as:
+   - Expert crypto developer (Solidity, blockchain architecture, security)
+   - Pedagogical expert (breaking down complex topics, examples, analogies)
+   - Hands-on instructor (practical activities, commands, expected outputs)
+5. **Use available tools and MCPs**:
+   - **context7 MCP** (if available) for gathering comprehensive context from official documentation sources:
+     - **Solidity** - Language syntax, security patterns, best practices
+     - **Hardhat** - Framework features, configuration, testing
+     - **ethers.js** - Web3 interactions, contract calls, transactions
+     - **Go** - Language fundamentals, concurrency, blockchain libraries
+     - **Python** - Language basics, pandas, web3.py
+     - **Node.js/TypeScript** - Runtime features, async patterns, types
+     - **Geth** - Ethereum client installation, configuration, RPC
+     - **PostgreSQL/Redis** - Database setup, queries, caching patterns
+     - **React/Next.js** - Frontend frameworks, hooks, Web3 integration
+   - **WebFetch** for latest documentation and best practices
+   - **WebSearch** for current tool versions and tutorials
+   - **Read** tool to reference Bitcoin/Ethereum books in `/assets` for reading assignments
+   - **Grep/Glob** to search existing codebase for examples and patterns
+6. **Structure each class document** following the template:
+   - Overview (duration, prerequisites, why it matters)
+   - Learning Objectives (3-7 measurable outcomes)
+   - Key Concepts (tables, examples, analogies)
+   - Hands-On Activities (step-by-step with PowerShell commands)
+   - Expected Outputs (so learner knows if correct)
+   - Deliverables (clear success criteria)
+   - Common Issues & Solutions (anticipate problems)
+   - Self-Assessment Quiz (5-10 questions with expandable answers)
+   - Key Takeaways
+   - Next Steps
+   - Teaching Notes (for Claude Code guidance)
+   - Reading References (relevant Bitcoin/Ethereum book chapters)
+
+**Examples of prepared class documents:**
+- `docs/week1-class1.1-environment-setup.md` ✅
+- `docs/week1-class1.2-blockchain-theory.md` ✅
+- `docs/week1-class1.3-first-smart-contract.md` ✅
+- `docs/week27-class27.1-mutation-testing.md` ✅
+
+**Key Principles:**
+- Make it hands-on and practical (not just theory)
+- Break into small, digestible chunks (respect user's learning style)
+- Include real commands with expected outputs (Windows/PowerShell)
+- Anticipate troubleshooting (from experience and research)
+- Connect to real-world use cases (portfolio-worthy skills)
+- Reference authoritative sources (official docs, books)
+
+**Timeline:**
+```
+End of Week N: User completes Week N classes
+    ↓
+Weekend/Start of Week N+1: Prepare Week N+1 class documents
+    ↓
+Week N+1: User works through prepared classes interactively
+    ↓
+End of Week N+1: Create learning guides and notes (documenting what happened)
+```
+
+---
+
+### Creating Learning Guides After a Week
+
+**IMPORTANT:** This happens AFTER completing the week, not before.
 
 When the user says "Let's create the learning guide for Week X":
 
