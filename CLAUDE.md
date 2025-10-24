@@ -15,6 +15,82 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a hands-on educational course covering blockchain, fintech, and full-stack development skills. Designed for developers with intermediate JavaScript/TypeScript proficiency targeting junior blockchain developer roles.
 
+## Course Navigation
+
+**IMPORTANT: When the user asks "What's next?" or similar phrases ("What should I do next?", "What comes next?", "Ready to continue", etc.):**
+
+1. **Check current progress:**
+   - Read `learning_notes.md` to see the latest completed week
+   - Check `docs/README.md` for week completion status
+   - Review `docs/weekN-learning-notes.md` for the most recent week
+
+2. **Determine next step:**
+   - If week is incomplete: Continue with remaining classes
+   - If week completed but no self-assessment: Prompt for self-assessment
+   - If week fully complete: Prepare next week's classes OR start next week if already prepared
+   - If at buffer week: Review and consolidation activities
+
+3. **Provide clear next action:**
+   - "You've completed Week X. Ready to prepare Week X+1?"
+   - "Let's complete the Week X self-assessment before moving forward."
+   - "Week X classes are prepared. Ready to start Class X.1?"
+
+4. **Reference COURSE_PLAN.md** for:
+   - Week structure and class topics
+   - Learning objectives and deliverables
+   - Reading assignments
+   - Milestone checkpoints
+
+**Never assume or guess - always check the documentation to provide accurate course navigation.**
+
+---
+
+## Session Wrap-Up
+
+**IMPORTANT: When the user says "that's a wrap", "let's call it a day", "let's pause", or similar phrases:**
+
+1. **Update learning notes** (`docs/weekN-learning-notes.md`):
+   - Add entry for today's session with date
+   - Document what was accomplished
+   - Note any decisions made or issues encountered
+   - Record next steps for when resuming
+
+2. **Update progress tracking:**
+   - Update `docs/README.md` if week status changed
+   - Update `learning_notes.md` master index if needed
+   - Mark any completed deliverables
+
+3. **Create session summary:**
+   - List what was accomplished today
+   - List what's ready for next session
+   - Note current progress (e.g., "Week X, Class X.Y complete")
+   - Provide clear starting point for next session
+
+4. **Verify all changes saved:**
+   - Confirm all file edits were successful
+   - Note any files that were created or modified
+
+**Session wrap-up template:**
+```markdown
+## 📋 Today's Accomplishments (YYYY-MM-DD)
+
+### ✅ Completed:
+- [List of completed items]
+
+### 📂 Files Updated/Created:
+- [List of files]
+
+### 🎯 Ready for Next Session:
+- [What comes next]
+- [Any preparation needed]
+
+### 📍 Current Status:
+- Week X: [Status]
+- Next: [Clear next action]
+```
+
+---
+
 ## Teaching & Learning Approach
 
 **IMPORTANT: The user has specific learning preferences. Follow these guidelines when teaching:**
