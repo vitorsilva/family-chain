@@ -146,19 +146,27 @@ When the user says "Let's prepare for Week X" or "What's next in the course?":
    - Hands-on instructor (practical activities, commands, expected outputs)
 5. **Use available tools and MCPs**:
    - **context7 MCP** (if available) for gathering comprehensive context from official documentation sources:
-     - **Solidity** - Language syntax, security patterns, best practices
-     - **Hardhat** - Framework features, configuration, testing
-     - **ethers.js** - Web3 interactions, contract calls, transactions
-     - **Go** - Language fundamentals, concurrency, blockchain libraries
+     - **⚠️ CRITICAL: Always query version-specific documentation!**
+     - **Solidity** v0.8.28+ - Language syntax, security patterns, best practices
+     - **Hardhat** v3.0.8+ - Framework features, configuration, testing ⚠️ NOT Hardhat 2.x!
+     - **ethers.js** v6.x - Web3 interactions, contract calls, transactions ⚠️ NOT v5!
+     - **Go** - Language fundamentals, concurrency, blockchain libraries (go-ethereum)
      - **Python** - Language basics, pandas, web3.py
-     - **Node.js/TypeScript** - Runtime features, async patterns, types
+     - **Node.js** v22.14.0+ / **TypeScript** ~5.8.0 - Runtime features, async patterns, types
      - **Geth** - Ethereum client installation, configuration, RPC
      - **PostgreSQL/Redis** - Database setup, queries, caching patterns
      - **React/Next.js** - Frontend frameworks, hooks, Web3 integration
-   - **WebFetch** for latest documentation and best practices
-   - **WebSearch** for current tool versions and tutorials
+   - **WebFetch** for latest documentation and best practices (verify versions match!)
+   - **WebSearch** for current tool versions and tutorials (filter by date/version)
    - **Read** tool to reference Bitcoin/Ethereum books in `/assets` for reading assignments
    - **Grep/Glob** to search existing codebase for examples and patterns
+
+   **Version Verification Checklist:**
+   - [ ] Check "Current Project Versions" section below before querying docs
+   - [ ] Include version number in context7/WebFetch queries (e.g., "Hardhat 3.0.8", "ethers.js v6")
+   - [ ] Verify documentation URLs include correct version (e.g., `/v3/` not `/v2/`)
+   - [ ] Cross-reference with official migration guides for breaking changes
+   - [ ] When in doubt, check CLAUDE.md "Current Project Versions" table
 6. **Structure each class document** following the template:
    - Overview (duration, prerequisites, why it matters)
    - Learning Objectives (3-7 measurable outcomes)
