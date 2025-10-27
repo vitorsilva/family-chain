@@ -87,9 +87,21 @@ weekXX-classX.X-topic-name.md
 
 | Class | Guide | Duration | Status |
 |-------|-------|----------|--------|
-| **2.1** | Installing and Configuring Geth | 1-2 hours | 🔜 Pending |
-| **2.2** | Node Operations and Monitoring | 1-2 hours | 🔜 Pending |
-| **2.3** | Getting Testnet ETH | 1 hour | 🔜 Pending |
+| **2.1** | [Installing and Configuring Geth](week2-class2.1-installing-geth.md) | 2-3 hours | ✅ Complete |
+| **2.2** | [Node Operations and Monitoring](week2-class2.2-node-operations.md) | 3-4 hours | ✅ Complete |
+| **2.3** | [Getting Testnet ETH](week2-class2.3-testnet-eth.md) | 1-2 hours | ✅ Complete |
+
+**Week 2 Learning Outcomes:**
+- ✅ Understanding execution clients (Geth) vs consensus clients (Lighthouse)
+- ✅ Installing Geth v1.16+ and Lighthouse v7.0+ (WSL Ubuntu or Windows)
+- ✅ Configuring JWT authentication between clients
+- ✅ Running a fully synced Sepolia testnet node
+- ✅ Monitoring sync progress and node health
+- ✅ Querying blockchain via JSON-RPC (your own node!)
+- ✅ Understanding data directories and node types
+- ✅ Obtaining testnet ETH from multiple faucets
+- ✅ Verifying balances using local node (not just Etherscan)
+- ✅ **Early Win:** Run your own Ethereum infrastructure!
 
 **Reading References (Week 2):**
 - Bitcoin Book: Chapter 3 (Bitcoin Core - Running a Node)
@@ -168,10 +180,10 @@ weekXX-classX.X-topic-name.md
 
 | Metric | Count |
 |--------|-------|
-| **Total Guides Created** | 4 |
-| **Guides Remaining** | ~80 (estimated based on 30-week course) |
-| **Total Words (Current)** | ~24,000 words |
-| **Average Guide Length** | ~6,000 words |
+| **Total Guides Created** | 7 |
+| **Guides Remaining** | ~77 (estimated based on 30-week course) |
+| **Total Words (Current)** | ~50,000 words |
+| **Average Guide Length** | ~7,000 words |
 
 ---
 
@@ -340,9 +352,9 @@ As you use these guides:
 
 ---
 
-**Last Updated:** 2025-10-24
-**Course Progress:** Week 1 FULLY Complete (✅ including self-assessment) | Week 2 Ready to Start (🔜)
-**Total Learning Guides:** 4 of ~80 planned
+**Last Updated:** 2025-10-27
+**Course Progress:** Week 1 FULLY Complete (✅ including self-assessment) | Week 2 Classes Prepared (📚 ready to start)
+**Total Learning Guides:** 7 of ~80 planned
 
 ---
 

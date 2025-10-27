@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(tree -L 2 -I 'node_modules|.git')"
+      "Bash(tree -L 2 -I 'node_modules|.git')",
+      "WebSearch",
+      "WebFetch(domain:geth.ethereum.org)"
     ],
     "deny": [],
     "ask": []
