@@ -361,13 +361,410 @@ chmod 600 ~/ethereum/sepolia/jwt/jwtsecret  # Set secure permissions
 
 #### Questions to Explore in Class 2.2
 
-- [ ] Which checkpoint sync URL works reliably for Sepolia + Lighthouse v6.0.1?
-- [ ] How long does genesis sync actually take on Sepolia? (if we can't fix checkpoint sync)
-- [ ] Should we upgrade Lighthouse to a newer version?
-- [ ] What's the difference between "snap sync" (Geth) and checkpoint sync (Lighthouse)?
-- [ ] How do we know when the node is fully synced?
-- [ ] What RPC endpoints can we query once synced?
+- [x] ✅ Which checkpoint sync URL works reliably for Sepolia + Lighthouse v6.0.1? **RESOLVED: v8.0.0-rc.2 needed, not v6.0.1**
+- [x] ✅ How long does genesis sync actually take on Sepolia? **N/A - checkpoint sync works with v8.0.0-rc.2**
+- [x] ✅ Should we upgrade Lighthouse to a newer version? **YES - upgraded to v8.0.0-rc.2**
+- [x] ✅ What's the difference between "snap sync" (Geth) and checkpoint sync (Lighthouse)? **Learned in Class 2.2**
+- [x] ✅ How do we know when the node is fully synced? **`eth_syncing` returns `false`**
+- [x] ✅ What RPC endpoints can we query once synced? **Explored in Class 2.2**
 
 ---
 
-*Last Updated: 2025-10-29*
+### Week 2, Class 2.2: Node Operations and Monitoring - COMPLETE ✅
+
+**Context:** Continuing from Class 2.1 with both Geth v1.16.5 and Lighthouse v8.0.0-rc.2 installed and checkpoint sync working
+
+**Duration:** ~1.5 hours (2025-10-29, 10:29 AM - 12:07 PM)
+
+---
+
+#### Running Geth and Lighthouse Together
+
+**Terminal Setup:**
+- Used Windows Terminal with multiple tabs (Option A)
+- Terminal 1: Geth (execution client)
+- Terminal 2: Lighthouse (consensus client)
+- Terminal 3: Query/management terminal
+
+**User Question:** "When I start a new terminal, doesn't mean I'm starting a new server, right?"
+- ✅ Correct understanding: New terminal = new connection to same WSL instance
+- Analogy: Same house, different windows
+
+**Geth Startup:**
+```bash
+geth --sepolia --datadir ~/ethereum/sepolia/geth --authrpc.jwtsecret ~/ethereum/sepolia/jwt/jwtsecret --http --http.api eth,net,web3 --syncmode snap
+```
+
+**Results:**
+- ✅ JWT secret loaded
+- ✅ HTTP server started (127.0.0.1:8545)
+- ✅ Authenticated Engine API (127.0.0.1:8551)
+- ✅ P2P networking started
+
+**Lighthouse Startup:**
+```bash
+lighthouse bn --network sepolia --datadir ~/ethereum/sepolia/lighthouse --execution-endpoint http://localhost:8551 --execution-jwt ~/ethereum/sepolia/jwt/jwtsecret --checkpoint-sync-url https://checkpoint-sync.sepolia.ethpandaops.io
+```
+
+**Results:**
+- ✅ Connected to Geth successfully (no more "connection refused"!)
+- ✅ Checkpoint state loaded from disk
+- ✅ 7 peers connected initially
+- ⚠️ "Unsupported fork" warnings (Osaka fork - expected with v8.0.0-rc.2 + Geth v1.16.5)
+
+---
+
+#### Understanding "Syncing" Concept
+
+**User Question:** "Explain what does it mean to be syncing... I'm a node on the ethereum network? Not quite, right?"
+
+**Key Clarification:**
+- ✅ **You ARE a node** (connected to network, 16 peers)
+- ✅ Downloading blockchain data
+- ✅ Verifying cryptographic proofs
+- ❌ **Can't reliably answer queries yet** (data incomplete)
+- ❌ **Not a validator** (no 32 ETH stake, not producing blocks)
+
+**Node Types Learned:**
+1. **Full Node** (you, when synced) - validates blocks, queries data, no rewards
+2. **Archive Node** - stores ALL history (terabytes)
+3. **Validator** - full node + 32 ETH stake + validator keys = earns rewards
+
+**Syncing Process:**
+```
+Checkpoint (started at slot 8,833,248)
+    ↓
+Downloading blocks forward
+    ↓
+Geth verifying execution payloads (catching up)
+    ↓
+Lighthouse ahead (optimistic sync)
+    ↓
+FULLY SYNCED (goal)
+```
+
+---
+
+#### Data Directory Exploration
+
+**Geth Directory Size:**
+- Initial: 73GB at ~42% sync
+- Projected final: ~100-150GB (Sepolia full node)
+
+**Lighthouse Directory Size:**
+- 2.0GB (consensus data)
+
+**Ratio:** Geth uses **36.5× more space** than Lighthouse!
+
+**Why the difference:**
+- **Geth (Execution):** Account balances, smart contract storage, transaction history, contract bytecode, receipts
+- **Lighthouse (Consensus):** Beacon blocks, attestations, validator votes, finality checkpoints
+
+**Analogy:**
+- Geth = Entire company database (all customer data, transactions)
+- Lighthouse = Meeting minutes (who voted yes/no)
+
+**Discovery:** `du -sh` can fail on active database (`.sst` files being compacted)
+- Solution: `du -sh ~/ethereum/sepolia/geth/ 2>/dev/null` (suppress errors)
+
+---
+
+#### Sync Modes Explained
+
+**Three Geth Sync Modes:**
+
+1. **Full Sync** (slowest)
+   - Time: Weeks to months
+   - Disk: ~1TB+ (mainnet)
+   - Replays EVERY transaction since 2015
+
+2. **Fast Sync** (deprecated)
+   - Time: Days
+   - Disk: ~500GB
+   - Downloads recent state + some history
+
+3. **Snap Sync** (what we're using!)
+   - Time: 4-12 hours (Sepolia)
+   - Disk: 100-150GB
+   - Downloads latest snapshot + forward sync
+   - **Like cliff notes + latest updates**
+
+**User insight:** "It's a snapshot synchronization that runs faster" ✅
+
+**Snap Sync Data Stored:**
+- ✅ Block headers (all blocks, back to genesis)
+- ✅ Block bodies (transactions)
+- ✅ Recent state snapshot (current balances, storage)
+- ❌ Historical state (can't query old balances)
+
+**Testing:**
+```bash
+curl eth_getBlockByNumber("0x1")  # Block #1 - SUCCESS!
+```
+Result: You have block data, but not historical state replay capability.
+
+---
+
+#### Peer Discovery and Networking
+
+**Peer Count Check:**
+```bash
+curl eth_peerCount → "0x10" (16 peers in hex)
+```
+
+**Admin Commands Security:**
+```bash
+curl admin_peers → Error: "method does not exist/is not available"
+```
+
+**Why blocked over HTTP:**
+- HTTP can be exposed to network (remote access)
+- Admin commands only via IPC (local-only)
+- Security principle: Admin operations require "physical" access
+
+**Using IPC (geth attach):**
+```bash
+geth attach ~/ethereum/sepolia/geth/geth.ipc
+> admin.peers.length
+16
+```
+
+**Key Difference:**
+- **HTTP (curl):** JSON-RPC formatting, remote possible, limited APIs, good for scripts
+- **IPC (geth attach):** Interactive JavaScript console, local-only, full admin access, great for debugging
+
+---
+
+#### Systemd Services Setup
+
+**Created Service Files:**
+
+**1. Geth Service (`/etc/systemd/system/geth-sepolia.service`):**
+```ini
+[Unit]
+Description=Geth Ethereum Node (Sepolia)
+After=network.target
+
+[Service]
+Type=simple
+User=vitor
+ExecStart=/usr/bin/geth --sepolia --datadir /home/vitor/ethereum/sepolia/geth ...
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+```
+
+**User insight:** "`Restart=on-failure` will restart if something happens" ✅
+
+**2. Lighthouse Service (`/etc/systemd/system/lighthouse-sepolia.service`):**
+```ini
+[Unit]
+Description=Lighthouse Beacon Node (Sepolia)
+After=network.target
+Wants=geth-sepolia.service  # Soft dependency
+
+[Service]
+Type=simple
+User=vitor
+ExecStart=/usr/local/bin/lighthouse bn --network sepolia ...
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+```
+
+**User insight:** "`Wants=geth-sepolia.service` because it depends on it" ✅
+
+**Dependency Types:**
+- `Wants=` - Soft dependency (start anyway, wait for Geth)
+- `Requires=` - Hard dependency (don't start without it)
+
+**Service Management:**
+```bash
+sudo systemctl daemon-reload          # Reload service definitions
+sudo systemctl start geth-sepolia     # Start service
+sudo systemctl status geth-sepolia    # Check status
+sudo systemctl enable geth-sepolia    # Auto-start on boot
+sudo journalctl -u geth-sepolia -f    # Follow live logs
+```
+
+**Benefits:**
+- ✅ Auto-start on boot
+- ✅ Auto-restart on crash
+- ✅ Run in background (no terminal needed)
+- ✅ Simple management commands
+
+---
+
+#### Helper Script Creation
+
+**Created `~/ethereum/node-manager.sh`:**
+- start/stop/restart commands
+- status checks for both nodes
+- sync progress (with jq formatting)
+- live log viewing
+- Help menu
+
+**Made executable:**
+```bash
+chmod +x ~/ethereum/node-manager.sh
+```
+
+**User insight:** "to be executable" ✅ (chmod +x adds execute permission)
+
+**Optional alias setup:**
+```bash
+echo 'alias nodes="~/ethereum/node-manager.sh"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+**How it works:**
+- `echo ... >> ~/.bashrc` - Appends alias to bash config (doesn't overwrite)
+- `source ~/.bashrc` - Reloads config in current session (no new terminal needed)
+- `>>` vs `>` - Append vs overwrite
+
+**Result:** Simple commands like `nodes status`, `nodes sync`, `nodes logs-geth`
+
+---
+
+#### Sync Progress Throughout Session
+
+**Progression:**
+- Start (10:29): ~36% (3,422,195 / 9,515,090 blocks)
+- +5 min: 42% (3,957,446 blocks)
+- +10 min: 47% (4,455,186 blocks)
+- +20 min: 49% (4,662,569 blocks)
+- End (12:07): **~56%** (5,301,214 / 9,515,525 blocks)
+
+**Gained: 20% progress in ~1.5 hours**
+
+**Non-linear sync pattern observed:**
+- Early: 6% gain in 10 minutes
+- Middle: 5% gain in 5 minutes
+- Later: 2% gain in 10 minutes
+- Slowing down as expected (recent blocks more complex)
+
+**Disk Usage:**
+- Geth: 73GB at 42% sync
+- Projected: ~100-150GB when complete
+
+---
+
+#### Technical Concepts Mastered
+
+**1. Execution vs Consensus Split**
+- **Why:** Resilience (client diversity), modularity (easier upgrades), separation of concerns
+- **Analogy:** Geth (worker processing transactions) + Lighthouse (manager deciding validity)
+
+**2. Optimistic Sync**
+- Lighthouse accepts blocks before Geth fully verifies them
+- "Head is optimistic" warning = normal during sync
+- Once Geth catches up, head becomes "verified"
+
+**3. Checkpoint Sync Benefits**
+- Without: Sync from genesis (days/weeks)
+- With: Download recent checkpoint + forward sync (hours)
+- Tradeoff: Trust checkpoint provider initially, trustless after sync
+
+**4. JWT Authentication**
+- Shared secret between Geth and Lighthouse
+- Both run as same user (vitor), so both can read JWT file
+- `chmod 600` prevents OTHER users/processes from accessing
+
+**5. Blob Data (EIP-4844)**
+- Temporary data storage for Layer 2 rollups
+- Makes L2s cheaper
+- v8.0.0-rc.2 supports it, Geth v1.16.5 doesn't yet
+- "Unsupported fork" warnings are non-blocking for learning
+
+---
+
+#### Issues Encountered & Solutions
+
+**Issue 1: Osaka Fork Warnings**
+- **Problem:** Recurring "Unsupported fork" errors from both clients
+- **Cause:** Lighthouse v8.0.0-rc.2 (Osaka fork support) vs Geth v1.16.5 (no Osaka support)
+- **Impact:** None - nodes sync successfully, basic operations work
+- **Solution:** Acceptable for learning purposes (Option 1: continue as-is)
+
+**Issue 2: Database File Access During `du` Command**
+- **Problem:** `du: cannot access '...038393.sst': No such file or directory`
+- **Cause:** Geth actively compacting LevelDB/RocksDB `.sst` files during scan
+- **Solution:** `du -sh ~/ethereum/sepolia/geth/ 2>/dev/null` (suppress errors)
+
+---
+
+#### Key User Questions & Insights
+
+**Excellent Questions:**
+1. "When I start a new terminal that doesn't mean I'm starting a new server, right?" ✅ Correct understanding
+2. "Why will Geth and Lighthouse read the file if only owner can read/write?" (JWT permissions) ✅ Good security thinking
+3. "Explain what does it mean to be syncing... I'm a node, not quite right?" ✅ Subtle understanding needed
+4. "Because it depends on it" (about `Wants=` directive) ✅ Correct
+5. "To be executable" (chmod +x) ✅ Succinct and correct
+
+**Strong Conceptual Understanding:**
+- Connected "resilience" to client diversity
+- Understood security tradeoffs (checkpoint trust vs speed)
+- Grasped IPC vs HTTP security implications
+- Recognized non-linear sync progression
+
+---
+
+#### Class 2.2 Deliverables - ALL COMPLETE ✅
+
+- [x] ✅ **Both clients running together** (Geth + Lighthouse communicating via JWT)
+- [x] ✅ **Understand syncing concept** (full node, not validator, optimistic sync)
+- [x] ✅ **Data directory exploration** (73GB Geth, 2GB Lighthouse, 36.5× ratio)
+- [x] ✅ **Sync modes explained** (full, fast, snap - why snap is best for learning)
+- [x] ✅ **Node types clarified** (full, archive, validator)
+- [x] ✅ **Peer discovery** (16 peers connected)
+- [x] ✅ **Security understanding** (HTTP vs IPC, admin commands)
+- [x] ✅ **Systemd services created** (auto-start, auto-restart, enabled on boot)
+- [x] ✅ **Helper script created** (`node-manager.sh` with alias)
+- [x] ✅ **Monitoring commands learned** (journalctl, systemctl status, eth_syncing)
+
+---
+
+#### Next Steps for Class 2.3
+
+**Before starting Class 2.3:**
+- ⏳ Wait for full sync (~2-3 more hours from 56%)
+- ✅ Check sync status: `nodes sync` or `curl eth_syncing`
+- ✅ When result is `false`, node is fully synced
+
+**Class 2.3 Activities:**
+- Get Sepolia ETH from faucets
+- Verify balance using YOUR node (not Etherscan!)
+- Understand testnet vs mainnet ETH
+- Learn about faucet strategies
+
+**Commands for when resuming:**
+```bash
+nodes status           # Check if nodes still running
+nodes sync             # Check sync progress
+nodes logs-geth        # View recent activity
+```
+
+---
+
+#### Software/Tools Installed in Class 2.2
+
+- `jq` (JSON formatter) - via `sudo apt install jq`
+
+---
+
+#### Week 2 Status
+
+- [x] ✅ **Class 2.1:** Installing and Configuring Geth (COMPLETE)
+- [x] ✅ **Class 2.2:** Node Operations and Monitoring (COMPLETE)
+- [ ] 🔜 **Class 2.3:** Getting Testnet ETH (PENDING - wait for full sync)
+
+**Sync Status:** ~56% complete, estimated 2-3 hours remaining
+
+---
+
+*Last Updated: 2025-10-29 (Session end: 12:07 PM)*
