@@ -113,14 +113,22 @@ weekXX-classX.X-topic-name.md
 
 | Class | Guide | Duration | Status |
 |-------|-------|----------|--------|
-| **3.1** | Creating Wallets via CLI | 1-2 hours | 🔜 Pending |
-| **3.2** | Sending Your First Transaction | 1-2 hours | 🔜 Pending |
-| **3.3** | Querying Blockchain Data | 1-2 hours | 🔜 Pending |
-| **3.4** | Hardhat Project Exploration | 1-2 hours | 🔜 Pending |
+| **3.1** | [Creating Wallets via CLI](week3-class3.1-creating-wallets-cli.md) | 1-2 hours | ✅ Prepared |
+| **3.2** | [Sending Your First Transaction](week3-class3.2-sending-first-transaction.md) | 1-2 hours | ✅ Prepared |
+| **3.3** | [Querying Blockchain Data](week3-class3.3-querying-blockchain-data.md) | 1-2 hours | ✅ Prepared |
+| **3.4** | [Hardhat Project Exploration](week3-class3.4-hardhat-project-exploration.md) | 1-2 hours | ✅ Prepared |
+
+**Week 3 Learning Outcomes:**
+- ✅ Create wallets programmatically (random, mnemonic, HD derivation)
+- ✅ Send ETH transactions via CLI with gas estimation
+- ✅ Query blockchain data (balances, blocks, transaction history)
+- ✅ Understand Hardhat 3 project structure and workflow
+- ✅ Build custom CLI tools for blockchain interactions
+- ✅ **Early Win:** Send ETH programmatically and query data!
 
 **Reading References (Week 3):**
-- Bitcoin Book: Chapter 4 (Keys), Chapter 5 (Wallets)
-- Ethereum Book: Chapter 4 (Keys and Addresses), Chapter 5 (Wallets)
+- Bitcoin Book: Chapter 4 (Keys), Chapter 5 (Wallets), Chapter 6 (Transactions)
+- Ethereum Book: Chapter 4 (Keys and Addresses), Chapter 5 (Wallets), Chapter 6 (Transactions)
 
 ---
 
@@ -352,9 +360,9 @@ As you use these guides:
 
 ---
 
-**Last Updated:** 2025-10-29
-**Course Progress:** Week 1 FULLY Complete (✅ including self-assessment) | Week 2 Class 2.1 Complete (🔄 in progress)
-**Total Learning Guides:** 7 of ~80 planned
+**Last Updated:** 2025-10-29 (Late Evening)
+**Course Progress:** Week 1 ✅ FULLY Complete | Week 2 ✅ FULLY Complete | Week 3 📚 PREPARED (ready to start)
+**Total Learning Guides:** 11 of ~80 planned (Week 1: 3, Week 2: 4, Week 3: 4)
 
 ---
 

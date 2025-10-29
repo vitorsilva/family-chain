@@ -1300,4 +1300,178 @@ npx hardhat keystore set --dev --force KEY   # Update existing key
 
 ---
 
-*Last Updated: 2025-10-29 (Evening session - Week 2 complete)*
+---
+
+## Session: 2025-10-29 (Late Evening) - Week 2 Self-Assessment & Week 3 Preparation
+
+**Context:** Completed Week 2 self-assessment, prepared all Week 3 class documents
+
+---
+
+### Week 2 Self-Assessment Results
+
+**Score: 5/8 Solid Understanding**
+
+**Strong Areas (✅):**
+1. ✅ Execution vs Consensus split (modularity, client diversity, resilience)
+2. ✅ Admin commands security (IPC vs HTTP)
+3. ✅ Faucet mainnet ETH requirements (anti-bot measures)
+4. ✅ Snap sync understanding (snapshot synchronization)
+5. ✅ Checkpoint sync tradeoff (trust vs speed)
+
+**Areas Needing Clarification (⚠️):**
+1. ⚠️ JWT authentication - Authentication not encryption (shared secret for verification)
+2. ⚠️ Checkpoint sync limitation - Misunderstood query capabilities (CAN query old blocks, CANNOT query historical state)
+3. ⚠️ Geth sync modes - Missing "Fast sync" (deprecated third mode)
+4. ⚠️ Node types confused - Full vs Archive (Archive = full + ALL historical state, not "just stores data")
+5. ⚠️ Backup faucet strategy - Forgot Google Cloud POW faucet (used in Week 1)
+
+**Key Corrections Made:**
+- JWT = authentication password, not encryption key
+- Checkpoint sync tradeoff = trust vs speed (not query limitations)
+- Archive node = full node + complete historical state
+- Backup faucet = Google Cloud POW (https://cloud.google.com/application/web3/faucet/ethereum/sepolia)
+
+**Overall Assessment:** Strong conceptual foundation, minor details to review. Ready for Week 3! ✅
+
+---
+
+### Week 3 Preparation - ALL COMPLETE ✅
+
+**Classes Created:**
+
+1. **Class 3.1: Creating Wallets via CLI** ✅
+   - File: `docs/week3-class3.1-creating-wallets-cli.md`
+   - Topics: Wallet creation, mnemonic phrases, HD wallets, provider connection
+   - Activities: 4 hands-on scripts (create-wallet, wallet-from-mnemonic, wallet-with-provider, load-existing-wallet)
+   - Reading: Bitcoin Book Ch 4-5, Ethereum Book Ch 4-5
+
+2. **Class 3.2: Sending Your First Transaction** ✅
+   - File: `docs/week3-class3.2-sending-first-transaction.md`
+   - Topics: Transaction anatomy, gas mechanics, nonce, error handling
+   - Activities: 4 scripts (send-transaction, estimate-gas, check-transaction, handle-errors)
+   - Reading: Bitcoin Book Ch 6, Ethereum Book Ch 6
+
+3. **Class 3.3: Querying Blockchain Data** ✅
+   - File: `docs/week3-class3.3-querying-blockchain-data.md`
+   - Topics: Balances, blocks, transaction history, real-time monitoring, indexers
+   - Activities: 4 scripts (query-balances, explore-blocks, transaction-history, monitor-blocks)
+   - Requires: Etherscan API key setup
+   - Reading: Bitcoin Book Ch 7-8, Ethereum Book Ch 7, 13
+
+4. **Class 3.4: Hardhat Project Exploration** ✅
+   - File: `docs/week3-class3.4-hardhat-project-exploration.md`
+   - Topics: Project structure, artifacts, Hardhat tasks, config, local node
+   - Activities: 6 activities (explore tasks, build/clean cycle, config, tests, custom task, local node)
+   - Reading: Ethereum Book Ch 7-8
+
+**Version-Specific Considerations Applied:**
+- ✅ All code uses **Hardhat 3.0.8** syntax (`build` NOT `compile`, `hre.vars.get()`)
+- ✅ All code uses **ethers.js v6** API (`JsonRpcProvider`, `parseEther`, `formatEther`)
+- ✅ References **Solidity 0.8.28** (user's installed version)
+- ✅ Uses **Alchemy RPC** (already configured in user's keystore)
+- ✅ PowerShell commands (Windows-first approach)
+- ✅ TypeScript for all scripts (`.ts` not `.js`)
+- ✅ Version warnings included (Hardhat 3 vs 2, ethers v6 vs v5)
+
+**New Instruction Added to CLAUDE.md:**
+When preparing new weeks, consider installed tool versions and configurations to ensure all examples match the user's actual environment.
+
+---
+
+### Session Accomplishments
+
+**✅ Completed:**
+- Week 2 self-assessment (8 questions answered, reviewed, and corrected)
+- 4 comprehensive Week 3 class documents created (~50+ pages total)
+- Version-specific code examples verified against user's actual setup
+- Reading references added (Bitcoin & Ethereum books)
+- Teaching notes for Claude Code guidance included
+- Self-assessment quizzes with expandable answers (5-7 questions per class)
+- Common issues & solutions based on Hardhat 3 breaking changes
+
+**📂 Files Created:**
+- `docs/week3-class3.1-creating-wallets-cli.md` (~12,000 words)
+- `docs/week3-class3.2-sending-first-transaction.md` (~14,000 words)
+- `docs/week3-class3.3-querying-blockchain-data.md` (~13,000 words)
+- `docs/week3-class3.4-hardhat-project-exploration.md` (~11,000 words)
+
+**Total Content Created:** ~50,000 words, 4 comprehensive learning guides
+
+---
+
+### 🎯 Ready for Next Session
+
+**Before Starting Week 3:**
+- [ ] ⏳ **Complete Week 2 Reading** (homework):
+  - Bitcoin Book: Chapter 3 (Bitcoin Core - Running a Node)
+  - Ethereum Book: Chapter 3 (Clients - Running an Ethereum Client)
+
+**When Ready to Start Week 3:**
+- [ ] 🔜 Confirm reading completed
+- [ ] 🔜 Start **Class 3.1: Creating Wallets via CLI**
+  - Create `scripts/week3/` directory
+  - Write 4 TypeScript scripts (wallet creation, mnemonic, provider, keystore)
+  - Run each script and verify output
+  - Understand private key → public key → address flow
+
+**Week 3 Tools Ready:**
+- ✅ Hardhat 3.0.8 installed
+- ✅ ethers.js v6 installed
+- ✅ Alchemy RPC configured
+- ✅ Existing wallet with ~0.048 SepoliaETH
+- ✅ VS Code with extensions
+- ✅ PowerShell environment
+
+**Week 3 Preview:**
+- **Duration:** 1 week (4 classes)
+- **Goal:** Master CLI blockchain interactions
+- **Deliverables:**
+  - Wallet creation scripts
+  - Transaction sending scripts
+  - Blockchain query scripts
+  - Custom Hardhat task
+- **Early Win:** Send ETH programmatically via CLI! 💸
+
+---
+
+### 📍 Current Course Status
+
+**✅ Completed:**
+- **Week 1:** Environment Setup, Blockchain Theory, First Smart Contract (FULLY COMPLETE including self-assessment)
+- **Week 2:** Running Ethereum Node, Node Operations, Getting Testnet ETH (FULLY COMPLETE including self-assessment)
+
+**🔜 Next:**
+- **Week 3:** Command Line Blockchain Interactions (PREPARED, ready to start)
+
+**Course Progress:** 2 of 30 weeks complete (6.7%)
+**Phase 1 Progress:** 2 of 8 weeks complete (25% of Phase 1: Blockchain Foundation)
+
+---
+
+### Questions to Explore in Week 3
+
+- [ ] How do HD wallets derive infinite addresses from one mnemonic?
+- [ ] What happens to transactions stuck in the mempool?
+- [ ] Why can't native RPC get "all transactions for address"?
+- [ ] When should I use local Hardhat node vs Sepolia testnet?
+- [ ] How do I create custom Hardhat tasks for automation?
+
+---
+
+### Key Decisions This Session
+
+1. **Self-Assessment First:** Verified Week 2 understanding before moving to Week 3 prep
+2. **Version-Specific Preparation:** All Week 3 code examples match installed versions (Hardhat 3, ethers v6)
+3. **Reading Assignment:** User will complete Week 2 reading before starting Week 3 (homework)
+4. **Teaching Approach Reinforced:** Claude provides instructions, user executes and learns by doing
+
+---
+
+**Session Duration:** ~1.5 hours (self-assessment + Week 3 preparation)
+
+**Next Session Start:** User confirms reading complete, then begins Week 3 Class 3.1 interactively
+
+---
+
+*Last Updated: 2025-10-29 (Late evening - Week 2 complete + Week 3 prepared)*
