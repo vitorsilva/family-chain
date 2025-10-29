@@ -1,0 +1,238 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 2000" font-family="Arial, sans-serif">
+  <!-- Title -->
+  <text x="700" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Week 2 - Ethereum Node Architecture (Geth + Lighthouse)
+  </text>
+
+  <!-- Ethereum Network (Top) -->
+  <rect x="50" y="60" width="1300" height="140" fill="#e8f5e9" stroke="#2e7d32" stroke-width="3" rx="5"/>
+  <text x="700" y="90" font-size="18" font-weight="bold" text-anchor="middle" fill="#1b5e20">
+    Ethereum Network (Thousands of nodes worldwide)
+  </text>
+
+  <!-- Network Types -->
+  <rect x="150" y="110" width="300" height="70" fill="#66bb6a" stroke="#43a047" stroke-width="2" rx="5"/>
+  <text x="300" y="140" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Mainnet</text>
+  <text x="300" y="162" font-size="11" text-anchor="middle" fill="white">Production • Real ETH</text>
+
+  <rect x="550" y="110" width="300" height="70" fill="#42a5f5" stroke="#1e88e5" stroke-width="2" rx="5"/>
+  <text x="700" y="140" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Sepolia Testnet</text>
+  <text x="700" y="162" font-size="11" text-anchor="middle" fill="white">Testing • Free ETH</text>
+
+  <rect x="950" y="110" width="300" height="70" fill="#42a5f5" stroke="#1e88e5" stroke-width="2" rx="5"/>
+  <text x="1100" y="140" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Holesky Testnet</text>
+  <text x="1100" y="162" font-size="11" text-anchor="middle" fill="white">Testing • Staking</text>
+
+  <!-- P2P Connection Arrow -->
+  <text x="700" y="230" font-size="14" font-weight="bold" text-anchor="middle" fill="#7f8c8d">
+    ↓ P2P Network (TCP/UDP) ↓
+  </text>
+
+  <!-- Your Node Container -->
+  <rect x="50" y="250" width="1300" height="700" fill="#ecf0f1" stroke="#34495e" stroke-width="3" rx="5"/>
+  <text x="700" y="280" font-size="20" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    YOUR ETHEREUM NODE (Running on your computer)
+  </text>
+
+  <!-- Consensus Layer (Lighthouse) -->
+  <rect x="100" y="310" width="1200" height="280" fill="#fff3e0" stroke="#ff6f00" stroke-width="3" rx="5"/>
+  <text x="700" y="340" font-size="18" font-weight="bold" text-anchor="middle" fill="#e65100">
+    CONSENSUS LAYER (Proof of Stake)
+  </text>
+
+  <!-- Lighthouse Box -->
+  <rect x="150" y="360" width="1100" height="210" fill="#ff9800" stroke="#f57c00" stroke-width="2" rx="5"/>
+  <text x="700" y="390" font-size="17" font-weight="bold" text-anchor="middle" fill="white">
+    Lighthouse (Consensus Client)
+  </text>
+
+  <text x="200" y="425" font-size="13" font-weight="bold" text-anchor="start" fill="white">Responsibilities:</text>
+  <text x="200" y="450" font-size="12" text-anchor="start" fill="white">• Block proposals and attestations</text>
+  <text x="200" y="470" font-size="12" text-anchor="start" fill="white">• Validator management</text>
+  <text x="200" y="490" font-size="12" text-anchor="start" fill="white">• Fork choice (canonical chain)</text>
+  <text x="200" y="510" font-size="12" text-anchor="start" fill="white">• Finality tracking</text>
+  <text x="200" y="530" font-size="12" text-anchor="start" fill="white">• P2P gossip (blocks, attestations)</text>
+
+  <text x="750" y="425" font-size="13" font-weight="bold" text-anchor="start" fill="white">Network:</text>
+  <text x="750" y="450" font-size="12" text-anchor="start" fill="white">• Port 9000 (TCP/UDP)</text>
+  <text x="750" y="470" font-size="12" text-anchor="start" fill="white">• Beacon Node API: 5052</text>
+  <text x="750" y="490" font-size="12" text-anchor="start" fill="white">• Metrics: 5054</text>
+
+  <text x="750" y="525" font-size="13" font-weight="bold" text-anchor="start" fill="white">Storage:</text>
+  <text x="750" y="545" font-size="12" text-anchor="start" fill="white">• ./data/lighthouse/</text>
+
+  <!-- Engine API Connection -->
+  <rect x="500" y="595" width="400" height="40" fill="#8e44ad" stroke="#6c3483" stroke-width="2" rx="5"/>
+  <text x="700" y="620" font-size="14" font-weight="bold" text-anchor="middle" fill="white">
+    Engine API (JSON-RPC) • JWT Auth • Port 8551
+  </text>
+
+  <!-- Arrow between layers -->
+  <line x1="700" y1="570" x2="700" y2="595" stroke="#8e44ad" stroke-width="4" marker-end="url(#arrowhead-purple)"/>
+  <line x1="700" y1="635" x2="700" y2="660" stroke="#8e44ad" stroke-width="4" marker-end="url(#arrowhead-purple)"/>
+
+  <!-- Execution Layer (Geth) -->
+  <rect x="100" y="660" width="1200" height="270" fill="#e3f2fd" stroke="#0d47a1" stroke-width="3" rx="5"/>
+  <text x="700" y="690" font-size="18" font-weight="bold" text-anchor="middle" fill="#01579b">
+    EXECUTION LAYER (Transaction Processing)
+  </text>
+
+  <!-- Geth Box -->
+  <rect x="150" y="710" width="1100" height="200" fill="#2196f3" stroke="#1976d2" stroke-width="2" rx="5"/>
+  <text x="700" y="740" font-size="17" font-weight="bold" text-anchor="middle" fill="white">
+    Geth (Execution Client) • go-ethereum
+  </text>
+
+  <text x="200" y="775" font-size="13" font-weight="bold" text-anchor="start" fill="white">Responsibilities:</text>
+  <text x="200" y="800" font-size="12" text-anchor="start" fill="white">• Execute transactions (EVM)</text>
+  <text x="200" y="820" font-size="12" text-anchor="start" fill="white">• Maintain state (accounts, balances)</text>
+  <text x="200" y="840" font-size="12" text-anchor="start" fill="white">• Transaction pool (mempool)</text>
+  <text x="200" y="860" font-size="12" text-anchor="start" fill="white">• Block execution and validation</text>
+  <text x="200" y="880" font-size="12" text-anchor="start" fill="white">• Provide RPC API for applications</text>
+
+  <text x="750" y="775" font-size="13" font-weight="bold" text-anchor="start" fill="white">RPC Endpoints:</text>
+  <text x="750" y="800" font-size="12" text-anchor="start" fill="white">• HTTP: localhost:8545</text>
+  <text x="750" y="820" font-size="12" text-anchor="start" fill="white">• WebSocket: localhost:8546</text>
+  <text x="750" y="840" font-size="12" text-anchor="start" fill="white">• IPC: geth.ipc</text>
+
+  <text x="750" y="875" font-size="13" font-weight="bold" text-anchor="start" fill="white">Storage:</text>
+  <text x="750" y="895" font-size="12" text-anchor="start" fill="white">• ./data/geth/chaindata/</text>
+
+  <!-- P2P Networks -->
+  <text x="700" y="990" font-size="14" font-weight="bold" text-anchor="middle" fill="#7f8c8d">
+    P2P: Port 30303 (Geth) | Port 9000 (Lighthouse)
+  </text>
+
+  <!-- Data Storage Section -->
+  <rect x="50" y="1020" width="1300" height="380" fill="#fafafa" stroke="#34495e" stroke-width="3" rx="5"/>
+  <text x="700" y="1055" font-size="20" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Data Storage (./data/ directory)
+  </text>
+
+  <!-- Geth Storage -->
+  <rect x="100" y="1080" width="600" height="290" fill="#e1f5fe" stroke="#0277bd" stroke-width="2" rx="5"/>
+  <text x="400" y="1110" font-size="16" font-weight="bold" text-anchor="middle" fill="#01579b">
+    ./data/geth/ (Execution)
+  </text>
+
+  <text x="130" y="1145" font-size="13" font-weight="bold" text-anchor="start" fill="#0277bd">chaindata/</text>
+  <text x="160" y="1165" font-size="11" text-anchor="start" fill="#546e7a">Blockchain data (blocks, txs)</text>
+
+  <text x="130" y="1195" font-size="13" font-weight="bold" text-anchor="start" fill="#0277bd">ancient/</text>
+  <text x="160" y="1215" font-size="11" text-anchor="start" fill="#546e7a">Archived old blocks</text>
+
+  <text x="130" y="1245" font-size="13" font-weight="bold" text-anchor="start" fill="#0277bd">keystore/</text>
+  <text x="160" y="1265" font-size="11" text-anchor="start" fill="#546e7a">Encrypted account keys</text>
+
+  <text x="130" y="1295" font-size="13" font-weight="bold" text-anchor="start" fill="#0277bd">geth.ipc</text>
+  <text x="160" y="1315" font-size="11" text-anchor="start" fill="#546e7a">IPC endpoint</text>
+
+  <text x="400" y="1350" font-size="13" font-weight="bold" text-anchor="middle" fill="#d32f2f">
+    Size: 200GB - 1TB+
+  </text>
+
+  <!-- Lighthouse Storage -->
+  <rect x="750" y="1080" width="600" height="290" fill="#fff3e0" stroke="#e65100" stroke-width="2" rx="5"/>
+  <text x="1050" y="1110" font-size="16" font-weight="bold" text-anchor="middle" fill="#e65100">
+    ./data/lighthouse/ (Consensus)
+  </text>
+
+  <text x="780" y="1145" font-size="13" font-weight="bold" text-anchor="start" fill="#e65100">beacon/</text>
+  <text x="810" y="1165" font-size="11" text-anchor="start" fill="#546e7a">Beacon chain database</text>
+
+  <text x="780" y="1195" font-size="13" font-weight="bold" text-anchor="start" fill="#e65100">chain_db/</text>
+  <text x="810" y="1215" font-size="11" text-anchor="start" fill="#546e7a">Beacon blocks and states</text>
+
+  <text x="780" y="1245" font-size="13" font-weight="bold" text-anchor="start" fill="#e65100">validators/</text>
+  <text x="810" y="1265" font-size="11" text-anchor="start" fill="#546e7a">Validator keys (if validating)</text>
+
+  <text x="780" y="1295" font-size="13" font-weight="bold" text-anchor="start" fill="#e65100">network/</text>
+  <text x="810" y="1315" font-size="11" text-anchor="start" fill="#546e7a">P2P discovery data</text>
+
+  <text x="1050" y="1350" font-size="13" font-weight="bold" text-anchor="middle" fill="#d32f2f">
+    Size: 50GB - 200GB
+  </text>
+
+  <!-- Applications Section -->
+  <rect x="50" y="1440" width="1300" height="220" fill="#f3e5f5" stroke="#4a148c" stroke-width="3" rx="5"/>
+  <text x="700" y="1475" font-size="20" font-weight="bold" text-anchor="middle" fill="#4a148c">
+    Applications (Connect via RPC: localhost:8545)
+  </text>
+
+  <!-- Application Boxes -->
+  <rect x="150" y="1500" width="300" height="130" fill="#9c27b0" stroke="#7b1fa2" stroke-width="2" rx="5"/>
+  <text x="300" y="1535" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Your DApp</text>
+  <text x="300" y="1560" font-size="12" text-anchor="middle" fill="white">Smart Contracts</text>
+  <text x="300" y="1580" font-size="11" text-anchor="middle" fill="white">• Deploy contracts</text>
+  <text x="300" y="1600" font-size="11" text-anchor="middle" fill="white">• Read blockchain state</text>
+  <text x="300" y="1620" font-size="11" text-anchor="middle" fill="white">• Send transactions</text>
+
+  <rect x="550" y="1500" width="300" height="130" fill="#7e57c2" stroke="#5e35b1" stroke-width="2" rx="5"/>
+  <text x="700" y="1535" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Hardhat</text>
+  <text x="700" y="1560" font-size="12" text-anchor="middle" fill="white">via ethers.js</text>
+  <text x="700" y="1580" font-size="11" text-anchor="middle" fill="white">• Run tests</text>
+  <text x="700" y="1600" font-size="11" text-anchor="middle" fill="white">• Deploy scripts</text>
+  <text x="700" y="1620" font-size="11" text-anchor="middle" fill="white">• Verify contracts</text>
+
+  <rect x="950" y="1500" width="300" height="130" fill="#f57c00" stroke="#ef6c00" stroke-width="2" rx="5"/>
+  <text x="1100" y="1535" font-size="16" font-weight="bold" text-anchor="middle" fill="white">MetaMask</text>
+  <text x="1100" y="1560" font-size="12" text-anchor="middle" fill="white">Browser Wallet</text>
+  <text x="1100" y="1580" font-size="11" text-anchor="middle" fill="white">• Sign transactions</text>
+  <text x="1100" y="1600" font-size="11" text-anchor="middle" fill="white">• Connect to DApps</text>
+  <text x="1100" y="1620" font-size="11" text-anchor="middle" fill="white">• View balances</text>
+
+  <!-- Connection arrows from apps to Geth -->
+  <line x1="300" y1="1500" x2="300" y2="960" stroke="#9c27b0" stroke-width="3" stroke-dasharray="5,5"/>
+  <line x1="700" y1="1500" x2="700" y2="960" stroke="#7e57c2" stroke-width="3" stroke-dasharray="5,5"/>
+  <line x1="1100" y1="1500" x2="1100" y2="960" stroke="#f57c00" stroke-width="3" stroke-dasharray="5,5"/>
+
+  <text x="700" y="1225" font-size="12" font-style="italic" text-anchor="middle" fill="#7f8c8d">
+    ↑ Applications connect to Geth RPC ↑
+  </text>
+
+  <!-- Sync Modes Section -->
+  <rect x="50" y="1700" width="1300" height="250" fill="#fff9c4" stroke="#f57f17" stroke-width="3" rx="5"/>
+  <text x="700" y="1735" font-size="20" font-weight="bold" text-anchor="middle" fill="#f57f17">
+    Sync Modes
+  </text>
+
+  <!-- Geth Sync Modes -->
+  <rect x="100" y="1760" width="600" height="160" fill="#fff59d" stroke="#f9a825" stroke-width="2" rx="5"/>
+  <text x="400" y="1790" font-size="16" font-weight="bold" text-anchor="middle" fill="#f57f17">
+    Geth Sync Modes
+  </text>
+
+  <text x="130" y="1820" font-size="13" font-weight="bold" text-anchor="start" fill="#e65100">SNAP (Default)</text>
+  <text x="160" y="1840" font-size="11" text-anchor="start" fill="#424242">Fast: 4-6 hours | ~800GB disk</text>
+
+  <text x="130" y="1870" font-size="13" font-weight="bold" text-anchor="start" fill="#e65100">FULL</text>
+  <text x="160" y="1890" font-size="11" text-anchor="start" fill="#424242">Slow: Days to weeks | Full verification</text>
+
+  <!-- Lighthouse Sync Modes -->
+  <rect x="750" y="1760" width="600" height="160" fill="#ffecb3" stroke="#ff6f00" stroke-width="2" rx="5"/>
+  <text x="1050" y="1790" font-size="16" font-weight="bold" text-anchor="middle" fill="#f57f17">
+    Lighthouse Sync Modes
+  </text>
+
+  <text x="780" y="1820" font-size="13" font-weight="bold" text-anchor="start" fill="#e65100">CHECKPOINT SYNC</text>
+  <text x="810" y="1840" font-size="11" text-anchor="start" fill="#424242">Fast: 5-15 min | Recommended</text>
+
+  <text x="780" y="1870" font-size="13" font-weight="bold" text-anchor="start" fill="#e65100">GENESIS SYNC</text>
+  <text x="810" y="1890" font-size="11" text-anchor="start" fill="#424242">Slow: Hours | Maximum trustlessness</text>
+
+  <!-- Key Takeaways -->
+  <rect x="50" y="1970" width="1300" height="20" fill="#2c3e50" stroke="#1a252f" stroke-width="2" rx="5"/>
+  <text x="700" y="1985" font-size="13" font-weight="bold" text-anchor="middle" fill="white">
+    Week 2 Focus: Install Geth + Lighthouse, sync Sepolia testnet, connect Hardhat to your local node
+  </text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#34495e" />
+    </marker>
+    <marker id="arrowhead-purple" markerWidth="12" markerHeight="12" refX="11" refY="3" orient="auto">
+      <polygon points="0 0, 12 3, 0 6" fill="#8e44ad" />
+    </marker>
+  </defs>
+</svg>
