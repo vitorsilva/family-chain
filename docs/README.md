@@ -88,20 +88,20 @@ weekXX-classX.X-topic-name.md
 | Class | Guide | Duration | Status |
 |-------|-------|----------|--------|
 | **2.1** | [Installing and Configuring Geth](week2-class2.1-installing-geth.md) | 2-3 hours | ✅ Complete |
-| **2.2** | [Node Operations and Monitoring](week2-class2.2-node-operations.md) | 3-4 hours | ✅ Complete |
-| **2.3** | [Getting Testnet ETH](week2-class2.3-testnet-eth.md) | 1-2 hours | ✅ Complete |
+| **2.2** | [Node Operations and Monitoring](week2-class2.2-node-operations.md) | 3-4 hours | 🔜 Pending |
+| **2.3** | [Getting Testnet ETH](week2-class2.3-testnet-eth.md) | 1-2 hours | 🔜 Pending |
 
-**Week 2 Learning Outcomes:**
+**Week 2 Learning Outcomes (In Progress):**
 - ✅ Understanding execution clients (Geth) vs consensus clients (Lighthouse)
-- ✅ Installing Geth v1.16+ and Lighthouse v7.0+ (WSL Ubuntu or Windows)
+- ✅ Installing Geth v1.16.5 and Lighthouse v6.0.1 (WSL Ubuntu)
 - ✅ Configuring JWT authentication between clients
-- ✅ Running a fully synced Sepolia testnet node
-- ✅ Monitoring sync progress and node health
-- ✅ Querying blockchain via JSON-RPC (your own node!)
+- 🔜 Running a fully synced Sepolia testnet node
+- 🔜 Monitoring sync progress and node health
+- 🔜 Querying blockchain via JSON-RPC (your own node!)
 - ✅ Understanding data directories and node types
-- ✅ Obtaining testnet ETH from multiple faucets
-- ✅ Verifying balances using local node (not just Etherscan)
-- ✅ **Early Win:** Run your own Ethereum infrastructure!
+- 🔜 Obtaining testnet ETH from multiple faucets
+- 🔜 Verifying balances using local node (not just Etherscan)
+- 🔜 **Early Win:** Run your own Ethereum infrastructure!
 
 **Reading References (Week 2):**
 - Bitcoin Book: Chapter 3 (Bitcoin Core - Running a Node)
@@ -352,8 +352,8 @@ As you use these guides:
 
 ---
 
-**Last Updated:** 2025-10-27
-**Course Progress:** Week 1 FULLY Complete (✅ including self-assessment) | Week 2 Classes Prepared (📚 ready to start)
+**Last Updated:** 2025-10-29
+**Course Progress:** Week 1 FULLY Complete (✅ including self-assessment) | Week 2 Class 2.1 Complete (🔄 in progress)
 **Total Learning Guides:** 7 of ~80 planned
 
 ---

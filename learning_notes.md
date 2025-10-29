@@ -10,7 +10,7 @@ This document tracks all questions, insights, and learning moments throughout th
 ## 📂 Weekly Learning Notes
 
 - **[Week 1](docs/week1-learning-notes.md)** - Environment Setup & Blockchain Theory & First Smart Contract (✅ FULLY COMPLETE)
-- **Week 2** - Running Your First Ethereum Node (🔜 Pending)
+- **[Week 2](docs/week2-learning-notes.md)** - Running Your First Ethereum Node (🔄 Class 2.1 Complete)
 - **Week 3** - Command Line Blockchain Interactions (🔜 Pending)
 - *(Additional weeks will be added as the course progresses)*
 
