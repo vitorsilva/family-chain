@@ -757,14 +757,169 @@ nodes logs-geth        # View recent activity
 
 ---
 
+---
+
+### Session: 2025-10-29 (Afternoon) - WSL Disk Space Issue & Hybrid Approach Decision
+
+**Context:** Geth sync ran out of disk space at ~56%, causing WSL Ubuntu to become unresponsive
+
+---
+
+#### Issue: WSL Out of Disk Space
+
+**What Happened:**
+- Geth syncing consumed available disk space in WSL's virtual disk
+- WSL Ubuntu became unresponsive (couldn't connect with `wsl -d Ubuntu`)
+- Commands `wsl --terminate Ubuntu` and `wsl --shutdown` hung/froze
+
+**Troubleshooting Steps Taken:**
+
+1. **Freed 100GB on Windows C: drive** ✅
+   - However, this doesn't directly help WSL's virtual disk (separate file)
+
+2. **Identified WSL processes still running:**
+   ```powershell
+   Get-Process -Name "*wsl*", "*vmcompute*", "*vmmem*"
+   ```
+   Found 12 processes: vmcompute, vmmemWSL, wsl (4 instances), wslhost (4 instances), wslrelay, wslservice
+
+3. **Force-killed WSL processes:**
+   ```powershell
+   Stop-Process -Id 432, 42772, 19884, 26896, 35696, 39444, 2348, 3064, 40068, 40244, 35268, 9840 -Force
+   ```
+   Successfully stopped most processes, 3 stubborn ones remained initially
+
+4. **Verified WSL stopped cleanly:**
+   ```powershell
+   wsl --list --verbose
+   ```
+   Result: Both `docker-desktop` and `Ubuntu` showing `STATE: Stopped` ✅
+
+5. **Attempted to restart WSL:**
+   ```powershell
+   wsl -d Ubuntu
+   ```
+   **Error:** `Failed to attach disk 'ext4.vhdx'... ERROR_SHARING_VIOLATION`
+   - Virtual disk file still locked by another process
+   - File handle not released despite killing processes
+
+**Resolution Strategy:** Physical machine reboot (cleanest way to release file locks)
+
+---
+
+#### Technical Concepts Learned
+
+**1. WSL Virtual Disk Architecture**
+- WSL stores Linux filesystem in `ext4.vhdx` (virtual hard disk)
+- Location: `C:\Users\USERNAME\AppData\Local\Packages\CanonicalGroupLimited.Ubuntu_...\LocalState\ext4.vhdx`
+- Disk space INSIDE WSL is separate from Windows C: drive free space
+- Even with 100GB free on C:, WSL's virtual disk can be full
+
+**2. WSL Process Structure**
+- `vmcompute` - Manages virtual machine compute resources
+- `vmmemWSL` - Virtual machine memory management (71MB working set in our case)
+- `wsl` - WSL command instances (multiple can run)
+- `wslhost` - Hosts WSL instances
+- `wslrelay` - Relays communication between Windows and WSL
+- `wslservice` - Core WSL service
+
+**3. File Locking in Windows**
+- `ERROR_SHARING_VIOLATION` = file is open/locked by another process
+- Can happen even after processes are killed (file handles not released)
+- Reboot is most reliable way to release all file locks
+
+**4. Geth Sync Space Requirements (Reminder)**
+- Sepolia testnet: ~100-150GB final size
+- At 56% sync: Already consuming ~73GB
+- Non-linear growth (recent blocks more complex, more state)
+
+---
+
+#### Hybrid Approach Decision
+
+**User's Decision:** Use hybrid strategy for learning efficiency ✅
+
+**Phase 1 (Weeks 2-10): Use Infura/Alchemy**
+- ✅ No disk space issues
+- ✅ Instant access (no sync wait)
+- ✅ Focus on smart contract development (Solidity, Hardhat, testing)
+- ✅ Always up-to-date blockchain state
+- ❌ Trade-off: Not fully trustless (relying on RPC provider)
+
+**Phase 2 (Week 11+): Return to Local Node**
+- When Go event listener needs direct node access
+- More disk space available by then
+- Better understanding of why local node matters
+- Time to troubleshoot properly
+
+**Rationale:**
+- **Learning priority:** Smart contracts > infrastructure (for now)
+- **Practical constraints:** Disk space, sync time, WSL complications
+- **Portfolio value:** Can demonstrate both approaches
+- **Educational:** Understanding trade-offs (sovereignty vs convenience)
+
+---
+
+#### Why Run Local Node vs RPC Provider? (Revisited)
+
+**User Question:** "Why do we want Geth and the other one running locally?"
+
+**Reasons for Local Node:**
+1. **Self-sovereignty & Trust** - Verify data yourself, no third-party trust
+2. **No Limits** - Query any data without rate limits/API keys
+3. **Deep Learning** - Understand infrastructure, P2P, consensus
+4. **Portfolio Value** - Shows DevOps skills, node operation experience
+5. **Course Needs** - Week 11 event listener, Week 25 MEV protection
+
+**Reasons for RPC Provider (Short-Term):**
+1. **No Disk Space Issues** - Provider handles storage
+2. **Instant Access** - No sync wait (hours/days)
+3. **Focus on Development** - More time on smart contracts
+4. **Always Updated** - Provider maintains nodes
+5. **Lower Complexity** - Fewer moving parts to troubleshoot
+
+**Decision:** RPC provider now, local node later (pragmatic approach)
+
+---
+
+#### Next Steps After Reboot
+
+**Immediate Actions:**
+1. ✅ Reboot physical machine (releases ext4.vhdx file lock)
+2. ✅ Verify WSL starts: `wsl -d Ubuntu`
+3. ✅ Check disk usage: `df -h ~` and `du -sh ~/ethereum/sepolia/geth/`
+4. ✅ Delete Geth sync data: `rm -rf ~/ethereum/sepolia/geth/`
+   - Frees ~73GB inside WSL virtual disk
+   - Keep installation, scripts, and directory structure
+5. ✅ Set up Infura account and API key
+6. ✅ Test Infura connection with sample RPC call
+7. ✅ Continue with Week 2 Class 2.3 (Getting Testnet ETH)
+
+**Files/Tools to Keep:**
+- ✅ Geth binary (`/usr/bin/geth`)
+- ✅ Lighthouse binary (`/usr/local/bin/lighthouse`)
+- ✅ Systemd service files (`/etc/systemd/system/geth-sepolia.service`, `lighthouse-sepolia.service`)
+- ✅ Helper script (`~/ethereum/node-manager.sh`)
+- ✅ Directory structure (`~/ethereum/sepolia/{geth,lighthouse,jwt}`)
+- ✅ JWT secret (`~/ethereum/sepolia/jwt/jwtsecret`)
+
+**Files to Delete:**
+- ❌ Geth sync data (`~/ethereum/sepolia/geth/` contents - ~73GB)
+
+**Reason:** Infrastructure is ready for Week 11 when we return to local node
+
+---
+
 #### Week 2 Status
 
 - [x] ✅ **Class 2.1:** Installing and Configuring Geth (COMPLETE)
 - [x] ✅ **Class 2.2:** Node Operations and Monitoring (COMPLETE)
-- [ ] 🔜 **Class 2.3:** Getting Testnet ETH (PENDING - wait for full sync)
+- [ ] 🔜 **Class 2.3:** Getting Testnet ETH (PENDING - switching to Infura approach)
 
-**Sync Status:** ~56% complete, estimated 2-3 hours remaining
+**Sync Status:** Abandoned at ~56% due to disk space constraints. Will return to local node in Week 11.
+
+**Current Status:** Awaiting reboot to fix WSL file lock, then switching to Infura/Alchemy for Weeks 2-10.
 
 ---
 
-*Last Updated: 2025-10-29 (Session end: 12:07 PM)*
+*Last Updated: 2025-10-29 (Afternoon session - pre-reboot)*
