@@ -922,4 +922,382 @@ nodes logs-geth        # View recent activity
 
 ---
 
-*Last Updated: 2025-10-29 (Afternoon session - pre-reboot)*
+## Session: 2025-10-29 (Evening) - WSL Recovery & Hybrid Approach Implementation
+
+**Context:** Fixed WSL disk space issue, cleaned up 264GB Geth data, set up Alchemy RPC provider
+
+---
+
+#### WSL Recovery & Disk Cleanup - SUCCESS ✅
+
+**Issue Resolution:**
+- ✅ Physical machine reboot successfully released ext4.vhdx file lock
+- ✅ WSL Ubuntu now accessible via `wsl -d Ubuntu`
+- ✅ 687GB "available" inside WSL (misleading - virtual disk maximum)
+
+**Real Disk Space Situation Discovered:**
+- Windows C: drive: **~135GB truly free**
+- WSL virtual disk (ext4.vhdx): **275GB** before cleanup
+- Geth sync data inside WSL: **264GB** (grew from 73GB at 56% to 264GB before crash!)
+
+**Why the Discrepancy:**
+- `df -h` inside WSL shows virtual disk's theoretical maximum (1TB)
+- BUT ext4.vhdx can only grow as large as Windows C: drive allows
+- This caused the original crash when Geth tried to expand beyond available Windows space
+
+**Cleanup Actions Taken:**
+1. ✅ Deleted Geth sync data: `rm -rf ~/ethereum/sepolia/geth/` (264GB freed inside WSL)
+2. ✅ Compacted WSL virtual disk using diskpart (PowerShell as Administrator)
+3. ✅ **Result:** ext4.vhdx reduced from 275GB → **8.17GB** (~267GB reclaimed on Windows!)
+4. ✅ Windows C: drive now has **~400GB free** (from 135GB)
+
+**Diskpart Commands Used:**
+```powershell
+wsl --shutdown
+@"
+select vdisk file="$env:LOCALAPPDATA\Packages\CanonicalGroupLimited.Ubuntu_79rhkp1fndgsc\LocalState\ext4.vhdx"
+attach vdisk readonly
+compact vdisk
+detach vdisk
+"@ | diskpart
+```
+
+**Files/Infrastructure Preserved:**
+- ✅ Geth binary (`/usr/bin/geth`)
+- ✅ Lighthouse binary (`/usr/local/bin/lighthouse`)
+- ✅ Systemd service files (`geth-sepolia.service`, `lighthouse-sepolia.service`)
+- ✅ Helper script (`~/ethereum/node-manager.sh` with alias)
+- ✅ Directory structure (`~/ethereum/sepolia/{geth,lighthouse,jwt}`)
+- ✅ JWT secret (`~/ethereum/sepolia/jwt/jwtsecret`)
+
+**Rationale:** Infrastructure ready for Week 11 when we return to local node operations.
+
+---
+
+#### Alchemy RPC Provider Setup - COMPLETE ✅
+
+**Decision:** Use Alchemy instead of Infura (Infura owned by ConsenSys/MetaMask - user preferred independent provider)
+
+**Alchemy Account Created:**
+- Account: Vitor's Team (Free tier)
+- App Name: Vitor's First App
+- Network: Ethereum Sepolia
+- Dashboard: https://dashboard.alchemy.com
+
+**API Key Storage:**
+- ✅ Stored in Hardhat keystore: `npx hardhat keystore set --dev ALCHEMY_API_KEY`
+- ✅ Full endpoint URL stored: `https://eth-sepolia.g.alchemy.com/v2/McWU4Kx-usN9BdeUinsTO`
+- ✅ Verified with `npx hardhat keystore list --dev`
+
+**Hardhat Keystore Contents (Development):**
+1. `SEPOLIA_PRIVATE_KEY` - Wallet private key (from Week 1)
+2. `SEPOLIA_RPC_URL` - RPC endpoint URL (from Week 1)
+3. `ALCHEMY_API_KEY` - Alchemy API endpoint (new)
+
+**Connection Test - SUCCESS:**
+```powershell
+curl -X POST https://eth-sepolia.g.alchemy.com/v2/McWU4Kx-usN9BdeUinsTO `
+  -H "Content-Type: application/json" `
+  -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
+```
+**Result:** `{"jsonrpc":"2.0","id":1,"result":"0x913621"}`
+- Block number: 9,516,577 (Sepolia current height) ✅
+
+---
+
+#### Wallet Information Retrieved
+
+**Wallet Address:** `0xB09b5449D8BB84312Fbc4293baf122E0e1875736`
+
+**Balance Check via Alchemy:**
+```powershell
+curl -X POST https://eth-sepolia.g.alchemy.com/v2/McWU4Kx-usN9BdeUinsTO `
+  -H "Content-Type: application/json" `
+  -d '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0xB09b5449D8BB84312Fbc4293baf122E0e1875736","latest"],"id":1}'
+```
+**Result:** `{"jsonrpc":"2.0","id":1,"result":"0xb1dd9a6a4126950"}`
+- Wei: 50,344,326,688,343,376
+- **Balance: ~0.0503 SepoliaETH** ✅
+
+**Sufficient for upcoming weeks!** (No urgent need for more testnet ETH)
+
+---
+
+### Week 2, Class 2.3: Getting Testnet ETH - COMPLETE ✅
+
+**Context:** Reviewed faucet strategies from Week 1, confirmed sufficient balance
+
+**Faucet Landscape (2025):**
+
+**❌ Most Major Faucets Now Require Mainnet ETH:**
+- Alchemy Faucet: Requires 0.001 mainnet ETH (blocked)
+- MetaMask Faucet: Requires mainnet ETH + MetaMask connection
+- Infura Faucet: Requires mainnet ETH
+- **Reason:** Anti-bot/anti-abuse measures
+
+**✅ Working Faucet (No Mainnet ETH Required):**
+- **Google Cloud POW Faucet** - Proof-of-Work puzzle (used successfully in Week 1)
+- Most reliable free option for testnet ETH
+- URL: https://cloud.google.com/application/web3/faucet/ethereum/sepolia
+
+**Current Balance Assessment:**
+- Current: **~0.05 SepoliaETH**
+- Week 2 needs: 0 ETH (only querying data)
+- Week 3 needs: ~0.01 ETH (CLI test transactions)
+- Weeks 5-6 needs: ~0.01-0.02 ETH (contract deployments)
+- **Conclusion:** Sufficient for next 3-4 weeks! ✅
+
+**Key Takeaways:**
+1. Always have backup faucet strategies
+2. POW faucets are best for learning (no mainnet ETH barrier)
+3. Monitor balance periodically, request more when needed
+4. Testnet ETH is free but requires effort (proof-of-work or mainnet ETH proof)
+
+---
+
+#### Technical Concepts Learned (Session Summary)
+
+**1. WSL Virtual Disk Architecture**
+- WSL uses `ext4.vhdx` virtual hard disk file on Windows C: drive
+- `df -h` inside WSL shows theoretical maximum, NOT Windows available space
+- Compacting required after deleting large amounts of data (diskpart on Windows)
+
+**2. API Key vs Private Key Security**
+- **Private Key:** Can sign transactions, spend ETH - CRITICAL to protect
+- **API Key:** Can read data, uses quota - Less critical but still protect
+- **Best Practice:** Store all credentials securely (Hardhat keystore, password managers)
+
+**3. RPC Provider Options**
+- **Local Node:** Full sovereignty, no limits, learning value, but requires disk/sync time
+- **RPC Provider:** Instant access, no disk usage, always updated, but quota limits/trust
+- **Hybrid Approach:** Use RPC provider for learning, local node for specific needs (Week 11+)
+
+**4. Hardhat 3 Keystore Access**
+- `hre.vars.get()` doesn't work in scripts the same way as Hardhat 2
+- `getSigners()` automatically loads accounts from network config
+- Keystore designed to hide values for security (intentional!)
+
+**5. Testnet Faucet Strategies**
+- Mainnet ETH requirements are common anti-bot measures (2025 trend)
+- POW faucets remain most accessible for developers
+- Always have multiple faucet options researched
+
+---
+
+#### Issues Encountered & Solutions
+
+**Issue 1: WSL Out of Disk Space**
+- **Problem:** Geth sync consumed 264GB, WSL became unresponsive
+- **Root Cause:** Virtual disk tried to grow beyond Windows C: drive available space
+- **Solution:** Reboot → Delete Geth data → Compact virtual disk with diskpart
+- **Prevention:** Monitor disk usage with `df -h` AND check Windows free space
+
+**Issue 2: Hardhat Project Location**
+- **Problem:** Hardhat commands failed in `FamilyChain/` root directory
+- **Resolution:** Hardhat project is in `FamilyChain/blockchain/` subdirectory
+- **Learning:** Always run `npx hardhat` commands from directory containing `hardhat.config.ts`
+
+**Issue 3: Viewing Keystore Values**
+- **Problem:** Wanted to view stored API key values for verification
+- **Attempted Solutions:**
+  - Custom Hardhat task (Hardhat 3 API changed, multiple TypeScript errors)
+  - Hardhat console (command flags different in Hardhat 3)
+- **Conclusion:** Keystore intentionally hides values for security - trust it works!
+- **Best Practice:** Keep backup of credentials in separate secure location (password manager)
+
+**Issue 4: Faucets Require Mainnet ETH**
+- **Problem:** Alchemy and most faucets require 0.001 mainnet ETH balance
+- **Resolution:** Reviewed Week 1 notes - POW faucet worked previously
+- **Decision:** Current balance (~0.05 ETH) sufficient for weeks 2-6, no urgent need
+
+---
+
+#### User Learning & Engagement Highlights
+
+**Excellent Questions:**
+1. "The disk space is not correct... could you please try to understand why?" ✅ Caught WSL virtual disk vs Windows drive discrepancy
+2. "How do I create that script?" (diskpart heredoc) ✅ Asked for clarification on PowerShell syntax
+3. "My alchemy_api_key is the whole url?" ✅ Questioned RPC endpoint structure
+4. "We installed hardhat on ubuntu, right?" ✅ Remembered where tools were installed
+5. "Is that hardhat 2 or hardhat 3?" ✅ Version-aware when seeing code examples
+6. "Do I really need more sepolia eth now?" ✅ Pragmatic assessment of actual needs
+
+**Strong Technical Understanding:**
+- Identified virtual disk space discrepancy immediately
+- Remembered Week 1 faucet strategies without prompting
+- Security-conscious (stored credentials outside project)
+- Version-aware (Hardhat 3 API differences)
+- Pragmatic decision-making (sufficient ETH, no urgent action needed)
+
+**Professional Best Practices:**
+- Saved sensitive wallet info OUTSIDE project directory (better than .gitignore)
+- Questioned API key security (even though less critical than private key)
+- Referenced past learning (Week 1 notes for faucet info)
+- Pragmatic approach (hybrid local node / RPC provider strategy)
+
+---
+
+#### Week 2 Status - COMPLETE ✅
+
+**Classes Completed:**
+- [x] ✅ **Class 2.1:** Installing and Configuring Geth
+  - Geth v1.16.5 + Lighthouse v8.0.0-rc.2 installed
+  - JWT authentication configured
+  - Test runs successful
+  - Understanding of execution vs consensus clients
+
+- [x] ✅ **Class 2.2:** Node Operations and Monitoring
+  - Both clients running together
+  - Systemd services created
+  - Helper script (`node-manager.sh`) with alias
+  - Sync reached ~56% before disk space issue
+  - Understanding of sync modes, node types, peer discovery
+
+- [x] ✅ **Class 2.3:** Getting Testnet ETH
+  - Current balance: ~0.05 SepoliaETH
+  - Faucet strategies reviewed (POW faucet = best option)
+  - Sufficient ETH for weeks 2-6
+  - Balance verified using Alchemy RPC
+
+**Deliverables Achieved:**
+- [x] ✅ Geth and Lighthouse installed and tested
+- [x] ✅ Understanding of execution vs consensus clients
+- [x] ✅ Node infrastructure ready (systemd services, helper scripts)
+- [x] ✅ Alchemy RPC provider configured and tested
+- [x] ✅ Wallet balance verified (~0.05 ETH sufficient)
+- [x] ✅ Hybrid approach documented (RPC provider now, local node Week 11+)
+
+**Infrastructure Status:**
+- ✅ WSL Ubuntu healthy (8.17GB virtual disk, 687GB theoretical max)
+- ✅ Windows C: drive: ~400GB free (recovered from 135GB)
+- ✅ Geth/Lighthouse binaries installed (ready for Week 11)
+- ✅ Alchemy RPC working (9.5M blocks queried successfully)
+- ✅ Hardhat keystore: 3 keys stored (SEPOLIA_PRIVATE_KEY, SEPOLIA_RPC_URL, ALCHEMY_API_KEY)
+
+---
+
+#### Key Decisions Made This Week
+
+**1. Hybrid Node Approach:**
+- **Weeks 2-10:** Use Alchemy RPC provider (instant access, no disk issues)
+- **Week 11+:** Return to local Geth node (for event listener, MEV protection)
+- **Rationale:** Focus on smart contract development now, infrastructure later
+
+**2. Alchemy over Infura:**
+- **Choice:** Alchemy (independent company)
+- **Alternative:** Infura (ConsenSys/MetaMask owned)
+- **Rationale:** User preferred independent RPC provider
+
+**3. Lighthouse v8.0.0-rc.2 over v6.0.1:**
+- **Choice:** Upgraded to v8.0.0-rc.2 during Class 2.2
+- **Reason:** Checkpoint sync compatibility (v6.0.1 had SSZ format errors)
+- **Result:** Checkpoint sync worked with ethPandaOps endpoint
+
+**4. Testnet ETH Strategy:**
+- **Decision:** Use existing ~0.05 ETH, no urgent faucet requests
+- **Backup Plan:** Google Cloud POW faucet when more ETH needed
+- **Rationale:** Sufficient balance for next 3-4 weeks of development
+
+**5. Credential Storage:**
+- **Decision:** Wallet info saved OUTSIDE project directory
+- **Alternative:** Could use .gitignore in project
+- **Rationale:** Extra safety layer (not relying on .gitignore)
+
+---
+
+#### Next Steps for Week 3
+
+**Before Starting Week 3:**
+- ⏳ **COMPLETE WEEK 2 READING** (User will do before next session):
+  - Bitcoin Book: Chapter 3 (Bitcoin Core - Running a Node)
+  - Ethereum Book: Chapter 3 (Clients - Running an Ethereum Client)
+  - ⚠️ **REMINDER FOR NEXT SESSION: Ask if reading was completed!**
+
+- ⏳ **COMPLETE WEEK 2 SELF-ASSESSMENT** (Next session start):
+  - Class 2.1: Execution vs consensus clients, JWT authentication
+  - Class 2.2: Sync modes, node types, systemd services
+  - Class 2.3: Faucet strategies, balance verification
+
+**Week 3 Preview: Command Line Blockchain Interactions**
+- **Class 3.1:** Creating Wallets via CLI
+- **Class 3.2:** Sending Your First Transaction
+- **Class 3.3:** Querying Blockchain Data
+- **Class 3.4:** Hardhat Project Exploration
+
+**Week 3 Tools:**
+- ✅ Alchemy RPC (already configured)
+- ✅ Hardhat CLI (already installed)
+- ✅ Existing wallet (already have address + private key)
+- 🔜 ethers.js scripts for CLI interactions
+
+---
+
+#### Commands Reference (Week 2)
+
+**WSL Management:**
+```powershell
+wsl -d Ubuntu                    # Launch Ubuntu distribution
+wsl --shutdown                   # Stop all WSL instances
+wsl --list --verbose             # Check WSL status
+```
+
+**Disk Space Monitoring:**
+```bash
+df -h ~                          # Check disk usage inside WSL
+du -sh ~/ethereum/sepolia/geth/  # Check Geth data size
+```
+
+**Compact WSL Virtual Disk:**
+```powershell
+# (PowerShell as Administrator)
+wsl --shutdown
+diskpart script (see detailed commands above)
+```
+
+**Alchemy RPC Queries:**
+```powershell
+# Get latest block number
+curl -X POST https://eth-sepolia.g.alchemy.com/v2/YOUR_API_KEY `
+  -H "Content-Type: application/json" `
+  -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
+
+# Get wallet balance
+curl -X POST https://eth-sepolia.g.alchemy.com/v2/YOUR_API_KEY `
+  -H "Content-Type: application/json" `
+  -d '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0xYOUR_ADDRESS","latest"],"id":1}'
+```
+
+**Hardhat Keystore:**
+```powershell
+npx hardhat keystore set --dev KEY_NAME      # Store new key
+npx hardhat keystore list --dev              # List all keys
+npx hardhat keystore set --dev --force KEY   # Update existing key
+```
+
+---
+
+#### Questions to Explore in Week 3
+
+- [ ] How to create new wallets programmatically with ethers.js?
+- [ ] What's the difference between wallet creation and account derivation (HD wallets)?
+- [ ] How to send ETH transactions via CLI (not just contracts)?
+- [ ] How to query historical blockchain data (past blocks, transaction history)?
+- [ ] Should we use ethers.js v6 directly or through Hardhat?
+
+---
+
+**Week 2 Status:** ✅ **FULLY COMPLETE** (pending self-assessment at start of Week 3)
+
+**Total Time Invested:** ~4-5 hours across 2 days
+- Class 2.1: ~1.5 hours (installation and configuration)
+- Class 2.2: ~1.5 hours (node operations and sync monitoring)
+- Troubleshooting: ~1 hour (disk space issue, WSL recovery, Alchemy setup)
+- Class 2.3: ~30 minutes (faucet review, balance verification)
+
+**Infrastructure Ready For:**
+- ✅ Week 3-10: Smart contract development with Alchemy RPC
+- ✅ Week 11+: Local node operations (Geth/Lighthouse already installed)
+
+---
+
+*Last Updated: 2025-10-29 (Evening session - Week 2 complete)*
