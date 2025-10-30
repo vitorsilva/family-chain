@@ -3,7 +3,8 @@
     "allow": [
       "Bash(tree -L 2 -I 'node_modules|.git')",
       "WebSearch",
-      "WebFetch(domain:geth.ethereum.org)"
+      "WebFetch(domain:geth.ethereum.org)",
+      "WebFetch(domain:hardhat.org)"
     ],
     "deny": [],
     "ask": []
