@@ -88,20 +88,18 @@ weekXX-classX.X-topic-name.md
 | Class | Guide | Duration | Status |
 |-------|-------|----------|--------|
 | **2.1** | [Installing and Configuring Geth](week2-class2.1-installing-geth.md) | 2-3 hours | ✅ Complete |
-| **2.2** | [Node Operations and Monitoring](week2-class2.2-node-operations.md) | 3-4 hours | 🔜 Pending |
-| **2.3** | [Getting Testnet ETH](week2-class2.3-testnet-eth.md) | 1-2 hours | 🔜 Pending |
+| **2.2** | [Node Operations and Monitoring](week2-class2.2-node-operations.md) | 3-4 hours | ✅ Complete |
+| **2.3** | [Getting Testnet ETH](week2-class2.3-testnet-eth.md) | 1-2 hours | ✅ Complete |
 
-**Week 2 Learning Outcomes (In Progress):**
+**Week 2 Learning Outcomes:**
 - ✅ Understanding execution clients (Geth) vs consensus clients (Lighthouse)
-- ✅ Installing Geth v1.16.5 and Lighthouse v6.0.1 (WSL Ubuntu)
+- ✅ Installing Geth v1.16.5 and Lighthouse v8.0.0-rc.2 (WSL Ubuntu)
 - ✅ Configuring JWT authentication between clients
-- 🔜 Running a fully synced Sepolia testnet node
-- 🔜 Monitoring sync progress and node health
-- 🔜 Querying blockchain via JSON-RPC (your own node!)
-- ✅ Understanding data directories and node types
-- 🔜 Obtaining testnet ETH from multiple faucets
-- 🔜 Verifying balances using local node (not just Etherscan)
-- 🔜 **Early Win:** Run your own Ethereum infrastructure!
+- ✅ Hybrid approach: RPC provider (Alchemy) for development, local node ready for Week 11+
+- ✅ Systemd services and helper scripts created
+- ✅ Understanding sync modes, node types, peer discovery
+- ✅ Wallet balance verified (0.80 SepoliaETH)
+- ✅ **Early Win:** Infrastructure ready for both development approaches!
 
 **Reading References (Week 2):**
 - Bitcoin Book: Chapter 3 (Bitcoin Core - Running a Node)
@@ -113,18 +111,21 @@ weekXX-classX.X-topic-name.md
 
 | Class | Guide | Duration | Status |
 |-------|-------|----------|--------|
-| **3.1** | [Creating Wallets via CLI](week3-class3.1-creating-wallets-cli.md) | 1-2 hours | ✅ Prepared |
+| **3.1** | [Creating Wallets via CLI](week3-class3.1-creating-wallets-cli.md) | 1-2 hours | ✅ Complete |
 | **3.2** | [Sending Your First Transaction](week3-class3.2-sending-first-transaction.md) | 1-2 hours | ✅ Prepared |
 | **3.3** | [Querying Blockchain Data](week3-class3.3-querying-blockchain-data.md) | 1-2 hours | ✅ Prepared |
 | **3.4** | [Hardhat Project Exploration](week3-class3.4-hardhat-project-exploration.md) | 1-2 hours | ✅ Prepared |
 
-**Week 3 Learning Outcomes:**
+**Week 3 Learning Outcomes (In Progress):**
 - ✅ Create wallets programmatically (random, mnemonic, HD derivation)
-- ✅ Send ETH transactions via CLI with gas estimation
-- ✅ Query blockchain data (balances, blocks, transaction history)
-- ✅ Understand Hardhat 3 project structure and workflow
-- ✅ Build custom CLI tools for blockchain interactions
-- ✅ **Early Win:** Send ETH programmatically and query data!
+- ✅ Hardhat 3 network connection patterns (`network.connect()`, `getSigners()`)
+- ✅ Understanding wallet components (mnemonic, private key, address)
+- ✅ Wallet recovery and HD wallet concepts
+- 🔜 Send ETH transactions via CLI with gas estimation
+- 🔜 Query blockchain data (balances, blocks, transaction history)
+- 🔜 Understand Hardhat 3 project structure and workflow
+- 🔜 Build custom CLI tools for blockchain interactions
+- 🔜 **Early Win:** Send ETH programmatically and query data!
 
 **Reading References (Week 3):**
 - Bitcoin Book: Chapter 4 (Keys), Chapter 5 (Wallets), Chapter 6 (Transactions)
@@ -360,8 +361,8 @@ As you use these guides:
 
 ---
 
-**Last Updated:** 2025-10-29 (Late Evening)
-**Course Progress:** Week 1 ✅ FULLY Complete | Week 2 ✅ FULLY Complete | Week 3 📚 PREPARED (ready to start)
+**Last Updated:** 2025-10-30 (Session break after Class 3.1)
+**Course Progress:** Week 1 ✅ FULLY Complete | Week 2 ✅ FULLY Complete | Week 3 🔄 IN PROGRESS (Class 3.1 Complete)
 **Total Learning Guides:** 11 of ~80 planned (Week 1: 3, Week 2: 4, Week 3: 4)
 
 ---
