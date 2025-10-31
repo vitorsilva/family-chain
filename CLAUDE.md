@@ -29,6 +29,8 @@ This is a hands-on educational course covering blockchain, fintech, and full-sta
 4. ✅ **Ask questions** to reinforce learning (especially connecting to previous phases)
 5. ✅ **Break tasks into very small steps** (one change at a time)
 6. ✅ **Use read-only tools** (Read, Glob, Grep) to understand the codebase when needed
+7. ✅ **Use MCP tools proactively** (context7 for docs, chrome-devtools for frontend debugging, playwright for E2E testing)
+8. ✅ **Verify versions before teaching** (always use context7 to check correct API for project versions)
 
 **Claude MUST NEVER:**
 1. ❌ **Run Bash commands** (except read-only commands like `ls` when explicitly needed for teaching)
@@ -108,6 +110,144 @@ The ONLY time Claude should write files is:
 - When user explicitly says "you write the learning notes" or similar
 
 Even then, ask for confirmation first.
+
+---
+
+### MCP Tools Usage (CRITICAL)
+
+**Claude has access to three powerful MCP servers that should be used proactively:**
+
+#### Context7 MCP - Documentation & Code Examples
+
+**Use context7 for:**
+- ✅ **Preparing class materials** - Gather up-to-date documentation before creating class guides
+- ✅ **Troubleshooting compilation errors** - When user's code doesn't compile, fetch latest API docs
+- ✅ **Verifying API changes** - When syntax seems wrong, check if library API changed
+- ✅ **Exploring new libraries** - Before introducing a tool, get comprehensive context
+
+**⚠️ CRITICAL: Always query version-specific documentation!**
+
+**When to use context7:**
+1. **Before preparing a new week's classes** - Fetch docs for all tools/libraries covered that week
+2. **When code doesn't compile** - Check if API changed in latest version
+3. **User asks "how do I..."** - Get official examples from docs
+4. **Introducing new concept** - Gather authoritative explanations
+
+**Example workflow:**
+```
+User: "This Hardhat command isn't working"
+Claude: [Use context7 to fetch Hardhat 3.0.8 docs]
+Claude: "I see the issue - Hardhat 3 changed that API. Here's the new pattern..."
+```
+
+**Key libraries to query (with version verification):**
+- Hardhat 3.0.8+ (NOT 2.x!)
+- ethers.js v6.x (NOT v5!)
+- Solidity ^0.8.28
+- React, Next.js (for Week 6+)
+- Go libraries (Week 11+)
+- Python web3.py (Week 17+)
+
+#### Chrome DevTools MCP - Browser Inspection
+
+**Use chrome-devtools for:**
+- ✅ **Debugging frontend issues** (Week 6+)
+- ✅ **Inspecting Web3 wallet connections** - Check MetaMask state
+- ✅ **Verifying blockchain transactions in UI** - Console logs, network requests
+- ✅ **Testing responsive design** - Viewport testing
+
+**When to use chrome-devtools:**
+1. User reports "UI not showing correct balance"
+2. Debugging Web3 provider connection issues
+3. Checking if blockchain transactions triggered from frontend
+4. Inspecting React component state
+
+#### Playwright MCP - Browser Automation
+
+**Use playwright for:**
+- ✅ **E2E testing guidance** (Week 27)
+- ✅ **Navigating complex UIs** - DApp testing workflows
+- ✅ **Testing wallet interactions** - MetaMask connection flows
+- ✅ **Cross-browser testing** - Ensure compatibility
+
+**When to use playwright:**
+1. Teaching E2E testing concepts
+2. User building complex UI workflows
+3. Testing multi-step DApp interactions
+4. Demonstrating automated testing patterns
+
+**Combined workflow example (Week 6+):**
+```
+User: "My DApp shows wrong balance"
+Claude: [Use playwright to navigate to localhost:3000]
+Claude: [Use chrome-devtools to inspect console errors]
+Claude: [Use context7 to check ethers.js v6 balance query syntax]
+Claude: "I found the issue - you're using v5 syntax. Here's the v6 approach..."
+```
+
+#### MCP Best Practices
+
+**Do:**
+- ✅ Use context7 BEFORE teaching new library/tool
+- ✅ Verify versions EVERY time (check "Current Project Versions" section)
+- ✅ Use chrome-devtools for frontend debugging (don't guess!)
+- ✅ Use playwright for demonstrating E2E testing
+
+**Don't:**
+- ❌ Query documentation without specifying version
+- ❌ Use MCPs to execute code for the user (still teaching mode!)
+- ❌ Skip version verification (huge source of errors!)
+- ❌ Forget MCPs exist when user has compilation issues
+
+---
+
+### Troubleshooting with MCPs
+
+**When user encounters compilation/runtime errors:**
+
+1. **Identify the library/tool causing the error**
+   - Read error message carefully
+   - Note the library name and method being called
+
+2. **Use context7 to verify API**
+   - Query: "[Library] [Version] [specific feature]"
+   - Example: "Hardhat 3.0.8 network connection"
+   - Example: "ethers.js v6 contract deployment"
+
+3. **Check for version mismatches**
+   - Compare user's code with context7 results
+   - Look for deprecated methods
+   - Check breaking changes
+
+4. **Provide corrected pattern**
+   - Show official example from context7
+   - Explain what changed and why
+   - Give user corrected code to type
+
+**Example troubleshooting flow:**
+```
+User: "Getting error: hre.ethers.provider is undefined"
+Claude: [Use context7: "Hardhat 3.0.8 provider access"]
+Claude: "Hardhat 3 changed this! You now need:
+```typescript
+import { network } from 'hardhat';
+const connection = await network.connect();
+const provider = connection.ethers.provider;
+```
+The old `hre.ethers.provider` pattern is Hardhat 2.x only."
+```
+
+**Frontend troubleshooting (Week 6+):**
+```
+User: "Balance not showing in UI"
+Claude: [Use playwright to open localhost:3000]
+Claude: [Use chrome-devtools to check console]
+Claude: [Found: "Error: Cannot read property 'getBalance' of undefined"]
+Claude: [Use context7: "ethers.js v6 provider setup"]
+Claude: "The issue is... here's the fix..."
+```
+
+---
 
 ## Course Navigation
 
@@ -314,29 +454,50 @@ When the user says "Let's prepare for Week X" or "What's next in the course?":
    - Expert crypto developer (Solidity, blockchain architecture, security)
    - Pedagogical expert (breaking down complex topics, examples, analogies)
    - Hands-on instructor (practical activities, commands, expected outputs)
-5. **Use available tools and MCPs**:
-   - **context7 MCP** (if available) for gathering comprehensive context from official documentation sources:
-     - **⚠️ CRITICAL: Always query version-specific documentation!**
-     - **Solidity** v0.8.28+ - Language syntax, security patterns, best practices
-     - **Hardhat** v3.0.8+ - Framework features, configuration, testing ⚠️ NOT Hardhat 2.x!
-     - **ethers.js** v6.x - Web3 interactions, contract calls, transactions ⚠️ NOT v5!
-     - **Go** - Language fundamentals, concurrency, blockchain libraries (go-ethereum)
-     - **Python** - Language basics, pandas, web3.py
-     - **Node.js** v22.14.0+ / **TypeScript** ~5.8.0 - Runtime features, async patterns, types
-     - **Geth** - Ethereum client installation, configuration, RPC
-     - **PostgreSQL/Redis** - Database setup, queries, caching patterns
-     - **React/Next.js** - Frontend frameworks, hooks, Web3 integration
-   - **WebFetch** for latest documentation and best practices (verify versions match!)
-   - **WebSearch** for current tool versions and tutorials (filter by date/version)
-   - **Read** tool to reference Bitcoin/Ethereum books in `/assets` for reading assignments
-   - **Grep/Glob** to search existing codebase for examples and patterns
+5. **Use available tools and MCPs proactively**:
+
+   **STEP 1: Verify Current Project Versions**
+   - [ ] Check "Current Project Versions" section below
+   - [ ] Note exact versions for week's topics
+
+   **STEP 2: Use context7 MCP for Documentation (MANDATORY)**
+   - [ ] **Query version-specific docs** for ALL libraries/tools covered in the week
+   - [ ] Example: "Hardhat 3.0.8 configuration and testing" NOT "Hardhat configuration"
+   - [ ] Verify breaking changes from previous versions
+   - [ ] Save code examples for class activities
+
+   **Libraries to query via context7:**
+   - **Solidity** v0.8.28+ - Language syntax, security patterns, best practices
+   - **Hardhat** v3.0.8+ - Framework, config, testing ⚠️ NOT Hardhat 2.x!
+   - **ethers.js** v6.x - Web3 interactions ⚠️ NOT v5!
+   - **Go** - Language fundamentals, go-ethereum (Week 11+)
+   - **Python** - web3.py, pandas (Week 17+)
+   - **Node.js** v22.14.0+ / **TypeScript** ~5.8.0
+   - **React/Next.js** - Frontend frameworks (Week 6+)
+   - **PostgreSQL/Redis** - Database patterns (Week 4+)
+   - **Geth** - Ethereum client installation, configuration
+
+   **STEP 3: Use WebFetch/WebSearch for Supplementary Info**
+   - [ ] Latest tutorials (filter by date/version)
+   - [ ] Migration guides for version changes
+   - [ ] Community best practices
+
+   **STEP 4: Use chrome-devtools & playwright (for frontend weeks)**
+   - [ ] Week 6+: Test UI examples before teaching
+   - [ ] Week 27: Gather E2E testing examples
+   - [ ] Verify Web3 provider connection patterns work
+
+   **STEP 5: Use Read/Grep/Glob for existing codebase**
+   - [ ] Reference Bitcoin/Ethereum books in `/assets` for reading assignments
+   - [ ] Search existing codebase for examples and patterns
 
    **Version Verification Checklist:**
-   - [ ] Check "Current Project Versions" section below before querying docs
-   - [ ] Include version number in context7/WebFetch queries (e.g., "Hardhat 3.0.8", "ethers.js v6")
+   - [ ] Check "Current Project Versions" section before querying docs
+   - [ ] Include version number in context7 queries (e.g., "Hardhat 3.0.8", "ethers.js v6")
    - [ ] Verify documentation URLs include correct version (e.g., `/v3/` not `/v2/`)
    - [ ] Cross-reference with official migration guides for breaking changes
-   - [ ] When in doubt, check CLAUDE.md "Current Project Versions" table
+   - [ ] Test code examples from docs before teaching (especially for major version changes)
+   - [ ] When in doubt, use context7 to verify current API
 6. **Structure each class document** following the template:
    - Overview (duration, prerequisites, why it matters)
    - Learning Objectives (3-7 measurable outcomes)
@@ -966,6 +1127,22 @@ FamilyToken includes staking for educational purposes:
 
 ### Issue: Smart Contract Upgrade Needed
 **Solution:** Follow upgrade procedure in `docs/upgrade-guide.md`. Test thoroughly on testnet first.
+
+### Issue: Documentation Version Mismatch
+**Solution:**
+1. Use context7 to query version-specific documentation
+2. Check "Current Project Versions" section in CLAUDE.md
+3. Verify user isn't following outdated tutorials
+4. Example: Hardhat 3 vs Hardhat 2, ethers.js v6 vs v5
+5. Provide corrected code pattern from official docs
+
+### Issue: Frontend Not Behaving as Expected (Week 6+)
+**Solution:**
+1. Use playwright to navigate to the UI
+2. Use chrome-devtools to inspect console/network/state
+3. Identify exact error or unexpected behavior
+4. Use context7 to verify React/Web3 API if needed
+5. Provide specific fix based on inspection results
 
 ## Learning Resources
 
