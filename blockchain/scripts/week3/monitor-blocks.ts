@@ -1,5 +1,5 @@
 import { network } from "hardhat";
-  import { formatEther } from "ethers";
+  import { formatEther, formatUnits } from "ethers";
 
   async function main() {
     const connection = await network.connect();
@@ -23,7 +23,7 @@ import { network } from "hardhat";
           if (block) {
             const utilization = (Number(block.gasUsed) / Number(block.gasLimit)) * 100;
             const baseFee = block.baseFeePerGas
-              ? formatEther(block.baseFeePerGas)
+              ? formatUnits(block.baseFeePerGas, "gwei")
               : "N/A";
             const timestamp = new Date(Number(block.timestamp) * 1000).toLocaleTimeString();      
 
