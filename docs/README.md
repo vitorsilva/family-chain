@@ -112,8 +112,8 @@ weekXX-classX.X-topic-name.md
 | Class | Guide | Duration | Status |
 |-------|-------|----------|--------|
 | **3.1** | [Creating Wallets via CLI](week3-class3.1-creating-wallets-cli.md) | 1-2 hours | ✅ Complete |
-| **3.2** | [Sending Your First Transaction](week3-class3.2-sending-first-transaction.md) | 1-2 hours | ✅ Prepared |
-| **3.3** | [Querying Blockchain Data](week3-class3.3-querying-blockchain-data.md) | 1-2 hours | ✅ Prepared |
+| **3.2** | [Sending Your First Transaction](week3-class3.2-sending-first-transaction.md) | 2 hours | ✅ Complete |
+| **3.3** | [Querying Blockchain Data](week3-class3.3-querying-blockchain-data.md) | 1-2 hours | 🔄 In Progress (Activity 1/4) |
 | **3.4** | [Hardhat Project Exploration](week3-class3.4-hardhat-project-exploration.md) | 1-2 hours | ✅ Prepared |
 
 **Week 3 Learning Outcomes (In Progress):**
@@ -121,11 +121,17 @@ weekXX-classX.X-topic-name.md
 - ✅ Hardhat 3 network connection patterns (`network.connect()`, `getSigners()`)
 - ✅ Understanding wallet components (mnemonic, private key, address)
 - ✅ Wallet recovery and HD wallet concepts
-- 🔜 Send ETH transactions via CLI with gas estimation
-- 🔜 Query blockchain data (balances, blocks, transaction history)
+- ✅ Send ETH transactions via CLI with gas estimation
+- ✅ Estimate gas costs before sending transactions
+- ✅ Check transaction status and confirmations
+- ✅ Handle transaction errors gracefully
+- ✅ Query account balances from blockchain
+- 🔜 Explore block data (headers, transactions, utilization)
+- 🔜 Get transaction history using Etherscan API
+- 🔜 Monitor blockchain in real-time
 - 🔜 Understand Hardhat 3 project structure and workflow
 - 🔜 Build custom CLI tools for blockchain interactions
-- 🔜 **Early Win:** Send ETH programmatically and query data!
+- ✅ **Early Win:** Send ETH programmatically! (0x85324acc...)
 
 **Reading References (Week 3):**
 - Bitcoin Book: Chapter 4 (Keys), Chapter 5 (Wallets), Chapter 6 (Transactions)
@@ -361,8 +367,8 @@ As you use these guides:
 
 ---
 
-**Last Updated:** 2025-10-30 (Session break after Class 3.1)
-**Course Progress:** Week 1 ✅ FULLY Complete | Week 2 ✅ FULLY Complete | Week 3 🔄 IN PROGRESS (Class 3.1 Complete)
+**Last Updated:** 2025-10-31 (Session break during Class 3.3)
+**Course Progress:** Week 1 ✅ FULLY Complete | Week 2 ✅ FULLY Complete | Week 3 🔄 IN PROGRESS (Classes 3.1-3.2 Complete, Class 3.3 Activity 1/4)
 **Total Learning Guides:** 11 of ~80 planned (Week 1: 3, Week 2: 4, Week 3: 4)
 
 ---

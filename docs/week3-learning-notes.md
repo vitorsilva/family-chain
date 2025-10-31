@@ -403,4 +403,303 @@ npx hardhat keystore list --dev
 
 ---
 
-*Last Updated: 2025-10-30 (Session end - Class 3.1 complete)*
+## Session: 2025-10-31
+
+### Week 3, Class 3.2: Sending Your First Transaction - COMPLETE ✅
+
+**Duration:** ~2 hours
+
+**Context:** Continuing from Class 3.1 (wallet creation). Learning to send transactions, estimate gas, check status, and handle errors.
+
+---
+
+#### Pre-Class: MCP Tools Integration
+
+**CLAUDE.md Updated with MCP Guidelines:**
+- Added comprehensive MCP tools usage section
+- context7 MCP for documentation lookup
+- chrome-devtools MCP for frontend debugging (Week 6+)
+- playwright MCP for E2E testing (Week 27)
+- Updated "Preparing Classes" section with step-by-step MCP workflow
+- Added "Troubleshooting with MCPs" section
+
+**Key additions:**
+- Always query version-specific documentation
+- Use context7 BEFORE teaching new library/tool
+- Proactive documentation checking prevents errors
+
+---
+
+#### Activity 1: Send ETH Between Wallets
+
+**Initial confusion: Local vs Sepolia network**
+
+**Issue encountered:**
+- Script ran successfully but used **local Hardhat network** instead of Sepolia
+- Clues: Address `0xf39Fd...` (Hardhat's default), 10,000 ETH balance, Block #1, instant confirmation
+
+**Root cause:** Using `npx tsx` instead of `npx hardhat run`
+- `tsx` doesn't understand `--network` flag
+- Hardhat runner required for network selection
+
+**Solution:**
+```powershell
+npx hardhat run scripts/week3/send-transaction.ts --network sepolia
+```
+
+**Successful transaction:**
+- **Hash:** `0x85324acc9e53f71dc1649839db5b33e620eadbdb295f5cc949443c7f084042fa`
+- **From:** 0xB09b...5736 (real wallet)
+- **To:** 0x310a9...30B5 (random wallet)
+- **Amount:** 0.001 ETH
+- **Block:** 9,531,070
+- **Gas Used:** 21,000
+- **Gas Cost:** 0.0000315 ETH (~1.5 gwei)
+- **Total Cost:** 0.001031500... ETH
+
+**Key learning:**
+- Gas is real - always adds to transaction cost
+- 21,000 gas is fixed for simple ETH transfers
+- Transaction confirmed in ~15-30 seconds on Sepolia
+- Funds sent to random wallet are effectively "lost" (no private key)
+
+---
+
+#### Activity 2: Estimate Gas Before Sending
+
+**Script created:** `scripts/week3/estimate-gas.ts`
+
+**Key concepts demonstrated:**
+- `provider.estimateGas()` - Simulates transaction, returns gas units needed
+- `provider.getFeeData()` - Gets current network gas prices (EIP-1559)
+- Total cost calculation: `amount + (gasLimit × gasPrice)`
+- Balance check before sending
+
+**Execution results:**
+- Estimated Gas Limit: 21,000 (as expected)
+- Gas Price: **0.001 gwei** (extremely low!)
+- Total Cost: 0.010000021 ETH (to send 0.01 ETH)
+
+**Gas price comparison:**
+- Activity 1 (sent): 1.5 gwei
+- Activity 2 (estimated): 0.001 gwei
+- **1,500x difference in ~30 minutes!** (typical testnet volatility)
+
+**User insight:** Understanding why gas estimation matters:
+1. Know total cost before sending
+2. Avoid insufficient funds errors
+3. Monitor network conditions (postpone if gas is high)
+4. Validate transaction will succeed
+
+---
+
+#### Activity 3: Check Transaction Status
+
+**Script created:** `scripts/week3/check-transaction.ts`
+
+**Key concepts:**
+- `getTransaction(hash)` - Returns what you **sent** (from, to, value, gas limit, nonce)
+- `getTransactionReceipt(hash)` - Returns what **happened** (block number, gas used, status, logs)
+- Confirmations = current block - transaction block
+
+**Execution results:**
+- Transaction Hash: 0x85324acc... (from Activity 1)
+- Nonce: 1 (this was the 2nd transaction from the wallet)
+- Block Number: 9,531,070
+- **Confirmations: 174** (Very Safe!)
+- Current Block: 9,531,244
+- Time passed: ~174 blocks × 12 sec = ~35 minutes
+
+**User question about block numbers:**
+"Why does receipt have a block number? Is it different from transaction block number?"
+
+**Answer:** They're the **same** block number!
+- `tx.blockNumber` = where transaction was mined
+- `receipt.blockNumber` = same block (where execution results are recorded)
+- Both refer to block 9,531,070
+- Different objects (Transaction vs Receipt), same block reference
+
+**Analogy provided:** Order (transaction) vs Receipt (result) - both reference same delivery address
+
+**Confirmations concept:**
+- 1 confirmation: Included in 1 block
+- 6 confirmations: Generally safe (exchanges use this)
+- 12+ confirmations: Very safe
+- 174 confirmations: Extremely safe (practically irreversible)
+
+---
+
+#### Activity 4: Handle Transaction Errors
+
+**Script created:** `scripts/week3/handle-errors.ts`
+
+**Tests performed:**
+1. **Insufficient funds** - Caught "bad address checksum" (ethers.js validates address first!)
+2. **Invalid address** - Caught "ENS resolution requires a provider" (ethers tried to resolve as ENS name)
+3. **Gas estimation** - ✅ Successful (21,000 gas)
+4. **Nonce check** - Current nonce: 2 (confirms 2 transactions sent total)
+
+**Unexpected error messages (different from guide):**
+- Test 1: Got "bad address checksum" instead of "insufficient funds"
+  - **Why:** ethers.js validates address format BEFORE checking balance
+  - **This is good:** Catches address errors early
+
+- Test 2: Got "ENS resolution requires a provider" instead of "invalid address"
+  - **Why:** ethers.js tried to resolve "0xinvalid" as ENS name
+  - **Still caught:** Error handling worked correctly
+
+**Key concept:** `try/catch` blocks protect code from crashing when errors occur
+
+**Transaction history confirmed:**
+- Nonce 0: First transaction (before Class 3.2)
+- Nonce 1: Activity 1 transaction (0x85324acc...)
+- Nonce 2: Next transaction will use this
+
+---
+
+#### Class 3.2 Deliverables - ALL COMPLETE ✅
+
+- [x] 4 working scripts: `send-transaction.ts`, `estimate-gas.ts`, `check-transaction.ts`, `handle-errors.ts`
+- [x] Sent successful transaction on Sepolia (0x85324acc...)
+- [x] Transaction verified on Etherscan (174 confirmations)
+- [x] Understanding of gas mechanics (21,000 gas, variable prices)
+- [x] Understanding of transaction lifecycle (pending → mined → confirmed)
+- [x] Understanding of nonce (sequential counter: 0, 1, 2...)
+- [x] Understanding of confirmations (depth in blockchain)
+
+---
+
+### Week 3, Class 3.3: Querying Blockchain Data - IN PROGRESS 🔄
+
+**Duration so far:** ~15 minutes
+
+**Context:** Learning to query blockchain as a public database - balances, blocks, transactions, real-time monitoring.
+
+---
+
+#### Activity 1: Query Account Balances - COMPLETE ✅
+
+**Script created:** `scripts/week3/query-balances.ts`
+
+**Hardhat 3 Pattern Correction:**
+- **Initial mistake:** Used `hre.vars.get("ALCHEMY_API_KEY")` (Hardhat 2 syntax)
+- **User caught it:** "that feels hardhat 2 to me and not hardhat 3"
+- **Corrected pattern:**
+  ```typescript
+  import { network } from "hardhat";
+  const connection = await network.connect();
+  const provider = connection.ethers.provider;
+  ```
+
+**Key concept:** `await network.connect()` automatically uses network config from `hardhat.config.ts` (including RPC URL via `configVariable()`)
+
+**Execution results (Sepolia testnet):**
+- Your Wallet (0xB09b...5736): 0.80000411 ETH
+- Vitalik Buterin: 34.3 ETH
+- Ethereum Foundation: 4.5 ETH
+- Current Block: 9,531,360
+
+**User question:** "but these are balances on sepolia testnet, right?"
+
+**Answer:** Yes! These are testnet balances (no real value)
+- Testnet ETH = play money
+- Mainnet balances are very different:
+  - Vitalik: ~3,700+ ETH ($7+ million)
+  - Ethereum Foundation: ~300,000+ ETH ($600+ million)
+
+**Key concept learned:** Blockchain is a **public database** - anyone can query any address balance without needing private keys!
+
+---
+
+#### Session Break Point
+
+**Paused at:** Class 3.3, Activity 1 complete
+
+**Next activities when resuming:**
+- Activity 2: Explore block data (fetch block details, calculate utilization)
+- Activity 3: Get transaction history (using Etherscan API - requires API key)
+- Activity 4: Monitor real-time blockchain (watch new blocks arrive)
+
+---
+
+### Files Created This Session
+
+**Class 3.2 Scripts:**
+- `scripts/week3/send-transaction.ts` - Send ETH between wallets
+- `scripts/week3/estimate-gas.ts` - Calculate transaction costs before sending
+- `scripts/week3/check-transaction.ts` - Query transaction details and confirmations
+- `scripts/week3/handle-errors.ts` - Error handling patterns
+
+**Class 3.3 Scripts:**
+- `scripts/week3/query-balances.ts` - Query account balances
+
+**Documentation:**
+- Updated `CLAUDE.md` with comprehensive MCP tools usage guidelines
+
+---
+
+### Key Technical Learnings
+
+**Hardhat 3 Patterns:**
+1. Use `npx hardhat run` with `--network` flag (NOT `npx tsx`)
+2. Use `await network.connect()` for provider access
+3. Use `connection.ethers.getSigners()` for configured accounts
+4. Provider auto-configured from `hardhat.config.ts`
+
+**Transaction Mechanics:**
+- Total cost = amount + (gas units × gas price)
+- Simple ETH transfers = exactly 21,000 gas
+- Gas prices fluctuate (saw 1.5 gwei → 0.001 gwei in 30 min)
+- Confirmations = current block - transaction block
+- Nonce = sequential transaction counter per address
+
+**Error Handling:**
+- ethers.js validates addresses before balance checks
+- Always use `try/catch` for transaction operations
+- Estimation simulates transaction (catches failures before sending)
+
+**Blockchain Querying:**
+- Everything is public except private keys
+- `provider.getBalance()` works for ANY address
+- Testnet vs mainnet balances are completely separate
+
+---
+
+### Questions Explored
+
+1. **JavaScript object nesting:** Understanding `connection.ethers.provider`
+   - `connection` has property `ethers`
+   - `ethers` has property `provider`
+   - Like `car.engine.horsepower`
+
+2. **Transaction vs Receipt block numbers:** Both reference same block
+   - Transaction = what you sent
+   - Receipt = what happened
+   - Same block, different purposes
+
+3. **Gas estimation purpose:** Know cost before sending, avoid failures, check network conditions
+
+4. **Testnet vs Mainnet:** Completely separate networks with different balances
+
+---
+
+### User Learning Strengths Observed
+
+- **Excellent version awareness:** Caught Hardhat 2 vs 3 syntax differences immediately
+- **Asks for concept explanations:** "explain the concepts, not just the code"
+- **Connects learning:** Gas estimation → postponing transactions if prices high
+- **Questions underlying mechanisms:** Block numbers, nonce, why estimate gas
+- **Verifies understanding:** "but these are balances on sepolia testnet, right?"
+
+---
+
+**Total Time Invested (Class 3.2 + Class 3.3 start):** ~2.5 hours
+- Class 3.2: ~2 hours (4 activities)
+- Class 3.3: ~15 minutes (Activity 1 only)
+
+**Class 3.2 Status:** ✅ **FULLY COMPLETE**
+**Class 3.3 Status:** 🔄 **IN PROGRESS** (Activity 1 of 4 complete)
+
+---
+
+*Last Updated: 2025-10-31 (Session break - Classes 3.1-3.2 complete, Class 3.3 Activity 1 complete)*
