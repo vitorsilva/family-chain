@@ -6,7 +6,8 @@
       "WebFetch(domain:geth.ethereum.org)",
       "WebFetch(domain:hardhat.org)",
       "mcp__context7__resolve-library-id",
-      "mcp__context7__get-library-docs"
+      "mcp__context7__get-library-docs",
+      "WebFetch(domain:docs.etherscan.io)"
     ],
     "deny": [],
     "ask": []
