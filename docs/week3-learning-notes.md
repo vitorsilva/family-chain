@@ -905,22 +905,355 @@ During busy times (100 gwei):
 
 ---
 
-### Session Break (2025-10-31)
+### Week 3, Class 3.4: Hardhat Project Exploration - COMPLETE ✅
 
-**Paused at:** End of Class 3.3 (all activities complete)
+**Duration:** ~45 minutes
 
-**Next when resuming:**
-- Class 3.4: Hardhat Project Exploration (~1-2 hours)
-- Week 3 self-assessment quiz
-- Week 3 reading (Bitcoin Ch 4-6, Ethereum Ch 4-6)
-
-**Ready for next session:**
-- ✅ All Week 3 scripts working (8 scripts total)
-- ✅ Mainnet and Sepolia both configured
-- ✅ Understanding of blockchain as public database
-- ✅ Real-time monitoring capability
-- ✅ Transaction sending and querying patterns mastered
+**Context:** Final class in Week 3. Verified class guide against Hardhat 3 documentation using context7 MCP, discovered custom task API changes, opted to skip Activity 5 (custom tasks) and complete Activities 1-4 and 6.
 
 ---
 
-*Last Updated: 2025-10-31 (Session break - Classes 3.1-3.3 FULLY COMPLETE, Class 3.4 pending)*
+#### Pre-Class: Documentation Verification with MCP Tools
+
+**User's excellent suggestion:** "Can I suggest you do a first analysis of the current plan... make sure it relates to Hardhat 3... with the new MCP tools."
+
+**Actions taken:**
+- Used context7 MCP to fetch Hardhat documentation
+- Verified commands, project structure, artifacts, config syntax
+- **Discovered critical issue:** Activity 5 (custom tasks) used Hardhat 2 API
+
+**Hardhat 3 Custom Task Changes Found:**
+- Old: `.addOptionalParam()` → New: `.addOption()` with object
+- Old: `.setAction(async (args, hre) => {})` → New: `.setAction(async () => ({ default: async (args, hre) => {} }))`
+- Must call `.build()` at end
+- Must export task and add to `config.tasks` array
+
+**Decision:** Skip Activity 5, complete Activities 1-4 and 6 (core concepts more important than advanced task creation)
+
+---
+
+#### Activity 1: Explore Hardhat Tasks - COMPLETE ✅
+
+**Command correction discovered:**
+- Tried: `npx hardhat help` → Error HHE404: Task "help" not found
+- Correct: `npx hardhat` (no arguments) or `npx hardhat --help`
+
+**Available tasks found (10 total):**
+- `build` - Build project ✅ (used since Week 1)
+- `clean` - Clear cache and artifacts
+- `compile` - Alias for build (Hardhat 3 compatibility)
+- `console` - Interactive Hardhat console
+- `flatten` - Combine imports for verification
+- `node` - Local blockchain server
+- `run` - Run scripts ✅ (used all Week 3)
+- `telemetry` - Usage statistics settings
+- `test` - Run tests ✅ (used in Week 1)
+- `verify` - Verify contracts on block explorers
+
+**Key insight:** `compile` listed as "alias for build" confirming Hardhat 3 command change.
+
+---
+
+#### Activity 2: Build and Clean Cycle - COMPLETE ✅
+
+**Commands executed:**
+
+1. **Clean artifacts:**
+   ```powershell
+   npx hardhat clean
+   ```
+   Result: No output (success)
+
+2. **Verify deletion:**
+   ```powershell
+   ls artifacts
+   ```
+   Result: "Cannot find path" (confirmed deleted)
+
+3. **Build project:**
+   ```powershell
+   npx hardhat build
+   ```
+   Result: "Compiled 2 Solidity files with solc 0.8.28... Compiled 1 Solidity file..."
+
+4. **Verify artifacts created:**
+   ```powershell
+   ls .\artifacts\contracts\
+   ```
+   Result: Counter.sol/ and HelloFamily.sol/ folders created
+
+**Key learning:**
+- Artifacts auto-generated from source files
+- Contains ABI (Application Binary Interface) and bytecode
+- Not committed to Git (.gitignore)
+- Can be rebuilt anytime with `npx hardhat build`
+
+---
+
+#### Activity 3: Understand Hardhat Config - COMPLETE ✅
+
+**Reviewed `hardhat.config.ts` structure:**
+
+**1. Solidity Compiler:**
+- Version: 0.8.28
+- Profiles: default and production (with optimizer)
+
+**2. Networks:**
+- `hardhatMainnet` - In-process simulated L1 (for tests)
+- `hardhatOp` - In-process simulated Optimism (for tests)
+- `sepolia` - HTTP connection to Alchemy RPC
+- `mainnet` - HTTP connection (configured in Class 3.3)
+
+**3. Plugins:**
+- `hardhatToolboxMochaEthersPlugin` - Bundles ethers.js, testing, verification
+
+**Key concept:**
+- `configVariable()` - Hardhat 3's secure way to access keystore variables
+- Replaces `process.env` from Hardhat 2
+- Values stored encrypted locally
+
+---
+
+#### Activity 4: Run Tests - COMPLETE ✅
+
+**Command executed:**
+```powershell
+npx hardhat test
+```
+
+**Results:**
+- **Solidity tests:** 3 passing (Counter contract tests)
+- **Mocha tests:** 7 passing (Counter + HelloFamily)
+- **Total:** 10 tests passed in ~807ms
+
+**Solidity Tests vs Mocha Tests (Review):**
+
+**Solidity Tests** (`test/contracts/Counter.t.sol`):
+- Written in Solidity
+- Run on-chain (inside EVM)
+- Fast unit tests
+- Fuzz testing built-in (`testFuzz_Inc(uint8)` ran 256 random inputs!)
+- Test from contract's perspective
+
+**Mocha Tests** (`test/Counter.ts`, `test/HelloFamily.ts`):
+- Written in TypeScript/JavaScript
+- Run off-chain (Node.js)
+- Integration testing
+- Test from user/frontend perspective
+- Use Mocha (`describe`, `it`) and Chai (`expect`) syntax
+
+**When to use which:**
+- Solidity: Fast unit tests, fuzz testing, gas optimization
+- Mocha: Integration tests, frontend simulation, complex workflows
+
+**User's project has both!** ✅ Best practice.
+
+---
+
+#### Activity 6: Local Hardhat Network - COMPLETE ✅
+
+**Command executed:**
+```powershell
+npx hardhat node
+```
+
+**Results:**
+- ✅ Started HTTP and WebSocket JSON-RPC server at `http://127.0.0.1:8545`
+- ✅ Account #0: `0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266` with 10,000 ETH
+- ⚠️ Warning displayed: Funds sent to publicly known accounts WILL BE LOST on mainnet
+
+**Key features:**
+- 20 pre-funded accounts (10,000 ETH each)
+- Instant mining (no 12-second blocks)
+- Perfect for rapid development
+- Blockchain state resets when stopped (Ctrl+C)
+
+**When to use local node vs Sepolia:**
+- **Local:** Fast testing, debugging, instant feedback
+- **Sepolia:** Integration testing, sharing, final testing before mainnet
+
+**User stopped node with Ctrl+C** ✅
+
+---
+
+#### Excellent User Question: Local Network Configuration
+
+**Question:** "Suppose I want to run scripts on local Hardhat node, would I configure a new network or use hardhatMainnet/hardhatOp?"
+
+**Answer provided:**
+- Use built-in `localhost` network (no config needed!)
+- **hardhatMainnet/hardhatOp** = In-process simulation (for tests without server)
+- **localhost** = HTTP connection to `npx hardhat node` server
+- Can add custom localhost config if needed, but optional
+
+**Usage pattern:**
+```powershell
+# Terminal 1: Start node
+npx hardhat node
+
+# Terminal 2: Run script on local node
+npx hardhat run scripts/week3/send-transaction.ts --network localhost
+```
+
+**Key distinction:**
+- `--network localhost` → Connects to running Hardhat node
+- No `--network` flag → Uses in-process simulation (hardhatMainnet)
+
+---
+
+#### Class 3.4 Deliverables - ALL COMPLETE ✅
+
+- [x] ✅ Understanding of Hardhat project structure (contracts/, test/, scripts/, artifacts/)
+- [x] ✅ Knowledge of artifacts (ABI + bytecode in JSON)
+- [x] ✅ Ability to use Hardhat tasks (build, clean, test, node)
+- [x] ✅ Explored `hardhat.config.ts` (Solidity, networks, plugins)
+- [x] ✅ Run tests successfully (10 tests: 3 Solidity + 7 Mocha)
+- [x] ✅ Understanding of Hardhat 3 vs Hardhat 2 differences
+- [x] ✅ Started and stopped local Hardhat node
+- [x] ⚠️ Skipped Activity 5 (custom tasks) due to Hardhat 3 API changes
+
+---
+
+### Week 3 Status - FULLY COMPLETE ✅
+
+**Classes Completed:**
+- [x] ✅ **Class 3.1:** Creating Wallets via CLI (4 scripts)
+- [x] ✅ **Class 3.2:** Sending Your First Transaction (4 scripts)
+- [x] ✅ **Class 3.3:** Querying Blockchain Data (4 scripts)
+- [x] ✅ **Class 3.4:** Hardhat Project Exploration (5 activities, skipped 1)
+
+**Total Scripts Created:** 12 working TypeScript scripts
+**Total Time:** ~5-6 hours across 2 days (Oct 30-31)
+
+**Key Achievements:**
+- 💸 Sent real transaction on Sepolia (0x85324acc...)
+- 🔍 Queried blockchain as public database
+- ⚡ Configured mainnet monitoring
+- 🛠️ Mastered Hardhat 3 workflow
+- 🧪 Ran both Solidity and Mocha tests
+- 🌐 Started local Hardhat blockchain
+- 📚 Verified documentation with MCP tools
+
+**Week 3 Early Win:** Sent ETH programmatically via CLI! ✨
+
+---
+
+### Files Created This Week
+
+**Class 3.1 Scripts:**
+- `scripts/week3/create-wallet.ts` - Random wallet generation
+- `scripts/week3/wallet-from-mnemonic.ts` - Wallet recovery
+- `scripts/week3/wallet-with-provider.ts` - Blockchain connection
+- `scripts/week3/load-existing-wallet.ts` - Load configured wallet
+
+**Class 3.2 Scripts:**
+- `scripts/week3/send-transaction.ts` - Send ETH between wallets
+- `scripts/week3/estimate-gas.ts` - Calculate transaction costs
+- `scripts/week3/check-transaction.ts` - Query transaction details
+- `scripts/week3/handle-errors.ts` - Error handling patterns
+
+**Class 3.3 Scripts:**
+- `scripts/week3/query-balances.ts` - Query account balances
+- `scripts/week3/explore-blocks.ts` - Fetch and analyze block data
+- `scripts/week3/transaction-history.ts` - Get transaction history via Etherscan API V2
+- `scripts/week3/monitor-blocks.ts` - Real-time blockchain monitoring (Sepolia + Mainnet)
+
+**Configuration:**
+- Updated `hardhat.config.ts` with mainnet network
+- Added `MAINNET_RPC_URL` and `ETHERSCAN_API_KEY` to keystore
+
+---
+
+### Technical Learnings (Week 3 Complete)
+
+**Hardhat 3 Patterns Mastered:**
+1. Use `npx hardhat` (no args) instead of `npx hardhat help`
+2. Use `build` command (not `compile`)
+3. Use `await network.connect()` for provider access
+4. Use `connection.ethers.getSigners()` for configured accounts
+5. Custom tasks API has changed significantly (documented for future)
+
+**Blockchain Concepts:**
+- Wallet components (mnemonic, private key, address)
+- HD wallets (one mnemonic → infinite addresses)
+- Transaction mechanics (nonce, gas, confirmations)
+- Block structure (parent hash, utilization, timestamps)
+- Public blockchain (anyone can query any address)
+- Testnet vs mainnet economics (28M times cost difference!)
+
+**Testing:**
+- Solidity tests (on-chain, fast, fuzz testing)
+- Mocha tests (off-chain, integration, frontend simulation)
+- Both have their place in comprehensive testing
+
+**Networks:**
+- Local Hardhat node (instant, free, resets)
+- Sepolia testnet (real network, 12-sec blocks, persistent)
+- Mainnet (production, real value, expensive gas)
+
+**Etherscan API V2:**
+- Unified endpoint with `chainid` parameter
+- Indexers needed (RPC can't query "all txs for address")
+- One API key works across 60+ networks
+
+---
+
+### Next Steps for Week 4
+
+**Before Starting Week 4:**
+- [ ] ⏳ **Complete Week 3 Reading** (homework):
+  - Bitcoin Book: Chapters 4-6 (Keys, Wallets, Transactions)
+  - Ethereum Book: Chapters 4-6 (Keys, Wallets, Transactions)
+
+**When Ready to Start Week 4:**
+- [ ] 🔜 **Complete Week 3 Self-Assessment** (next session start)
+  - Class 3.1: Wallet creation, HD wallets, mnemonic recovery
+  - Class 3.2: Transactions, gas, nonces, confirmations
+  - Class 3.3: Querying balances, blocks, transaction history
+  - Class 3.4: Hardhat structure, artifacts, testing frameworks
+
+**Week 4 Preview: Database Design & Architecture**
+- Class 4.1: PostgreSQL Setup and Schema Design
+- Class 4.2: Redis Configuration
+- Class 4.3: Data Modeling for Financial Systems
+- Class 4.4: Database Security and Encryption
+
+**Tools to install:** PostgreSQL, Redis (just-in-time installation)
+
+---
+
+### Questions to Explore in Week 4
+
+- [ ] How to store off-chain data alongside blockchain data?
+- [ ] What should be in the database vs on-chain?
+- [ ] How to encrypt sensitive financial data (IBANs, NIFs)?
+- [ ] How to design schema for transaction history?
+- [ ] When to use PostgreSQL vs Redis?
+
+---
+
+### 📍 Current Course Status
+
+**✅ Completed:**
+- **Week 1:** Environment Setup, Blockchain Theory, First Smart Contract (FULLY COMPLETE)
+- **Week 2:** Running Ethereum Node, Hybrid RPC Approach (FULLY COMPLETE)
+- **Week 3:** Command Line Blockchain Interactions (FULLY COMPLETE) ← **JUST FINISHED!**
+
+**🔜 Next:**
+- **Week 4:** Database Design & Architecture (4 classes)
+
+**Course Progress:** 3 of 30 weeks complete (10% | Phase 1: 37.5% complete)
+
+---
+
+**Total Time Invested (Week 3):** ~5-6 hours
+- Class 3.1: ~1.5 hours (wallet creation, recovery, connection)
+- Class 3.2: ~2 hours (send, estimate, check, errors)
+- Class 3.3: ~1.5 hours (balances, blocks, history, monitoring + mainnet setup)
+- Class 3.4: ~45 minutes (tasks, build, config, tests, local node)
+
+**Week 3 Status:** ✅ **FULLY COMPLETE** (pending self-assessment at start of Week 4)
+
+---
+
+*Last Updated: 2025-10-31 (Evening - Week 3 FULLY COMPLETE!)*

@@ -114,9 +114,9 @@ weekXX-classX.X-topic-name.md
 | **3.1** | [Creating Wallets via CLI](week3-class3.1-creating-wallets-cli.md) | 1-2 hours | ✅ Complete |
 | **3.2** | [Sending Your First Transaction](week3-class3.2-sending-first-transaction.md) | 2 hours | ✅ Complete |
 | **3.3** | [Querying Blockchain Data](week3-class3.3-querying-blockchain-data.md) | 1-2 hours | ✅ Complete |
-| **3.4** | [Hardhat Project Exploration](week3-class3.4-hardhat-project-exploration.md) | 1-2 hours | ✅ Prepared |
+| **3.4** | [Hardhat Project Exploration](week3-class3.4-hardhat-project-exploration.md) | 1-2 hours | ✅ Complete |
 
-**Week 3 Learning Outcomes (Classes 3.1-3.3 Complete):**
+**Week 3 Learning Outcomes (ALL COMPLETE):**
 - ✅ Create wallets programmatically (random, mnemonic, HD derivation)
 - ✅ Hardhat 3 network connection patterns (`network.connect()`, `getSigners()`)
 - ✅ Understanding wallet components (mnemonic, private key, address)
@@ -132,10 +132,13 @@ weekXX-classX.X-topic-name.md
 - ✅ Understand blockchain immutability via parent hash chain
 - ✅ Monitor blockchain in real-time (polling pattern)
 - ✅ Configure and compare mainnet vs testnet (28M times cost difference!)
-- 🔜 Understand Hardhat 3 project structure and workflow
-- 🔜 Build custom CLI tools for blockchain interactions
+- ✅ Understand Hardhat 3 project structure (contracts, artifacts, tests, scripts)
+- ✅ Master Hardhat tasks (build, clean, test, node)
+- ✅ Understand artifacts (ABI + bytecode in JSON)
+- ✅ Run both Solidity and Mocha tests (10 tests passing)
+- ✅ Start and use local Hardhat blockchain (instant mining, 10,000 ETH accounts)
 - ✅ **Early Win:** Send ETH programmatically! (0x85324acc...)
-- ✅ **Bonus:** Fixed formatEther bug, configured mainnet monitoring
+- ✅ **Bonus:** Fixed formatEther bug, configured mainnet monitoring, verified docs with MCP tools
 
 **Reading References (Week 3):**
 - Bitcoin Book: Chapter 4 (Keys), Chapter 5 (Wallets), Chapter 6 (Transactions)
