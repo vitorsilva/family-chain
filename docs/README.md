@@ -113,10 +113,10 @@ weekXX-classX.X-topic-name.md
 |-------|-------|----------|--------|
 | **3.1** | [Creating Wallets via CLI](week3-class3.1-creating-wallets-cli.md) | 1-2 hours | ✅ Complete |
 | **3.2** | [Sending Your First Transaction](week3-class3.2-sending-first-transaction.md) | 2 hours | ✅ Complete |
-| **3.3** | [Querying Blockchain Data](week3-class3.3-querying-blockchain-data.md) | 1-2 hours | 🔄 In Progress (Activity 3/4) |
+| **3.3** | [Querying Blockchain Data](week3-class3.3-querying-blockchain-data.md) | 1-2 hours | ✅ Complete |
 | **3.4** | [Hardhat Project Exploration](week3-class3.4-hardhat-project-exploration.md) | 1-2 hours | ✅ Prepared |
 
-**Week 3 Learning Outcomes (In Progress):**
+**Week 3 Learning Outcomes (Classes 3.1-3.3 Complete):**
 - ✅ Create wallets programmatically (random, mnemonic, HD derivation)
 - ✅ Hardhat 3 network connection patterns (`network.connect()`, `getSigners()`)
 - ✅ Understanding wallet components (mnemonic, private key, address)
@@ -130,10 +130,12 @@ weekXX-classX.X-topic-name.md
 - ✅ Get transaction history using Etherscan API V2
 - ✅ Identify transaction types (ETH transfers vs contract deployments)
 - ✅ Understand blockchain immutability via parent hash chain
-- 🔜 Monitor blockchain in real-time
+- ✅ Monitor blockchain in real-time (polling pattern)
+- ✅ Configure and compare mainnet vs testnet (28M times cost difference!)
 - 🔜 Understand Hardhat 3 project structure and workflow
 - 🔜 Build custom CLI tools for blockchain interactions
 - ✅ **Early Win:** Send ETH programmatically! (0x85324acc...)
+- ✅ **Bonus:** Fixed formatEther bug, configured mainnet monitoring
 
 **Reading References (Week 3):**
 - Bitcoin Book: Chapter 4 (Keys), Chapter 5 (Wallets), Chapter 6 (Transactions)
@@ -369,8 +371,8 @@ As you use these guides:
 
 ---
 
-**Last Updated:** 2025-10-31 (Session break during Class 3.3)
-**Course Progress:** Week 1 ✅ FULLY Complete | Week 2 ✅ FULLY Complete | Week 3 🔄 IN PROGRESS (Classes 3.1-3.2 Complete, Class 3.3 Activity 3/4)
+**Last Updated:** 2025-10-31 (Session break after Class 3.3)
+**Course Progress:** Week 1 ✅ FULLY Complete | Week 2 ✅ FULLY Complete | Week 3 🔄 IN PROGRESS (Classes 3.1-3.3 Complete, Class 3.4 Pending)
 **Total Learning Guides:** 11 of ~80 planned (Week 1: 3, Week 2: 4, Week 3: 4)
 
 ---

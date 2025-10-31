@@ -699,12 +699,77 @@ https://api.etherscan.io/v2/api?chainid=11155111&module=account&action=txlist&ad
 
 ---
 
-#### Session Break Point
+#### Activity 4: Monitor Real-Time Blockchain - COMPLETE ✅
 
-**Paused at:** Class 3.3, Activities 1-3 complete
+**Script created:** `scripts/week3/monitor-blocks.ts`
 
-**Next activity when resuming:**
-- Activity 4: Monitor Real-Time Blockchain (watch new blocks arrive every ~12 seconds)
+**Key concepts:**
+- **Polling pattern:** Check for new blocks every 6 seconds
+- **Real-time updates:** Watch blocks arrive every ~12 seconds
+- **Block timing:** Proof of Stake = fixed 12-second schedule
+- **setInterval():** JavaScript timer for repeated execution
+
+**Execution results (Sepolia):**
+- Blocks arriving exactly 12 seconds apart (18:38:00 → 18:38:12 → 18:38:24...)
+- Transaction count varying: 72-155 per block
+- Utilization: 13-45% (plenty of space)
+- Base fee stable: ~0.00000001 gwei (essentially free)
+
+**Bug discovered and fixed:**
+- **Issue:** Used `formatEther()` instead of `formatUnits(value, "gwei")`
+- **Impact:** Base fees displayed in ETH units instead of gwei (confusing!)
+- **Fix:** Changed to `formatUnits(block.baseFeePerGas, "gwei")`
+- **Result:** Readable gwei values
+
+**Mainnet comparison added:**
+- User configured mainnet network in `hardhat.config.ts`
+- Added `MAINNET_RPC_URL` to keystore (Alchemy)
+- Ran monitor on both networks side-by-side
+
+**Mainnet vs Sepolia comparison:**
+
+| Metric | Sepolia (Testnet) | Mainnet (Real) |
+|--------|-------------------|----------------|
+| Base Fee | 0.00000001 gwei | 0.28 gwei |
+| Difference | 1x | **28,000,000x higher!** |
+| Utilization | 15-40% | 20-68% |
+| Cost per transfer | ~$0.000000021 | ~$0.012 (1 cent) |
+| ETH Value | $0 (play money) | Real value |
+
+**Real-world cost calculation:**
+```
+Simple ETH transfer on mainnet:
+21,000 gas × 0.28 gwei = 5,880 gwei = 0.00000588 ETH
+At $2,000/ETH: ~$0.012 (about 1 cent)
+
+During busy times (100 gwei):
+21,000 gas × 100 gwei = ~$4.20 per transaction!
+```
+
+**Key insights:**
+- Mainnet currently very quiet (0.28 gwei is cheap!)
+- During NFT mints/crashes: 100-300 gwei (200-1000x more expensive)
+- Always test on Sepolia first (free, safe, debuggable)
+- Deploy to mainnet when: code tested, gas optimized, network quiet
+
+**User learning highlights:**
+- Fixed formatEther bug independently
+- Successfully configured mainnet network
+- Understood dramatic cost difference (28M times!)
+- Grasped economic implications of gas prices
+
+---
+
+#### Class 3.3 Deliverables - ALL COMPLETE ✅
+
+- [x] 4 working scripts created
+- [x] Query any address balance (public blockchain database)
+- [x] Explore block structure (parent hash chain, utilization)
+- [x] Get transaction history via Etherscan API V2
+- [x] Monitor real-time blockchain (Sepolia + Mainnet)
+- [x] Fixed formatEther → formatUnits bug
+- [x] Configured mainnet network
+- [x] Understanding of testnet vs mainnet economics
 
 ---
 
@@ -720,6 +785,11 @@ https://api.etherscan.io/v2/api?chainid=11155111&module=account&action=txlist&ad
 - `scripts/week3/query-balances.ts` - Query account balances
 - `scripts/week3/explore-blocks.ts` - Fetch and analyze block data
 - `scripts/week3/transaction-history.ts` - Get full transaction history via Etherscan API V2
+- `scripts/week3/monitor-blocks.ts` - Real-time blockchain monitoring (Sepolia + Mainnet)
+
+**Configuration:**
+- Updated `hardhat.config.ts` with mainnet network configuration
+- Added `MAINNET_RPC_URL` to Hardhat keystore
 
 **Documentation:**
 - Updated `CLAUDE.md` with comprehensive MCP tools usage guidelines
@@ -823,16 +893,34 @@ https://api.etherscan.io/v2/api?chainid=11155111&module=account&action=txlist&ad
 
 ---
 
-**Total Time Invested (Week 3 so far):** ~4 hours
+**Total Time Invested (Week 3 so far):** ~5 hours
 - Class 3.1: ~1.5 hours (4 activities - wallet creation, recovery, connection)
 - Class 3.2: ~2 hours (4 activities - send, estimate, check, errors)
-- Class 3.3: ~1 hour (3 of 4 activities - balances, blocks, transaction history)
+- Class 3.3: ~1.5 hours (4 activities - balances, blocks, transaction history, real-time monitoring + mainnet setup)
 
 **Class 3.1 Status:** ✅ **FULLY COMPLETE**
 **Class 3.2 Status:** ✅ **FULLY COMPLETE**
-**Class 3.3 Status:** 🔄 **IN PROGRESS** (Activities 1-3 complete, Activity 4 pending)
-**Class 3.4 Status:** 🔜 **PENDING** (Hardhat Project Exploration - guide prepared)
+**Class 3.3 Status:** ✅ **FULLY COMPLETE** (All 4 activities + bonus mainnet configuration)
+**Class 3.4 Status:** 🔜 **PENDING** (Hardhat Project Exploration - guide prepared, ready to start)
 
 ---
 
-*Last Updated: 2025-10-31 (Session break - Classes 3.1-3.2 complete, Class 3.3 Activities 1-3 complete)*
+### Session Break (2025-10-31)
+
+**Paused at:** End of Class 3.3 (all activities complete)
+
+**Next when resuming:**
+- Class 3.4: Hardhat Project Exploration (~1-2 hours)
+- Week 3 self-assessment quiz
+- Week 3 reading (Bitcoin Ch 4-6, Ethereum Ch 4-6)
+
+**Ready for next session:**
+- ✅ All Week 3 scripts working (8 scripts total)
+- ✅ Mainnet and Sepolia both configured
+- ✅ Understanding of blockchain as public database
+- ✅ Real-time monitoring capability
+- ✅ Transaction sending and querying patterns mastered
+
+---
+
+*Last Updated: 2025-10-31 (Session break - Classes 3.1-3.3 FULLY COMPLETE, Class 3.4 pending)*
