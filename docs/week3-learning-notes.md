@@ -611,14 +611,100 @@ npx hardhat run scripts/week3/send-transaction.ts --network sepolia
 
 ---
 
+#### Activity 2: Explore Block Data - COMPLETE ✅
+
+**Script created:** `scripts/week3/explore-blocks.ts`
+
+**Key concepts learned:**
+- Blocks are "pages in the ledger" containing transactions and metadata
+- **Parent Hash** creates the blockchain "chain" (cryptographic pointer to previous block)
+- Block utilization = (gasUsed / gasLimit) × 100%
+- High utilization indicates network congestion
+
+**Execution results (Block 9,531,512):**
+- **Block Utilization:** 73.29% (fairly busy testnet)
+- **Gas Used:** 43,971,524 / 60,000,000 limit
+- **Base Fee:** 0.000000011 gwei (testnet is essentially free)
+- **Transaction Count:** 72 transactions
+- **Timestamp:** 31/10/2025, 17:27:00 (just created!)
+
+**User insights:**
+1. **Parent hash creates immutability:** Changing any past block breaks the entire chain
+2. **Block utilization → gas fees:** High utilization = high demand = higher prices (on mainnet)
+3. **Block numbers increase over time:** ~12 seconds per block on Ethereum
+4. **Time calculation:** 152 blocks × 12 sec ≈ 30 minutes elapsed since Activity 1
+
+**Key learning:** Block structure is fundamental to blockchain immutability and security!
+
+---
+
+#### Activity 3: Get Transaction History - COMPLETE ✅
+
+**Script created:** `scripts/week3/transaction-history.ts`
+
+**Challenge encountered: Etherscan API V2 Migration**
+
+**Issue:** Got error "You are using a deprecated V1 endpoint, switch to Etherscan API V2"
+
+**User's excellent instinct:** "please look into their documentation first at https://docs.etherscan.io/introduction"
+
+**Solution found via documentation research:**
+- **V1 (deprecated):** `https://api.etherscan.io/api?action=balance&apikey=KEY`
+- **V2 (current):** `https://api.etherscan.io/v2/api?chainid=1&action=balance&apikey=KEY`
+- **Key change:** Add `chainid` parameter to specify network
+- **Sepolia Chain ID:** 11155111
+
+**Final working endpoint:**
+```
+https://api.etherscan.io/v2/api?chainid=11155111&module=account&action=txlist&address=ADDRESS&startblock=0&endblock=99999999&sort=desc&apikey=KEY
+```
+
+**Execution results - Transaction History Analysis:**
+
+1. **SENT 0.001 ETH** (Block 9,531,070)
+   - Hash: 0x85324acc... (from Class 3.2, Activity 1!)
+   - Gas: 21,000 (standard ETH transfer)
+
+2. **RECEIVED 0.75103619 ETH** (Block 9,466,216)
+   - Faucet funding
+
+3. **SENT 0.0 ETH with no recipient** (Block 9,465,609) 🤔
+   - Gas: 571,512 (MUCH higher than 21,000!)
+   - **Identified as:** Smart contract deployment!
+   - This was the HelloFamily contract from Week 1, Class 1.3!
+
+4. **RECEIVED 0.05 ETH** (Block 9,465,373)
+   - Initial faucet funding
+
+**Key discoveries:**
+- **Why no recipient?** Contract deployments don't have a "To" address
+- **Why 0.0 ETH?** Constructor didn't require ETH payment
+- **Why high gas?** Deploying bytecode costs much more than transferring ETH
+- **Date correlation:** Oct 22 matches Week 1 contract deployment
+
+**Important concept learned:**
+- **Native RPC limitation:** Can't query "all transactions for an address"
+- **Ethereum nodes index by:** Block number and transaction hash (NOT by address)
+- **Solution:** Use indexer services (Etherscan, Alchemy, The Graph)
+
+**Why indexers are needed:**
+- Getting all transactions for an address would require scanning EVERY block since genesis
+- Indexers maintain address-based databases for efficient queries
+
+**User learning highlights:**
+- Insisted on checking official documentation before implementing
+- Identified the mysterious "0.0 ETH" transaction pattern
+- Understood parent hash → immutability connection
+- Connected block utilization to gas pricing economics
+
+---
+
 #### Session Break Point
 
-**Paused at:** Class 3.3, Activity 1 complete
+**Paused at:** Class 3.3, Activities 1-3 complete
 
-**Next activities when resuming:**
-- Activity 2: Explore block data (fetch block details, calculate utilization)
-- Activity 3: Get transaction history (using Etherscan API - requires API key)
-- Activity 4: Monitor real-time blockchain (watch new blocks arrive)
+**Next activity when resuming:**
+- Activity 4: Monitor Real-Time Blockchain (watch new blocks arrive every ~12 seconds)
 
 ---
 
@@ -632,6 +718,8 @@ npx hardhat run scripts/week3/send-transaction.ts --network sepolia
 
 **Class 3.3 Scripts:**
 - `scripts/week3/query-balances.ts` - Query account balances
+- `scripts/week3/explore-blocks.ts` - Fetch and analyze block data
+- `scripts/week3/transaction-history.ts` - Get full transaction history via Etherscan API V2
 
 **Documentation:**
 - Updated `CLAUDE.md` with comprehensive MCP tools usage guidelines
@@ -663,6 +751,22 @@ npx hardhat run scripts/week3/send-transaction.ts --network sepolia
 - `provider.getBalance()` works for ANY address
 - Testnet vs mainnet balances are completely separate
 
+**Block Structure:**
+- Parent hash creates blockchain "chain" (cryptographic pointer)
+- Changing any block breaks all subsequent blocks (immutability!)
+- Block utilization = gasUsed / gasLimit (indicates network congestion)
+- Blocks created every ~12 seconds on Ethereum
+
+**Transaction Types:**
+- ETH transfer: 21,000 gas, has "To" address, transfers value
+- Contract deployment: Variable gas (500k+), no "To" address, 0 ETH value
+
+**Etherscan API V2:**
+- New unified endpoint: `https://api.etherscan.io/v2/api`
+- Requires `chainid` parameter (Sepolia = 11155111)
+- One API key works across 60+ supported networks
+- Indexers needed because RPC can't query "all txs for address"
+
 ---
 
 ### Questions Explored
@@ -681,6 +785,29 @@ npx hardhat run scripts/week3/send-transaction.ts --network sepolia
 
 4. **Testnet vs Mainnet:** Completely separate networks with different balances
 
+5. **Parent hash and immutability:** How does changing one block affect the chain?
+   - Changes block hash → breaks next block's parent hash reference
+   - Would need to recalculate all subsequent blocks
+   - While recalculating, network adds even more blocks
+   - This is the core of blockchain security!
+
+6. **Block utilization and gas:** Why monitor block utilization?
+   - High utilization = network congestion = higher gas prices
+   - Important for timing transactions to save money
+   - On testnet: utilization doesn't affect price (no economic value)
+   - On mainnet: crucial for cost optimization
+
+7. **Mysterious 0.0 ETH transaction:** Why no recipient and high gas?
+   - Identified as smart contract deployment
+   - No "To" address = contract creation
+   - 0 ETH = constructor didn't require payment
+   - High gas = deploying bytecode costs more than transfers
+
+8. **Why can't RPC get transaction history?**
+   - Nodes index by block/hash, not by address
+   - Would require scanning all blocks since genesis
+   - Indexers (Etherscan, Alchemy) solve this problem
+
 ---
 
 ### User Learning Strengths Observed
@@ -688,18 +815,24 @@ npx hardhat run scripts/week3/send-transaction.ts --network sepolia
 - **Excellent version awareness:** Caught Hardhat 2 vs 3 syntax differences immediately
 - **Asks for concept explanations:** "explain the concepts, not just the code"
 - **Connects learning:** Gas estimation → postponing transactions if prices high
-- **Questions underlying mechanisms:** Block numbers, nonce, why estimate gas
+- **Questions underlying mechanisms:** Block numbers, nonce, why estimate gas, parent hash
 - **Verifies understanding:** "but these are balances on sepolia testnet, right?"
+- **Documentation-first approach:** "please look into their documentation first" (Etherscan API)
+- **Pattern recognition:** Identified contract deployment from gas usage and missing recipient
+- **Deep conceptual understanding:** Connected parent hash to immutability, block utilization to economics
 
 ---
 
-**Total Time Invested (Class 3.2 + Class 3.3 start):** ~2.5 hours
-- Class 3.2: ~2 hours (4 activities)
-- Class 3.3: ~15 minutes (Activity 1 only)
+**Total Time Invested (Week 3 so far):** ~4 hours
+- Class 3.1: ~1.5 hours (4 activities - wallet creation, recovery, connection)
+- Class 3.2: ~2 hours (4 activities - send, estimate, check, errors)
+- Class 3.3: ~1 hour (3 of 4 activities - balances, blocks, transaction history)
 
+**Class 3.1 Status:** ✅ **FULLY COMPLETE**
 **Class 3.2 Status:** ✅ **FULLY COMPLETE**
-**Class 3.3 Status:** 🔄 **IN PROGRESS** (Activity 1 of 4 complete)
+**Class 3.3 Status:** 🔄 **IN PROGRESS** (Activities 1-3 complete, Activity 4 pending)
+**Class 3.4 Status:** 🔜 **PENDING** (Hardhat Project Exploration - guide prepared)
 
 ---
 
-*Last Updated: 2025-10-31 (Session break - Classes 3.1-3.2 complete, Class 3.3 Activity 1 complete)*
+*Last Updated: 2025-10-31 (Session break - Classes 3.1-3.2 complete, Class 3.3 Activities 1-3 complete)*
