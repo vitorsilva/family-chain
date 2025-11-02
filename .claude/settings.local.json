@@ -7,7 +7,8 @@
       "WebFetch(domain:hardhat.org)",
       "mcp__context7__resolve-library-id",
       "mcp__context7__get-library-docs",
-      "WebFetch(domain:docs.etherscan.io)"
+      "WebFetch(domain:docs.etherscan.io)",
+      "Bash(python:*)"
     ],
     "deny": [],
     "ask": []

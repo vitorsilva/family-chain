@@ -1,0 +1,281 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 2400" font-family="Arial, sans-serif">
+  <!-- Title -->
+  <text x="700" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Week 3 - CLI Blockchain Interactions Architecture
+  </text>
+
+  <!-- Your Scripts Section -->
+  <rect x="50" y="60" width="1300" height="200" fill="#f3e5f5" stroke="#4a148c" stroke-width="3" rx="5"/>
+  <text x="700" y="90" font-size="18" font-weight="bold" text-anchor="middle" fill="#4a148c">
+    Your TypeScript Scripts (scripts/week3/)
+  </text>
+
+  <!-- Script boxes -->
+  <rect x="100" y="110" width="280" height="130" fill="#9c27b0" stroke="#7b1fa2" stroke-width="2" rx="5"/>
+  <text x="240" y="135" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Wallet Management</text>
+  <text x="120" y="160" font-size="11" text-anchor="start" fill="white">• create-wallet.ts</text>
+  <text x="120" y="180" font-size="11" text-anchor="start" fill="white">• wallet-from-mnemonic.ts</text>
+  <text x="120" y="200" font-size="11" text-anchor="start" fill="white">• wallet-with-provider.ts</text>
+  <text x="120" y="220" font-size="11" text-anchor="start" fill="white">• load-existing-wallet.ts</text>
+
+  <rect x="420" y="110" width="280" height="130" fill="#7e57c2" stroke="#5e35b1" stroke-width="2" rx="5"/>
+  <text x="560" y="135" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Transactions</text>
+  <text x="440" y="160" font-size="11" text-anchor="start" fill="white">• send-transaction.ts</text>
+  <text x="440" y="180" font-size="11" text-anchor="start" fill="white">• estimate-gas.ts</text>
+  <text x="440" y="200" font-size="11" text-anchor="start" fill="white">• check-transaction.ts</text>
+  <text x="440" y="220" font-size="11" text-anchor="start" fill="white">• handle-errors.ts</text>
+
+  <rect x="740" y="110" width="280" height="130" fill="#673ab7" stroke="#512da8" stroke-width="2" rx="5"/>
+  <text x="880" y="135" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Blockchain Queries</text>
+  <text x="760" y="160" font-size="11" text-anchor="start" fill="white">• query-balances.ts</text>
+  <text x="760" y="180" font-size="11" text-anchor="start" fill="white">• explore-blocks.ts</text>
+  <text x="760" y="200" font-size="11" text-anchor="start" fill="white">• transaction-history.ts</text>
+  <text x="760" y="220" font-size="11" text-anchor="start" fill="white">• monitor-blocks.ts</text>
+
+  <rect x="1060" y="110" width="280" height="130" fill="#5e35b1" stroke="#4527a0" stroke-width="2" rx="5"/>
+  <text x="1200" y="135" font-size="14" font-weight="bold" text-anchor="middle" fill="white">12 Scripts Total</text>
+  <text x="1080" y="165" font-size="11" text-anchor="start" fill="white">• Wallet creation</text>
+  <text x="1080" y="185" font-size="11" text-anchor="start" fill="white">• Send real ETH</text>
+  <text x="1080" y="205" font-size="11" text-anchor="start" fill="white">• Query blockchain</text>
+  <text x="1080" y="225" font-size="11" text-anchor="start" fill="white">• Monitor networks</text>
+
+  <!-- Arrow down -->
+  <text x="700" y="285" font-size="14" font-weight="bold" text-anchor="middle" fill="#7f8c8d">
+    ↓ uses ↓
+  </text>
+
+  <!-- Hardhat Framework -->
+  <rect x="50" y="300" width="1300" height="180" fill="#ffe0b2" stroke="#e65100" stroke-width="3" rx="5"/>
+  <text x="700" y="330" font-size="18" font-weight="bold" text-anchor="middle" fill="#e65100">
+    Hardhat 3.0.8 Framework
+  </text>
+
+  <rect x="100" y="350" width="550" height="110" fill="#ff9800" stroke="#f57c00" stroke-width="2" rx="5"/>
+  <text x="375" y="380" font-size="15" font-weight="bold" text-anchor="middle" fill="white">Network Connection Pattern</text>
+  <rect x="130" y="395" width="490" height="50" fill="#424242" stroke="#212121" stroke-width="1" rx="3"/>
+  <text x="150" y="415" font-size="11" font-family="Courier New" text-anchor="start" fill="#4caf50">import</text>
+  <text x="200" y="415" font-size="11" font-family="Courier New" text-anchor="start" fill="white">{ network }</text>
+  <text x="300" y="415" font-size="11" font-family="Courier New" text-anchor="start" fill="#4caf50">from</text>
+  <text x="345" y="415" font-size="11" font-family="Courier New" text-anchor="start" fill="#ff9800">"hardhat"</text>
+  <text x="150" y="435" font-size="11" font-family="Courier New" text-anchor="start" fill="#4caf50">const</text>
+  <text x="195" y="435" font-size="11" font-family="Courier New" text-anchor="start" fill="white">connection =</text>
+  <text x="290" y="435" font-size="11" font-family="Courier New" text-anchor="start" fill="#4caf50">await</text>
+  <text x="335" y="435" font-size="11" font-family="Courier New" text-anchor="start" fill="white">network.connect()</text>
+
+  <rect x="700" y="350" width="600" height="110" fill="#fb8c00" stroke="#ef6c00" stroke-width="2" rx="5"/>
+  <text x="1000" y="380" font-size="15" font-weight="bold" text-anchor="middle" fill="white">Responsibilities</text>
+  <text x="730" y="405" font-size="12" text-anchor="start" fill="white">• Manages network connections</text>
+  <text x="730" y="425" font-size="12" text-anchor="start" fill="white">• Provides ethers.js instance</text>
+  <text x="730" y="445" font-size="12" text-anchor="start" fill="white">• Loads hardhat.config.ts</text>
+
+  <!-- Arrow down -->
+  <text x="700" y="510" font-size="14" font-weight="bold" text-anchor="middle" fill="#7f8c8d">
+    ↓ provides ↓
+  </text>
+
+  <!-- ethers.js Library -->
+  <rect x="50" y="530" width="1300" height="220" fill="#e3f2fd" stroke="#0d47a1" stroke-width="3" rx="5"/>
+  <text x="700" y="560" font-size="18" font-weight="bold" text-anchor="middle" fill="#01579b">
+    ethers.js v6.15.0 Library
+  </text>
+
+  <rect x="100" y="580" width="550" height="150" fill="#2196f3" stroke="#1976d2" stroke-width="2" rx="5"/>
+  <text x="375" y="610" font-size="15" font-weight="bold" text-anchor="middle" fill="white">Provider (Read-only)</text>
+  <text x="130" y="640" font-size="12" text-anchor="start" fill="white">• connection.ethers.provider</text>
+  <text x="130" y="665" font-size="12" text-anchor="start" fill="white">• getBalance(), getBlock(), getTransaction()</text>
+  <text x="130" y="690" font-size="12" text-anchor="start" fill="white">• estimateGas(), getFeeData()</text>
+  <text x="130" y="715" font-size="12" text-anchor="start" fill="white">Read blockchain state</text>
+
+  <rect x="700" y="580" width="600" height="150" fill="#1976d2" stroke="#0d47a1" stroke-width="2" rx="5"/>
+  <text x="1000" y="610" font-size="15" font-weight="bold" text-anchor="middle" fill="white">Signer (Can sign transactions)</text>
+  <text x="730" y="640" font-size="12" text-anchor="start" fill="white">• connection.ethers.getSigners()</text>
+  <text x="730" y="665" font-size="12" text-anchor="start" fill="white">• Wallet.createRandom()</text>
+  <text x="730" y="690" font-size="12" text-anchor="start" fill="white">• Wallet.fromPhrase(mnemonic)</text>
+  <text x="730" y="715" font-size="12" text-anchor="start" fill="white">Sign and send transactions</text>
+
+  <!-- Arrow down -->
+  <text x="350" y="780" font-size="14" font-weight="bold" text-anchor="middle" fill="#7f8c8d">
+    ↓ connects to ↓
+  </text>
+  <text x="1050" y="780" font-size="14" font-weight="bold" text-anchor="middle" fill="#7f8c8d">
+    ↓ queries ↓
+  </text>
+
+  <!-- RPC Providers and Etherscan -->
+  <rect x="50" y="800" width="650" height="240" fill="#fff3e0" stroke="#e65100" stroke-width="3" rx="5"/>
+  <text x="375" y="830" font-size="18" font-weight="bold" text-anchor="middle" fill="#e65100">
+    RPC Providers (Access Layer)
+  </text>
+
+  <rect x="100" y="850" width="250" height="170" fill="#ff9800" stroke="#f57c00" stroke-width="2" rx="5"/>
+  <text x="225" y="880" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Alchemy (Sepolia)</text>
+  <text x="120" y="905" font-size="10" text-anchor="start" fill="white">eth-sepolia.g.alchemy.com</text>
+  <text x="120" y="930" font-size="11" font-weight="bold" text-anchor="start" fill="white">Your Wallet:</text>
+  <text x="120" y="950" font-size="10" text-anchor="start" fill="white">0xB09b...5736</text>
+  <text x="120" y="970" font-size="11" font-weight="bold" text-anchor="start" fill="white">Balance: 0.80 ETH</text>
+  <text x="120" y="995" font-size="10" text-anchor="start" fill="white">Used in all Week 3 scripts</text>
+
+  <rect x="400" y="850" width="250" height="80" fill="#fb8c00" stroke="#ef6c00" stroke-width="2" rx="5"/>
+  <text x="525" y="880" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Alchemy (Mainnet)</text>
+  <text x="420" y="905" font-size="10" text-anchor="start" fill="white">eth-mainnet.g.alchemy.com</text>
+  <text x="420" y="920" font-size="10" text-anchor="start" fill="white">Base fee: ~0.28 gwei</text>
+
+  <rect x="400" y="940" width="250" height="80" fill="#f57c00" stroke="#e64a19" stroke-width="2" rx="5"/>
+  <text x="525" y="970" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Local Hardhat Node</text>
+  <text x="420" y="995" font-size="10" text-anchor="start" fill="white">http://127.0.0.1:8545</text>
+  <text x="420" y="1010" font-size="10" text-anchor="start" fill="white">10,000 ETH • Instant mining</text>
+
+  <rect x="750" y="800" width="600" height="240" fill="#e8f5e9" stroke="#2e7d32" stroke-width="3" rx="5"/>
+  <text x="1050" y="830" font-size="18" font-weight="bold" text-anchor="middle" fill="#1b5e20">
+    Etherscan API V2 (Indexer)
+  </text>
+
+  <rect x="800" y="850" width="500" height="170" fill="#66bb6a" stroke="#43a047" stroke-width="2" rx="5"/>
+  <text x="1050" y="880" font-size="14" font-weight="bold" text-anchor="middle" fill="white">api.etherscan.io/v2/api</text>
+  <text x="820" y="910" font-size="12" text-anchor="start" fill="white">?chainid=11155111 (Sepolia)</text>
+  <text x="820" y="935" font-size="12" text-anchor="start" fill="white">&amp;module=account</text>
+  <text x="820" y="960" font-size="12" text-anchor="start" fill="white">&amp;action=txlist</text>
+  <text x="820" y="990" font-size="11" font-weight="bold" text-anchor="start" fill="white">Why needed?</text>
+  <text x="820" y="1010" font-size="10" text-anchor="start" fill="white">RPC can't query "all txs for address"</text>
+
+  <!-- Arrow down -->
+  <text x="375" y="1070" font-size="14" font-weight="bold" text-anchor="middle" fill="#7f8c8d">
+    ↓ connects to ↓
+  </text>
+
+  <!-- Blockchain Networks -->
+  <rect x="50" y="1090" width="1300" height="280" fill="#fafafa" stroke="#34495e" stroke-width="3" rx="5"/>
+  <text x="700" y="1125" font-size="20" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Blockchain Networks (The Data)
+  </text>
+
+  <rect x="100" y="1150" width="350" height="200" fill="#42a5f5" stroke="#1e88e5" stroke-width="2" rx="5"/>
+  <text x="275" y="1185" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Sepolia Testnet</text>
+  <text x="130" y="1215" font-size="12" text-anchor="start" fill="white">• Test ETH (no value)</text>
+  <text x="130" y="1240" font-size="12" text-anchor="start" fill="white">• 12-second blocks</text>
+  <text x="130" y="1265" font-size="12" text-anchor="start" fill="white">• Free gas (~0.00000001 gwei)</text>
+  <text x="130" y="1290" font-size="12" text-anchor="start" fill="white">• Persistent blockchain</text>
+  <text x="130" y="1320" font-size="13" font-weight="bold" text-anchor="start" fill="white">Primary network for Week 3</text>
+
+  <rect x="500" y="1150" width="350" height="200" fill="#66bb6a" stroke="#43a047" stroke-width="2" rx="5"/>
+  <text x="675" y="1185" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Ethereum Mainnet</text>
+  <text x="530" y="1215" font-size="12" text-anchor="start" fill="white">• Real ETH (production)</text>
+  <text x="530" y="1240" font-size="12" text-anchor="start" fill="white">• 12-second blocks</text>
+  <text x="530" y="1265" font-size="12" text-anchor="start" fill="white">• Real gas costs (~0.28 gwei)</text>
+  <text x="530" y="1290" font-size="12" text-anchor="start" fill="white">• Persistent blockchain</text>
+  <text x="530" y="1320" font-size="13" font-weight="bold" text-anchor="start" fill="white">WARNING: 28,000,000x cost vs Sepolia!</text>
+
+  <rect x="900" y="1150" width="400" height="200" fill="#ffa726" stroke="#f57c00" stroke-width="2" rx="5"/>
+  <text x="1100" y="1185" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Local Hardhat Network</text>
+  <text x="930" y="1215" font-size="12" text-anchor="start" fill="white">• 10,000 ETH per account</text>
+  <text x="930" y="1240" font-size="12" text-anchor="start" fill="white">• Instant mining (no delay)</text>
+  <text x="930" y="1265" font-size="12" text-anchor="start" fill="white">• Resets when stopped</text>
+  <text x="930" y="1290" font-size="12" text-anchor="start" fill="white">• 20 pre-funded accounts</text>
+  <text x="930" y="1320" font-size="13" font-weight="bold" text-anchor="start" fill="white">Fast development &amp; testing</text>
+
+  <!-- Data Flow Examples -->
+  <rect x="50" y="1400" width="1300" height="380" fill="#fff9c4" stroke="#f57f17" stroke-width="3" rx="5"/>
+  <text x="700" y="1435" font-size="20" font-weight="bold" text-anchor="middle" fill="#f57f17">
+    Data Flow Examples
+  </text>
+
+  <!-- Flow 1 -->
+  <rect x="100" y="1460" width="600" height="65" fill="#fff59d" stroke="#f9a825" stroke-width="2" rx="5"/>
+  <text x="400" y="1485" font-size="14" font-weight="bold" text-anchor="middle" fill="#e65100">1. CREATE WALLET (Local, no blockchain)</text>
+  <text x="120" y="1510" font-size="11" text-anchor="start" fill="#424242">Script → ethers.js → Wallet.createRandom()</text>
+  <text x="120" y="1525" font-size="11" font-weight="bold" text-anchor="start" fill="#2e7d32">Result: Mnemonic → Private Key → Address</text>
+
+  <!-- Flow 2 -->
+  <rect x="750" y="1460" width="600" height="65" fill="#ffecb3" stroke="#ff6f00" stroke-width="2" rx="5"/>
+  <text x="1050" y="1485" font-size="14" font-weight="bold" text-anchor="middle" fill="#e65100">2. SEND TRANSACTION (Blockchain write)</text>
+  <text x="770" y="1510" font-size="11" text-anchor="start" fill="#424242">Script → Hardhat → ethers.js → Alchemy → Sepolia</text>
+  <text x="770" y="1525" font-size="11" font-weight="bold" text-anchor="start" fill="#2e7d32">Result: Transaction hash (0x85324acc...)</text>
+
+  <!-- Flow 3 -->
+  <rect x="100" y="1540" width="600" height="65" fill="#fff59d" stroke="#f9a825" stroke-width="2" rx="5"/>
+  <text x="400" y="1565" font-size="14" font-weight="bold" text-anchor="middle" fill="#e65100">3. QUERY BALANCE (Blockchain read)</text>
+  <text x="120" y="1590" font-size="11" text-anchor="start" fill="#424242">Script → Hardhat → ethers.js → Alchemy → Sepolia</text>
+  <text x="120" y="1605" font-size="11" font-weight="bold" text-anchor="start" fill="#2e7d32">Result: Balance in wei (800103561848228488)</text>
+
+  <!-- Flow 4 -->
+  <rect x="750" y="1540" width="600" height="65" fill="#ffecb3" stroke="#ff6f00" stroke-width="2" rx="5"/>
+  <text x="1050" y="1565" font-size="14" font-weight="bold" text-anchor="middle" fill="#e65100">4. GET TX HISTORY (Indexer query)</text>
+  <text x="770" y="1590" font-size="11" text-anchor="start" fill="#424242">Script → HTTP → Etherscan API V2</text>
+  <text x="770" y="1605" font-size="11" font-weight="bold" text-anchor="start" fill="#2e7d32">Result: All 4 transactions for address</text>
+
+  <!-- Flow 5 -->
+  <rect x="100" y="1620" width="1250" height="65" fill="#fff59d" stroke="#f9a825" stroke-width="2" rx="5"/>
+  <text x="725" y="1645" font-size="14" font-weight="bold" text-anchor="middle" fill="#e65100">5. MONITOR BLOCKS (Real-time read)</text>
+  <text x="120" y="1670" font-size="11" text-anchor="start" fill="#424242">Script → setInterval (6 sec) → ethers.js → Alchemy → Sepolia</text>
+  <text x="120" y="1685" font-size="11" font-weight="bold" text-anchor="start" fill="#2e7d32">Result: New block every ~12 seconds (Block 9,531,512 → 9,531,513 → ...)</text>
+
+  <!-- Configuration Section -->
+  <rect x="50" y="1820" width="1300" height="160" fill="#e8eaf6" stroke="#283593" stroke-width="3" rx="5"/>
+  <text x="700" y="1855" font-size="20" font-weight="bold" text-anchor="middle" fill="#283593">
+    Configuration &amp; Security (Hardhat Keystore)
+  </text>
+
+  <rect x="100" y="1880" width="1200" height="80" fill="#3f51b5" stroke="#303f9f" stroke-width="2" rx="5"/>
+  <text x="150" y="1910" font-size="12" font-family="Courier New" text-anchor="start" fill="#ffeb3b">SEPOLIA_PRIVATE_KEY</text>
+  <text x="390" y="1910" font-size="12" font-family="Courier New" text-anchor="start" fill="white">= [encrypted - never shown in code]</text>
+  <text x="150" y="1930" font-size="12" font-family="Courier New" text-anchor="start" fill="#ffeb3b">SEPOLIA_RPC_URL</text>
+  <text x="390" y="1930" font-size="12" font-family="Courier New" text-anchor="start" fill="white">= https://eth-sepolia.g.alchemy.com/v2/...</text>
+  <text x="150" y="1950" font-size="12" font-family="Courier New" text-anchor="start" fill="#ffeb3b">MAINNET_RPC_URL</text>
+  <text x="390" y="1950" font-size="12" font-family="Courier New" text-anchor="start" fill="white">= https://eth-mainnet.g.alchemy.com/v2/...</text>
+
+  <!-- Key Concepts -->
+  <rect x="50" y="2020" width="1300" height="340" fill="#e0f2f1" stroke="#00695c" stroke-width="3" rx="5"/>
+  <text x="700" y="2055" font-size="20" font-weight="bold" text-anchor="middle" fill="#004d40">
+    Key Concepts Learned in Week 3
+  </text>
+
+  <rect x="100" y="2080" width="380" height="260" fill="#4db6ac" stroke="#26a69a" stroke-width="2" rx="5"/>
+  <text x="290" y="2110" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Wallet Concepts</text>
+  <text x="120" y="2140" font-size="11" text-anchor="start" fill="white">• Mnemonic (12 words)</text>
+  <text x="120" y="2160" font-size="11" text-anchor="start" fill="white">• Private Key (256-bit)</text>
+  <text x="120" y="2180" font-size="11" text-anchor="start" fill="white">• Address (derived)</text>
+  <text x="120" y="2205" font-size="11" font-weight="bold" text-anchor="start" fill="white">Deterministic:</text>
+  <text x="120" y="2225" font-size="10" text-anchor="start" fill="white">Same mnemonic = same wallet</text>
+  <text x="120" y="2245" font-size="11" font-weight="bold" text-anchor="start" fill="white">Provider vs Signer:</text>
+  <text x="120" y="2265" font-size="10" text-anchor="start" fill="white">Provider = read-only</text>
+  <text x="120" y="2285" font-size="10" text-anchor="start" fill="white">Signer = provider + private key</text>
+  <text x="120" y="2305" font-size="10" text-anchor="start" fill="white">(can send transactions)</text>
+
+  <rect x="510" y="2080" width="380" height="260" fill="#26a69a" stroke="#00897b" stroke-width="2" rx="5"/>
+  <text x="700" y="2110" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Transaction Mechanics</text>
+  <text x="530" y="2140" font-size="11" text-anchor="start" fill="white">• Nonce: Sequential counter</text>
+  <text x="530" y="2160" font-size="11" text-anchor="start" fill="white">• Gas: 21,000 for ETH transfer</text>
+  <text x="530" y="2180" font-size="11" text-anchor="start" fill="white">• Confirmations: Depth in chain</text>
+  <text x="530" y="2205" font-size="11" font-weight="bold" text-anchor="start" fill="white">Total Cost:</text>
+  <text x="530" y="2225" font-size="10" text-anchor="start" fill="white">amount + (gas × price)</text>
+  <text x="530" y="2250" font-size="11" font-weight="bold" text-anchor="start" fill="white">Status:</text>
+  <text x="530" y="2270" font-size="10" text-anchor="start" fill="white">1 conf = included</text>
+  <text x="530" y="2290" font-size="10" text-anchor="start" fill="white">6 confs = safe</text>
+  <text x="530" y="2310" font-size="10" text-anchor="start" fill="white">12+ confs = very safe</text>
+
+  <rect x="920" y="2080" width="430" height="260" fill="#00897b" stroke="#00695c" stroke-width="2" rx="5"/>
+  <text x="1135" y="2110" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Blockchain Structure</text>
+  <text x="940" y="2140" font-size="11" text-anchor="start" fill="white">• Parent Hash: Links blocks (immutable)</text>
+  <text x="940" y="2160" font-size="11" text-anchor="start" fill="white">• Public Database: Anyone can query</text>
+  <text x="940" y="2180" font-size="11" text-anchor="start" fill="white">• Indexers: Address-based queries</text>
+  <text x="940" y="2205" font-size="11" font-weight="bold" text-anchor="start" fill="white">Testnet vs Mainnet:</text>
+  <text x="940" y="2225" font-size="10" text-anchor="start" fill="white">Sepolia: ~0.00000001 gwei</text>
+  <text x="940" y="2245" font-size="10" text-anchor="start" fill="white">Mainnet: ~0.28 gwei</text>
+  <text x="940" y="2265" font-size="11" font-weight="bold" text-anchor="start" fill="#ffeb3b">28,000,000x cost difference!</text>
+  <text x="940" y="2290" font-size="11" font-weight="bold" text-anchor="start" fill="white">Why Etherscan?</text>
+  <text x="940" y="2310" font-size="10" text-anchor="start" fill="white">RPC can't get "all txs for address"</text>
+  <text x="940" y="2330" font-size="10" text-anchor="start" fill="white">Indexers maintain address DB</text>
+
+  <!-- Footer -->
+  <rect x="50" y="2380" width="1300" height="20" fill="#2c3e50" stroke="#1a252f" stroke-width="2" rx="5"/>
+  <text x="700" y="2395" font-size="13" font-weight="bold" text-anchor="middle" fill="white">
+    Week 3 Achievement: Sent real ETH on Sepolia! (0x85324acc...) • 12 working scripts • Blockchain querying mastered
+  </text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#34495e" />
+    </marker>
+  </defs>
+</svg>
