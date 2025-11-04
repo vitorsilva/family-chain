@@ -24,5 +24,8 @@
     "hardhat": "^3.0.8",
     "mocha": "^11.7.4",
     "typescript": "~5.8.0"
+  },
+  "dependencies": {
+    "pg": "^8.16.3"
   }
 }
