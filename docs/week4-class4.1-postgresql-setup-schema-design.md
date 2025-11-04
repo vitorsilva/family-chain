@@ -184,14 +184,14 @@ Learning with a local database gives you:
 # Download PostgreSQL installer from official website
 # Visit: https://www.postgresql.org/download/windows/
 
-# Run the installer (recommended version: PostgreSQL 16.x)
+# Run the installer (recommended version: PostgreSQL 18.x)
 # During installation, note down your postgres user password!
 
 # After installation, verify it's working:
 psql --version
 
 # Expected output:
-# psql (PostgreSQL) 16.x
+# psql (PostgreSQL) 18.x
 ```
 
 **Installation Steps (detailed):**
@@ -800,7 +800,7 @@ By the end of this class, you should have:
 ```powershell
 # Add to system PATH (Windows):
 # Control Panel → System → Advanced → Environment Variables
-# Add: C:\Program Files\PostgreSQL\16\bin
+# Add: C:\Program Files\PostgreSQL\18\bin
 ```
 
 ### Issue 2: "connection refused on port 5432"
@@ -813,7 +813,7 @@ By the end of this class, you should have:
 Get-Service -Name postgresql*
 
 # Start service if stopped
-Start-Service postgresql-x64-16  # Version number may vary
+Start-Service postgresql-x64-18  # Version number may vary
 ```
 
 ### Issue 3: "password authentication failed for user postgres"

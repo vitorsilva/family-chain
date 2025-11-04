@@ -1162,10 +1162,10 @@ GRANT SELECT, INSERT, UPDATE ON family_members TO api_service;
 **Solution:**
 ```powershell
 # Add to PATH
-$env:Path += ";C:\Program Files\PostgreSQL\16\bin"
+$env:Path += ";C:\Program Files\PostgreSQL\18\bin"
 
 # Or use full path in script
-& "C:\Program Files\PostgreSQL\16\bin\pg_dump" ...
+& "C:\Program Files\PostgreSQL\18\bin\pg_dump" ...
 ```
 
 ---

@@ -691,7 +691,7 @@ Don't install everything upfront! Each week specifies what to install when neede
 - Week 17: Python
 - Week 29: Docker
 
-### Current Project Versions (as of Week 1)
+### Current Project Versions (as of Week 4)
 **Core Tools:**
 - Node.js: v22.14.0
 - npm: 11.6.2
@@ -700,10 +700,18 @@ Don't install everything upfront! Each week specifies what to install when neede
 - TypeScript: ~5.8.0
 - Solidity: ^0.8.28
 
+**Database Tools (Week 4+):**
+- PostgreSQL: 18.x
+- Redis: Latest stable
+- node-postgres (pg): Latest (fully compatible with PostgreSQL 18)
+- ioredis: Latest
+
 **Documentation Links:**
 - Hardhat 3 Docs: https://hardhat.org/docs/getting-started (⚠️ Most tutorials use Hardhat 2.x - commands are different!)
 - ethers.js v6 Docs: https://docs.ethers.org/v6/
 - Solidity Docs: https://docs.soliditylang.org/en/v0.8.28/
+- PostgreSQL 18 Docs: https://www.postgresql.org/docs/18/
+- node-postgres Docs: https://node-postgres.com/
 
 **Key Hardhat 3 Breaking Changes:**
 - ⚠️ Use `npx hardhat build` NOT `npx hardhat compile`
