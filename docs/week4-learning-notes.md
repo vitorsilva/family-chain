@@ -731,3 +731,204 @@ Created `database/initialize-test-data.sql`:
 
 **Session End:** 2025-11-10
 **Next Session:** Class 4.4 - Database Security and Encryption
+
+---
+
+## Session 4: Class 4.4 - Database Security and Encryption (2025-01-10 continued)
+
+### 📋 Session Overview
+**Duration:** ~3 hours (in progress)
+**Status:** 🔄 Class 4.4 IN PROGRESS
+
+### ✅ Accomplishments
+
+#### Encryption Utility Implementation
+Created comprehensive AES-256-GCM encryption system:
+
+**File:** `blockchain/src/utils/encryption.ts`
+- AES-256-GCM authenticated encryption
+- Random IV (Initialization Vector) per encryption
+- Uses `ENCRYPTION_KEY` environment variable
+- Functions: `encrypt()`, `decrypt()`, `hashPassword()`
+- Handles null/undefined/empty string cases correctly
+
+**Key design decision:**
+- User decided: `''` (empty string) ≠ `null`
+- Empty strings are encrypted (not treated as null)
+- Rationale: Semantic difference between "no value" and "value is empty"
+
+**Fixed bug:**
+- Initial implementation: `if (!plaintext) return null;` treated `''` as falsy
+- Corrected to: `if (plaintext === null || plaintext === undefined) return null;`
+
+#### Test Suite Conversion (Ad-hoc → Mocha)
+
+**Converted 3 test files to proper Mocha framework:**
+
+1. **`blockchain/test/unit/encryption.test.ts`**
+   - 16 tests passing
+   - Tests encryption, decryption, hashing, tampering detection
+   - Empty string handling, null handling
+   - Correct use of unit test structure (no database)
+
+2. **`blockchain/test/integration/gdpr.test.ts`**
+   - 14 tests passing
+   - Tests GDPR compliance (Right to Portability, Right to Erasure)
+   - Anonymization, data export, idempotency
+   - Uses before/after hooks for setup/teardown
+   - Uses adminPool for cleanup operations
+
+3. **`blockchain/test/integration/transactions.test.ts`**
+   - 18 tests passing
+   - Tests double-entry bookkeeping transfers
+   - Ledger entry validation, reconciliation
+   - Uses before/after hooks to create test accounts with initial balances
+
+**Test Infrastructure:**
+- Updated `.mocharc.json` (removed `spec` field to allow granular test commands)
+- Added test scripts to `package.json`:
+  - `test` - Run all tests
+  - `test:unit` - Unit tests only
+  - `test:integration` - Integration tests only
+  - `test:encryption` - Specific encryption tests
+  - `test:gdpr` - Specific GDPR tests
+  - `test:transactions` - Specific transaction tests
+
+**Test isolation fixes:**
+1. **Pool closing issue:** Only transactions.test.ts closes pool (runs last alphabetically)
+2. **Insufficient balance:** Created test accounts with initial balances AND ledger entries
+3. **CHECK constraint:** Used valid account_types ('checking', 'savings')
+4. **Reconciliation failures:** Created deposit transactions with credit ledger entries
+
+#### Principle of Least Privilege (RBAC)
+
+**Goal:** Use appropriate database roles for different operations
+
+**Database roles created (Week 4 Class 4.1):**
+- `app_admin` - Full access (DDL, DML)
+- `app_readwrite` - INSERT, UPDATE, SELECT, DELETE
+- `app_readonly` - SELECT only
+
+**Database users created:**
+- `migration_service` - Uses app_admin (schema migrations, test setup)
+- `api_service` - Uses app_readwrite (normal API operations)
+- `analytics_service` - Uses app_readonly (reports, analytics)
+
+**Implementation approach:**
+- Updated `blockchain/scripts/week4/db/connection.ts` to export 3 pools:
+  - `pool` (api_service - readwrite)
+  - `adminPool` (migration_service - admin for DDL/DML)
+  - `readonlyPool` (analytics_service - readonly)
+- Updated test files to use `adminPool` for setup/teardown
+- Added database credentials to `.env` file
+
+**Current Status:**
+- ✅ connection.ts updated with 3 pools
+- ✅ Test files updated to use adminPool
+- ✅ .env file updated with credentials
+- ❌ **BLOCKED:** Syntax error when running tests
+
+### 🐛 Current Issue
+
+**Error:**
+```
+Exception during run: SyntaxError: Unexpected token ':'
+```
+
+**Context:**
+- Occurs when running `npm run test:gdpr`
+- Happens during module loading
+- Likely in `blockchain/scripts/week4/db/connection.ts` or import statements
+
+**Investigation needed:**
+- TypeScript/ES module syntax issue
+- Possibly related to `.ts` vs `.js` imports with tsx/esm
+- Connection.ts file syntax appears correct when read
+- Test file imports may have wrong file extensions
+
+**Files involved:**
+- `blockchain/scripts/week4/db/connection.ts` - 3 pool exports
+- `blockchain/test/integration/gdpr.test.ts` - Imports connection
+- `.mocharc.json` - Uses tsx/esm for TypeScript
+
+**Attempted fix:**
+- Tried to change imports from `.js` to `.ts` in gdpr.test.ts
+- Edit tool reported "string not found" (formatting issue)
+
+### 💡 Key Learnings
+
+**Testing Best Practices:**
+1. **Mocha structure:** describe() blocks for organization, it() for individual tests
+2. **Hooks:** before/after for shared setup, beforeEach/afterEach for isolation
+3. **Integration tests:** Need database connections, require cleanup
+4. **Unit tests:** No external dependencies (database, network)
+5. **Granular scripts:** Specific test commands for fast feedback loop
+
+**Database Security Principles:**
+1. **Encrypt sensitive PII:** IBANs, NIFs, wallet private keys (NOT public addresses)
+2. **Empty string ≠ null:** Semantic difference matters
+3. **RBAC:** Principle of least privilege (use minimal permissions needed)
+4. **Connection pools:** Separate pools for different access levels
+5. **Test setup:** Use admin pool for DDL/DML in tests
+
+**TypeScript/Node.js:**
+1. **tsx/esm:** ES module loader for TypeScript
+2. **Import extensions:** With tsx/esm, may need `.ts` extensions (not `.js`)
+3. **Mocha config:** `spec` field overrides CLI arguments (removed for flexibility)
+
+### 📂 Files Created/Modified
+
+**Created:**
+- `blockchain/src/utils/encryption.ts` - AES-256-GCM encryption utility
+- `blockchain/test/unit/encryption.test.ts` - 16 encryption tests
+- `blockchain/test/integration/gdpr.test.ts` - 14 GDPR compliance tests
+- `blockchain/test/integration/transactions.test.ts` - 18 transaction tests
+
+**Modified:**
+- `blockchain/scripts/week4/db/connection.ts` - Added adminPool and readonlyPool
+- `blockchain/.mocharc.json` - Removed `spec` field
+- `blockchain/package.json` - Added granular test scripts
+- `.env` - Added DB_ADMIN_USER, DB_ADMIN_PASSWORD, DB_READONLY_USER, DB_READONLY_PASSWORD
+
+**Deleted:**
+- `blockchain/src/utils/test-encryption.ts` - Converted to Mocha test
+- (Pending: other ad-hoc test files once converted)
+
+### 🔄 Next Steps
+
+**Immediate (Resume Point):**
+1. Fix syntax error in connection.ts or test imports
+2. Verify all tests pass with multi-pool setup
+3. Test that RBAC works (analytics_service cannot write, api_service cannot DDL)
+4. Complete Class 4.4 remaining topics (if any)
+
+**Class 4.4 Topics Remaining:**
+- Backup and recovery strategies (?)
+- Connection pooling security (partially done)
+- Additional security hardening (?)
+
+**Test Conversion (Future - Week 27):**
+- Convert remaining ad-hoc test files to Mocha
+- Mutation testing for test quality
+
+### 📊 Progress Tracking
+
+**Week 4 Status:**
+- ✅ Class 4.1: PostgreSQL Setup and Schema Design (COMPLETE)
+- ✅ Class 4.2: Redis Configuration and Caching Patterns (COMPLETE)
+- ✅ Class 4.3: Data Modeling for Financial Systems (COMPLETE)
+- 🔄 Class 4.4: Database Security and Encryption (IN PROGRESS - 75%)
+
+**Overall Course Progress:**
+- Week 1: ✅ Complete (3 classes)
+- Week 2: ✅ Complete (3 classes)
+- Week 3: ✅ Complete (4 classes)
+- Week 4: 🔄 In Progress (3/4 classes complete - 75%)
+
+**Phase 1 Progress:** 13/24 classes complete (54%)
+
+---
+
+**Session End:** 2025-01-10 (paused)
+**Resume Point:** Fix syntax error in test imports (connection.ts loading issue)
+**Next Session:** Complete Class 4.4, then Week 4 wrap-up and self-assessment
