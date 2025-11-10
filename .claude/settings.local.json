@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(Select-Object FullName)"
+      "Bash(Select-Object FullName)",
+      "Bash(psql:*)"
     ],
     "deny": [],
     "ask": []
