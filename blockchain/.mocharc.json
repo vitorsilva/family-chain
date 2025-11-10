@@ -1,6 +1,5 @@
   {
     "extension": ["ts"],
-    "spec": "test/**/*.test.ts",
     "require": "tsx/esm",
     "timeout": 10000,
     "color": true,
