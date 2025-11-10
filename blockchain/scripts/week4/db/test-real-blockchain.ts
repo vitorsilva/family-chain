@@ -1,5 +1,5 @@
   import { network } from 'hardhat';
-  import pool from './connection.js';
+import { pool }  from './connection.js';
   import { linkBlockchainTransaction, getBlockchainTransactionDetails } from
   './transactions.js';
 

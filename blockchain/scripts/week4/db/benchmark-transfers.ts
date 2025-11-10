@@ -1,5 +1,5 @@
   import { createTransfer, createTransferSP } from './transactions.js';
-  import  pool  from './connection.js';
+  import { pool }  from './connection.js';
 
   async function resetDatabase() {
     // Reset to known state

@@ -1,4 +1,4 @@
-  import  pool  from './connection.js';
+  import { pool }  from './connection.js';
   import type { PoolClient } from 'pg';
 
   // Type definitions

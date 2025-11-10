@@ -1,4 +1,4 @@
-  import pool from './connection.js';
+  import { pool } from './connection.js';
   import { getSecureMember } from './secure-members.js';
 
 

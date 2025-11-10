@@ -2,7 +2,7 @@
   import { expect } from 'chai';
   import { createTransfer, getTransactionHistory, reconcileAccountBalance } from
   '../../scripts/week4/db/transactions.js';
-  import  pool  from '../../scripts/week4/db/connection.js';
+  import  { pool, adminPool }  from '../../scripts/week4/db/connection.js';
 
 describe('Double-Entry Bookkeeping Transactions', function () {
     this.timeout(10000);
@@ -15,7 +15,7 @@ describe('Double-Entry Bookkeeping Transactions', function () {
     // Create test accounts with initial balances
     console.log('\n📝 Setting up test accounts...');
 
-    const client = await pool.connect();
+    const client = await adminPool.connect();
     try {
       await client.query('BEGIN');
 
@@ -90,14 +90,14 @@ describe('Double-Entry Bookkeeping Transactions', function () {
       console.log('\n🧹 Cleaning up test data...');
 
       // Delete ledger entries first (foreign key constraint)
-      await pool.query(
+      await adminPool.query(
         `DELETE FROM ledger_entries
          WHERE account_id IN ($1, $2)`,
         [testAccountFrom, testAccountTo]
       );
 
       // Delete transactions
-      await pool.query(
+      await adminPool.query(
         `DELETE FROM transactions
          WHERE from_account_id IN ($1, $2)
             OR to_account_id IN ($1, $2)`,
@@ -105,7 +105,7 @@ describe('Double-Entry Bookkeeping Transactions', function () {
       );
 
       // Delete test accounts
-      await pool.query(
+      await adminPool.query(
         'DELETE FROM accounts WHERE id IN ($1, $2)',
         [testAccountFrom, testAccountTo]
       );

@@ -1,7 +1,7 @@
   import { expect } from 'chai';
   import { exportUserData, anonymizeUserData } from '../../scripts/week4/db/gdpr.js';
   import { createSecureMember, getSecureMember } from '../../scripts/week4/db/secure-members.js';
-  import pool from '../../scripts/week4/db/connection.js';
+  import { pool, adminPool }  from '../../scripts/week4/db/connection.js';
 
   describe('GDPR Compliance', function () {
     // Increase timeout for database operations
@@ -25,7 +25,7 @@
     // Teardown: Clean up test data after all tests
     after(async function () {
       // Delete test user (even if anonymized)
-      await pool.query('DELETE FROM family_members WHERE id = $1', [testUserId]);
+      await adminPool.query('DELETE FROM family_members WHERE id = $1', [testUserId]);
       // Don't close pool - let transactions.test.ts handle it (runs last alphabetically)
     });
 
@@ -105,7 +105,7 @@
 
       afterEach(async function () {
         // Clean up anonymized user
-        await pool.query('DELETE FROM family_members WHERE id = $1', [anonymizedUserId]);
+        await adminPool.query('DELETE FROM family_members WHERE id = $1', [anonymizedUserId]);
       });
 
       it('should anonymize user profile', async function () {
@@ -191,7 +191,7 @@
       });
 
       afterEach(async function () {
-        await pool.query('DELETE FROM family_members WHERE id = $1', [userId]);
+        await adminPool.query('DELETE FROM family_members WHERE id = $1', [userId]);
       });
 
       it('should export anonymized data (not original PII)', async function () {

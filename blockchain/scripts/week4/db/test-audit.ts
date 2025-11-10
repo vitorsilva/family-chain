@@ -1,5 +1,4 @@
-
-  import pool from './connection.js';
+import { pool }  from './connection.js';
   import { createTransfer } from './transactions.js';
 
   async function testAuditLog() {

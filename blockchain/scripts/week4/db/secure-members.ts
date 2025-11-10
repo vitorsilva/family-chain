@@ -1,4 +1,4 @@
-import  pool  from './connection.js';
+import { pool }  from './connection.js';
 import { encrypt, decrypt } from '../encrypt/utils/encryption.js';
 
   export interface FamilyMember {
