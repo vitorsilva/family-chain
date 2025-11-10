@@ -3,6 +3,7 @@
         "familychain",
         "hgetall",
         "hset",
+        "iban",
         "lpush",
         "lrange",
         "ltrim"
