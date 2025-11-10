@@ -34,7 +34,7 @@
    * @returns Encrypted data as base64 string (contains IV + authTag + ciphertext)      
    */
   export function encrypt(plaintext: string | null | undefined): string | null {        
-    if (!plaintext) return null;
+    if (plaintext === null || plaintext === undefined) return null;
 
     // Generate random IV for each encryption (security best practice)
     const iv = crypto.randomBytes(IV_LENGTH);
@@ -66,7 +66,7 @@
    * @returns Decrypted plaintext
    */
   export function decrypt(encryptedData: string | null | undefined): string | null {    
-    if (!encryptedData) return null;
+    if (encryptedData === null || encryptedData === undefined) return null;
 
     try {
       // Decode from base64
