@@ -32,7 +32,8 @@
       // Close the pool
       await pool.end();
     } catch (err) {
-      console.error('❌ Database connection error:', err.message);
+      console.error('❌ Database connection error:', err instanceof Error ?
+  err.message : 'Unknown error');
       process.exit(1);
     }
   }

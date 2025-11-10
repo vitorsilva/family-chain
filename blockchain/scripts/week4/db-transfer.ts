@@ -14,11 +14,24 @@
     port: 5432,
   });
 
+  interface AccountBalance {
+    name: string;
+    id: number;
+    account_type: string;
+    balance: string;
+    currency: string;
+  }
+
   /**
    * Transfer funds between two accounts atomically
    * This demonstrates proper database transaction handling
    */
-  async function transferFunds(fromAccountId, toAccountId, amount, description) {
+ async function transferFunds(
+    fromAccountId: number,
+    toAccountId: number,
+    amount: number,
+    description: string
+  ): Promise<void> {
     // Get a client from the pool
     const client = await pool.connect();
 
@@ -80,7 +93,8 @@
     } catch (err) {
       // Rollback on error
       await client.query('ROLLBACK');
-      console.error('❌ Transfer failed:', err.message);
+      console.error('❌ Transfer failed:', err instanceof Error ? err.message :
+  'Unknown error');
       console.error('🔄 All changes rolled back\n');
       throw err;
     } finally {
@@ -92,7 +106,7 @@
   /**
    * Display account balances
    */
-  async function showBalances() {
+  async function showBalances(): Promise<void> {
     const result = await pool.query(`
       SELECT
         fm.name,
@@ -114,7 +128,7 @@
     console.log('─'.repeat(70));
   }
 
-  async function main() {
+  async function main(): Promise<void> {
     try {
       console.log('🏦 FamilyChain Transfer System\n');
 

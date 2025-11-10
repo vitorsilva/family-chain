@@ -14,11 +14,32 @@
     port: 5432,
   });
 
+  interface TransferResult {
+    success: boolean;
+    message: string;
+    old_balance_from: string;
+    new_balance_from: string;
+    new_balance_to: string;
+  }
+
+  interface AccountBalance {
+    name: string;
+    id: number;
+    account_type: string;
+    balance: string;
+    currency: string;
+  }
+
   /**
    * Transfer funds using stored procedure
    * All business logic is in the database - single call!
    */
-  async function transferFunds(fromAccountId, toAccountId, amount, description) {
+  async function transferFunds(
+    fromAccountId: number,
+    toAccountId: number,
+    amount: number,
+    description: string
+  ): Promise<TransferResult> {
     try {
       console.log(`\n💸 Processing transfer: ${amount} from account ${fromAccountId} to
   ${toAccountId}`);
@@ -41,7 +62,7 @@
 
       return transfer;
     } catch (err) {
-      console.error('❌ Transfer error:', err.message);
+      console.error('❌ Transfer error:', err instanceof Error ? err.message : 'Unknown error');
       throw err;
     }
   }
@@ -49,7 +70,7 @@
   /**
    * Display account balances
    */
-  async function showBalances() {
+  async function showBalances(): Promise<void> {
     const result = await pool.query(`
       SELECT
         fm.name,
@@ -71,7 +92,7 @@
     console.log('─'.repeat(70));
   }
 
-  async function main() {
+  async function main(): Promise<void> {
     try {
       console.log('🏦 FamilyChain Transfer System (Stored Procedure Version)\n');
 

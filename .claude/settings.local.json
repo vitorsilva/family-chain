@@ -1,14 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(tree -L 2 -I 'node_modules|.git')",
-      "WebSearch",
-      "WebFetch(domain:geth.ethereum.org)",
-      "WebFetch(domain:hardhat.org)",
-      "mcp__context7__resolve-library-id",
-      "mcp__context7__get-library-docs",
-      "WebFetch(domain:docs.etherscan.io)",
-      "Bash(python:*)"
+      "Bash(Select-Object FullName)"
     ],
     "deny": [],
     "ask": []
