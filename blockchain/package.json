@@ -10,6 +10,7 @@
       "test:contracts": "hardhat test",
       "test:encryption": "mocha test/unit/encryption.test.ts",
       "test:transactions": "mocha test/unit/transactions.test.ts",
+      "test:gdpr": "mocha test/unit/gdpr.test.ts",
       "test:all": "npm run test:unit && npm run test:contracts"
   },
   "keywords": [],
