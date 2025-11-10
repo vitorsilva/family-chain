@@ -150,10 +150,21 @@ weekXX-classX.X-topic-name.md
 
 | Class | Guide | Duration | Status |
 |-------|-------|----------|--------|
-| **4.1** | PostgreSQL Setup and Schema Design | 2-3 hours | 🔜 Pending |
-| **4.2** | Redis Configuration | 1-2 hours | 🔜 Pending |
-| **4.3** | Data Modeling for Financial Systems | 2-3 hours | 🔜 Pending |
+| **4.1** | PostgreSQL Setup and Schema Design | 2-3 hours | ✅ Complete |
+| **4.2** | Redis Configuration and Caching Patterns | 1-2 hours | ✅ Complete |
+| **4.3** | Data Modeling for Financial Systems | 3-4 hours | ✅ Complete |
 | **4.4** | Database Security and Encryption | 1-2 hours | 🔜 Pending |
+
+**Week 4 Learning Outcomes (Classes 4.1-4.3 COMPLETE):**
+- ✅ PostgreSQL 18 setup with schema design (family_members, accounts)
+- ✅ Redis caching with Docker (50-108x speedup!)
+- ✅ Double-entry bookkeeping with ledger_entries
+- ✅ Stored procedures (55% faster than application-level)
+- ✅ Audit logging with JSONB and triggers
+- ✅ **Real Sepolia blockchain integration** (linked actual transaction!)
+- ✅ NUMERIC precision for financial data
+- ✅ Row locking (FOR UPDATE) to prevent race conditions
+- 🔜 Database security and encryption (Class 4.4 next)
 
 **Reading References (Week 4):**
 - Bitcoin Book: Chapter 6 (Transactions), Chapter 11 (Blockchain)
@@ -374,8 +385,8 @@ As you use these guides:
 
 ---
 
-**Last Updated:** 2025-10-31 (Session break after Class 3.3)
-**Course Progress:** Week 1 ✅ FULLY Complete | Week 2 ✅ FULLY Complete | Week 3 🔄 IN PROGRESS (Classes 3.1-3.3 Complete, Class 3.4 Pending)
+**Last Updated:** 2025-11-10 (Session break after Class 4.3)
+**Course Progress:** Week 1 ✅ | Week 2 ✅ | Week 3 ✅ | Week 4 🔄 IN PROGRESS (3/4 classes complete - Class 4.4 next)
 **Total Learning Guides:** 11 of ~80 planned (Week 1: 3, Week 2: 4, Week 3: 4)
 
 ---

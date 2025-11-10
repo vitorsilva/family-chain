@@ -470,3 +470,264 @@ Strong answers on:
 
 **Session End:** 2025-01-05
 **Next Session:** Class 4.3 - Data Modeling for Financial Systems
+
+---
+
+## Session 3: Class 4.3 - Data Modeling for Financial Systems (2025-11-10)
+
+### 📋 Session Overview
+**Duration:** ~4 hours
+**Status:** ✅ Class 4.3 COMPLETE (Self-assessment passed 5/5)
+
+### ✅ Accomplishments
+
+#### Enhanced Transaction Schema
+Created comprehensive financial data model with 5 new tables:
+
+1. **transactions** (enhanced version)
+   - NUMERIC(28, 18) for ETH precision (18 decimals)
+   - Multi-currency support
+   - Status tracking (pending, confirmed, failed, reversed)
+   - Reversal tracking (reversed_at, reversed_by)
+   - Metadata JSONB for flexible data storage
+
+2. **ledger_entries** (double-entry bookkeeping)
+   - Links to transactions table
+   - Entry types: 'debit' (money out) and 'credit' (money in)
+   - Records balance_before and balance_after for audit trail
+   - Enables reconciliation (sum of entries = account balance)
+
+3. **audit_log**
+   - Generic audit table using JSONB for old_values/new_values
+   - Works for ANY table (accounts, transactions, family_members)
+   - Tracks action type (INSERT, UPDATE, DELETE)
+   - Automatic triggers capture all changes
+
+4. **blockchain_transactions**
+   - Raw blockchain data (tx_hash, block_number, gas, confirmations)
+   - Stores amount_wei as NUMERIC(28, 0)
+   - Separate from internal business logic
+
+5. **exchange_rates**
+   - Multi-currency conversion support
+   - Rate history with timestamps
+   - Source tracking (chainlink, uniswap, coingecko)
+
+#### Double-Entry Bookkeeping Implementation
+
+**Application-Level Transaction (TypeScript):**
+- Created `src/db/transactions.ts` with full type safety
+- Implemented `createTransfer()` function
+- Multiple database round-trips (8 calls per transfer)
+- Explicit transaction management (BEGIN/COMMIT/ROLLBACK)
+- Row locking with FOR UPDATE to prevent race conditions
+
+**Stored Procedure (PostgreSQL):**
+- Created `create_transfer_transaction()` PL/pgSQL function
+- Single database call (1 round-trip)
+- Implicit transaction handling (automatic rollback on error)
+- Created TypeScript wrapper `createTransferSP()`
+
+**Performance Benchmark Results:**
+- Application-level: 222ms for 100 transfers
+- Stored procedure: 100ms for 100 transfers
+- **55.2% faster with stored procedure!** 🚀
+- Average: 2.22ms vs 1.00ms per transfer
+
+#### Audit Logging with Triggers
+
+**Created audit trigger function:**
+- Uses PostgreSQL special variables (TG_OP, TG_TABLE_NAME, OLD, NEW)
+- Captures INSERT, UPDATE, DELETE operations
+- Stores complete row state as JSONB using row_to_json()
+- Attached to accounts and transactions tables
+
+**Key concepts learned:**
+- `$$` dollar quoting for function bodies
+- `row_to_json()` converts rows to JSONB
+- `TG_OP` identifies operation type
+- `->` and `->>` JSONB operators for querying
+
+**JSONB operators:**
+- `->` returns JSONB (e.g., `old_values->'balance'`)
+- `->>` returns TEXT (e.g., `old_values->>'balance'`)
+- Use `->>` for casting to NUMERIC
+
+#### Blockchain Integration (Real Sepolia Transaction!)
+
+**Implemented blockchain linking:**
+- Created `linkBlockchainTransaction()` function
+- Fetches real transaction data from Sepolia via Alchemy
+- Links on-chain data to off-chain database records
+- Matches wallet addresses to family members
+
+**Real transaction linked:**
+- TX Hash: 0x85324acc9e53f71dc1649839db5b33e620eadbdb295f5cc949443c7f084042fa
+- From: Alice Johnson (0xB09b5449D8BB84312Fbc4293baf122E0e1875736)
+- To: Bob Johnson (0x310a9DaB3c4B9406d6629E66a4b1D737e01C30B5)
+- Amount: 0.001 ETH
+- Block: 9,531,070
+- Confirmations: 68,451+ (extremely secure!)
+- Stored as both blockchain_transaction and internal transaction
+
+**Key insight discovered:**
+- Must have BOTH wallet_address in family_members AND ETH account in accounts table
+- Code requires both addresses to be family members to create internal transaction
+- Provides complete audit trail: blockchain proof + family context
+
+#### Database Initialization Script
+
+Created `database/initialize-test-data.sql`:
+- Reusable script to reset database to known state
+- Creates initial deposit transactions with ledger entries
+- Ensures balances match ledger history (reconciliation passes)
+- Includes verification queries
+- Usage: `psql -U postgres -d familychain -f database/initialize-test-data.sql`
+
+### 💡 Key Learnings
+
+**Technical Concepts:**
+
+1. **NUMERIC for Money** - MUST use NUMERIC, never FLOAT/DOUBLE
+   - FLOAT: Binary fractions cause rounding errors (0.1 + 0.2 = 0.30000000000000004)
+   - Over 1000 operations, loses ~0.17 cents
+   - NUMERIC(28, 18): Exact decimal arithmetic for ETH
+
+2. **Double-Entry Bookkeeping**
+   - Every transaction creates 2 ledger entries (debit + credit)
+   - Self-auditing: sum of debits = sum of credits (always 0)
+   - Complete audit trail (see both sides of every transaction)
+   - Required for regulatory compliance
+
+3. **Immutability**
+   - Never DELETE or UPDATE transactions
+   - Create reversing transaction instead
+   - Preserves complete history for audits
+   - Example: +10 ETH mistake → create -10 ETH reversal (both visible)
+
+4. **Row Locking (FOR UPDATE)**
+   - Prevents race conditions (lost updates)
+   - Locks row from SELECT until COMMIT
+   - Lock held for milliseconds (1-5ms)
+   - Essential for financial systems: Correctness > Speed
+
+5. **Stored Procedures vs Application Logic**
+   - Stored procedure: 1 network round-trip, implicit transactions, 55% faster
+   - Application logic: 8+ round-trips, explicit BEGIN/COMMIT, easier to debug
+   - Best practice: Use stored procedures for critical financial operations
+
+6. **JSONB Audit Logs**
+   - Generic audit table works for ANY table
+   - Flexible schema (no ALTER needed when adding columns)
+   - Query with `->` (JSONB) and `->>` (TEXT) operators
+   - Example: `old_values->>'balance'::NUMERIC`
+
+7. **Blockchain Linking**
+   - Separate blockchain_transactions (on-chain) from transactions (off-chain)
+   - Link via tx_hash
+   - Provides both blockchain proof AND business context
+   - Requires matching wallet_address to family_members
+
+**PostgreSQL Features:**
+
+- `$$` dollar quoting for clean function syntax
+- `row_to_json()` for flexible audit logging
+- `TG_OP`, `TG_TABLE_NAME`, `OLD`, `NEW` trigger variables
+- `FOR UPDATE` row-level locking
+- `RETURNING` clause for INSERT statements
+- JSONB data type with rich operators
+
+**Architecture Decisions:**
+
+1. **Function vs Procedure:** Used FUNCTION for implicit transactions and easy SELECT usage
+2. **NUMERIC precision:** NUMERIC(28, 18) for ETH (18 decimals), NUMERIC(20, 8) for general money
+3. **Audit strategy:** Generic JSONB-based audit log > table-specific audit tables
+4. **Stored procedures:** For high-frequency financial operations
+5. **TypeScript wrappers:** Keep type safety while using stored procedures
+
+### 🎓 Self-Assessment Results
+
+**Score: 5/5 (100%) ✅**
+
+**Q1: Why use double-entry bookkeeping?**
+- User answer: Validation, performance, reliability. Sum of credits = sum of debits. Can quickly query all records for an account.
+- ✅ Perfect! Also noted self-auditing and regulatory compliance.
+
+**Q2: Why immutability?**
+- User answer: Must know everything that happened, even mistakes. Never delete, create opposite transaction.
+- ✅ Exactly right! Preserves audit trail, required by law.
+
+**Q3: Row locking necessity?**
+- User answer: Need "fixed" values during transaction to prevent race conditions. Example: balance check passes but funds spent before update.
+- ✅ Nailed the TOCTOU (time-of-check to time-of-use) problem! Wait time acceptable (~50ms estimate).
+
+**Q4: NUMERIC vs FLOAT?**
+- User answer: ETH needs 18 decimals. FLOAT stored as binary fractions, loses precision, compounds over time.
+- ✅ Perfect understanding! Showed example of adding 0.1 ETH 1000 times losing money.
+
+**Q5: JSONB for audit logs?**
+- User answer: Generic audit table that works with all schemas.
+- ✅ Excellent! One audit log for all tables, no schema changes needed.
+
+**Standout insights:**
+- Immediately recognized need to explicitly connect to Sepolia network
+- Discovered that both wallet_address AND account are needed for blockchain linking
+- Created database initialization script proactively for reproducibility
+- Asked about stored procedures vs application logic (production-level thinking)
+
+### 📂 Files Created/Modified
+
+**Created:**
+- `database/initialize-test-data.sql` - Reusable test data setup
+- `src/db/transactions.ts` - Double-entry bookkeeping (TypeScript with types)
+- `src/db/test-transactions.ts` - Transfer testing
+- `src/db/test-audit.ts` - Audit logging tests
+- `src/db/benchmark-transfers.ts` - Performance comparison
+- `src/db/test-blockchain-link.ts` - Mock blockchain linking
+- `src/db/test-real-blockchain.ts` - Real Sepolia integration ✨
+
+**Modified:**
+- `family_members` table - Updated Alice and Bob with real wallet addresses
+- `accounts` table - Created ETH account for Bob
+
+**Database Objects:**
+- Tables: transactions, ledger_entries, audit_log, blockchain_transactions, exchange_rates
+- Function: `create_transfer_transaction()` (PL/pgSQL)
+- Triggers: `audit_accounts`, `audit_transactions` (using audit_trigger_func)
+- Indexes: 8 performance indexes on transactions, ledger_entries, blockchain_transactions, audit_log
+
+### 🔄 Next Steps
+
+**Class 4.4: Database Security and Encryption**
+- Encrypting sensitive data (IBANs, NIFs, private keys)
+- Database roles and permissions (least privilege)
+- Backup and recovery strategies
+- Connection pooling security
+- SQL injection prevention (already using parameterized queries ✅)
+- GDPR compliance for personal data
+
+**Preparation:**
+- Review `docs/week4-class4.4-database-security-encryption.md`
+- Think about: "What data in FamilyChain is sensitive and must be encrypted?"
+- Consider: How to handle database backups securely?
+
+### 📊 Progress Tracking
+
+**Week 4 Status:**
+- ✅ Class 4.1: PostgreSQL Setup and Schema Design (COMPLETE)
+- ✅ Class 4.2: Redis Configuration and Caching Patterns (COMPLETE)
+- ✅ Class 4.3: Data Modeling for Financial Systems (COMPLETE)
+- 🔜 Class 4.4: Database Security and Encryption (READY TO START)
+
+**Overall Course Progress:**
+- Week 1: ✅ Complete (3 classes)
+- Week 2: ✅ Complete (3 classes)
+- Week 3: ✅ Complete (4 classes)
+- Week 4: 🔄 In Progress (3/4 classes complete - 75%)
+
+**Phase 1 Progress:** 13/24 classes complete (54%)
+
+---
+
+**Session End:** 2025-11-10
+**Next Session:** Class 4.4 - Database Security and Encryption
