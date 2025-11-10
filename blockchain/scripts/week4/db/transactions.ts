@@ -188,7 +188,8 @@
   /**
    * Reconcile account balance (verify integrity)
    */
-  export async function reconcileAccountBalance(accountId: number): Promise<ReconciliationResult> {      
+  export async function reconcileAccountBalance(accountId: number): Promise<ReconciliationResult> {     
+
     // Calculate balance from ledger entries
     const result = await pool.query(
       `SELECT
@@ -222,4 +223,162 @@
       difference: difference.toFixed(8),
       isBalanced,
     };
+  }
+
+  
+  /**
+   * Link a blockchain transaction to internal records
+   */
+  export async function linkBlockchainTransaction(
+    txHash: string,
+    fromAddress: string,
+    toAddress: string,
+    amountWei: string,
+    blockNumber: number,
+    gasUsed: number,
+    gasPriceGwei: string
+  ): Promise<{ blockchainTxId: number; internalTxId: number | null; amountEth: string }> {        
+    const client = await pool.connect();
+
+    try {
+      await client.query('BEGIN');
+
+      // 1. Insert blockchain transaction
+      const btResult = await client.query(
+        `INSERT INTO blockchain_transactions
+         (tx_hash, from_address, to_address, amount_wei, block_number, gas_used, gas_price_gwei, status, confirmations)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, 'confirmed', 12)
+         RETURNING id`,
+        [txHash, fromAddress, toAddress, amountWei, blockNumber, gasUsed, gasPriceGwei]
+      );
+
+      const blockchainTxId = btResult.rows[0].id;
+
+      // 2. Find matching accounts by wallet address
+      const fromAccount = await client.query(
+        `SELECT a.id FROM accounts a
+         JOIN family_members fm ON a.member_id = fm.id
+         WHERE fm.wallet_address = $1 AND a.currency = 'ETH'`,
+        [fromAddress]
+      );
+
+      const toAccount = await client.query(
+        `SELECT a.id FROM accounts a
+         JOIN family_members fm ON a.member_id = fm.id
+         WHERE fm.wallet_address = $1 AND a.currency = 'ETH'`,
+        [toAddress]
+      );
+
+      // 3. Convert wei to ETH
+      const amountEth = (BigInt(amountWei) / BigInt(1e18)).toString() +
+                        '.' +
+                        (BigInt(amountWei) % BigInt(1e18)).toString().padStart(18, '0');
+
+      let internalTxId = null;
+
+      // 4. If both accounts exist in our system, create internal transaction
+      if (fromAccount.rows[0] && toAccount.rows[0]) {
+        const txResult = await client.query(
+          `INSERT INTO transactions
+           (from_account_id, to_account_id, amount, currency, tx_type, status, tx_hash, description, metadata)
+           VALUES ($1, $2, $3, 'ETH', 'blockchain_transfer', 'confirmed', $4, 'Blockchain transfer', $5)
+           RETURNING id`,
+          [
+            fromAccount.rows[0].id,
+            toAccount.rows[0].id,
+            amountEth,
+            txHash,
+            JSON.stringify({ blockchain_tx_id: blockchainTxId, block_number: blockNumber })       
+          ]
+        );
+
+        internalTxId = txResult.rows[0].id;
+      }
+
+      await client.query('COMMIT');
+
+      return {
+        blockchainTxId,
+        internalTxId,
+        amountEth: parseFloat(amountEth).toFixed(8)
+      };
+    } catch (err) {
+      await client.query('ROLLBACK');
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
+  /**
+   * Get blockchain transaction details with internal context
+   */
+  export async function getBlockchainTransactionDetails(txHash: string) {
+    const result = await pool.query(
+      `SELECT
+        bt.id AS blockchain_tx_id,
+        bt.tx_hash,
+        bt.block_number,
+        bt.from_address,
+        bt.to_address,
+        bt.amount_wei,
+        bt.gas_used,
+        bt.gas_price_gwei,
+        bt.confirmations,
+        bt.created_at AS blockchain_created_at,
+        t.id AS internal_tx_id,
+        t.tx_type,
+        t.description,
+        t.metadata,
+        fm_from.name AS from_name,
+        fm_to.name AS to_name
+      FROM blockchain_transactions bt
+      LEFT JOIN transactions t ON t.tx_hash = bt.tx_hash
+      LEFT JOIN accounts a_from ON t.from_account_id = a_from.id
+      LEFT JOIN accounts a_to ON t.to_account_id = a_to.id
+      LEFT JOIN family_members fm_from ON a_from.member_id = fm_from.id
+      LEFT JOIN family_members fm_to ON a_to.member_id = fm_to.id
+      WHERE bt.tx_hash = $1`,
+      [txHash]
+    );
+
+    return result.rows[0] || null;
+  }
+
+  /**
+   * Get all blockchain transactions for a family member
+   */
+  export async function getBlockchainTransactionsForMember(memberName: string, limit: number = 10)
+ {
+    const result = await pool.query(
+      `SELECT
+        bt.tx_hash,
+        bt.block_number,
+        bt.amount_wei::NUMERIC / 1e18 AS amount_eth,
+        bt.confirmations,
+        bt.created_at,
+        t.tx_type,
+        t.description,
+        CASE
+          WHEN fm_from.name = $1 THEN 'sent'
+          WHEN fm_to.name = $1 THEN 'received'
+          ELSE 'unknown'
+        END AS direction,
+        CASE
+          WHEN fm_from.name = $1 THEN fm_to.name
+          WHEN fm_to.name = $1 THEN fm_from.name
+        END AS counterparty
+      FROM blockchain_transactions bt
+      LEFT JOIN transactions t ON t.tx_hash = bt.tx_hash
+      LEFT JOIN accounts a_from ON t.from_account_id = a_from.id
+      LEFT JOIN accounts a_to ON t.to_account_id = a_to.id
+      LEFT JOIN family_members fm_from ON a_from.member_id = fm_from.id
+      LEFT JOIN family_members fm_to ON a_to.member_id = fm_to.id
+      WHERE fm_from.name = $1 OR fm_to.name = $1
+      ORDER BY bt.created_at DESC
+      LIMIT $2`,
+      [memberName, limit]
+    );
+
+    return result.rows;
   }
