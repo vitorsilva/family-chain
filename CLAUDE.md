@@ -1134,7 +1134,7 @@ FamilyToken includes staking for educational purposes:
 **Solution:** Check relayer service logs. Manually submit proof if relayer is down.
 
 ### Issue: Smart Contract Upgrade Needed
-**Solution:** Follow upgrade procedure in `docs/upgrade-guide.md`. Test thoroughly on testnet first.
+**Solution:** Create and upgrade procedure first. Test thoroughly on testnet first.
 
 ### Issue: Documentation Version Mismatch
 **Solution:**
