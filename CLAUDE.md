@@ -254,7 +254,7 @@ Claude: "The issue is... here's the fix..."
 **IMPORTANT: When the user asks "What's next?" or similar phrases ("What should I do next?", "What comes next?", "Ready to continue", etc.):**
 
 1. **Check current progress:**
-   - Read `docs/week0-learning_notes.md` to see the latest completed week
+   - Read `COURSE_PLAN.md` to see the latest completed week
    - Check `docs/README.md` for week completion status
    - Review `docs/weekN-learning-notes.md` for the most recent week
 
@@ -1180,10 +1180,7 @@ The course includes 4 buffer weeks for consolidation, catch-up, and integration:
 - **Week 28:** Before final production deployment
 
 ### Key Documentation
-- `docs/week0-first_thought.md`: Original project ideation and pivot to family finance
-- `docs/week0-learning_notes.md`: Master index with pre-course planning and course structure decisions
 - `docs/weekN-learning-notes.md`: Week-by-week session notes and learning insights
-- `docs/week0-course_critique.md`: Professional course builder review and recommendations (led to 30-week restructure)
 
 ## Development Phases (30 Weeks)
 

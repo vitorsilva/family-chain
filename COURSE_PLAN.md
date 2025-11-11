@@ -1643,6 +1643,12 @@ As you progress, you can improve this course by:
 
 ---
 
+## Foundational documents
+
+- `docs/week0-first_thought.md`: Original project ideation and pivot to family finance
+- `docs/week0-course_critique.md`: Professional course builder review and recommendations (led to 30-week restructure that is reflected on the COURSE_PLAN.md)
+- `docs/week0-learning_notes.md`: Master index with pre-course planning and course structure decisions
+
 ## 📄 License
 
 This course plan is open-source and available for anyone to use for learning purposes.

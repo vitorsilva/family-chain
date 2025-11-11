@@ -372,8 +372,6 @@ These notes become the foundation for creating comprehensive learning guides.
 
 - **[COURSE_PLAN.md](../COURSE_PLAN.md)** - Complete 30-week course structure
 - **[CLAUDE.md](../CLAUDE.md)** - Project overview and teaching approach
-- **[learning_notes.md](../docs/week0-learning_notes.md)** - Master index with pre-course planning
-- **[week1-learning-notes.md](week1-learning-notes.md)** - Week 1 session notes
 - **[Bitcoin Book](../assets/bitcoinbook-develop/)** - Blockchain fundamentals
 - **[Ethereum Book](../assets/ethereumbook-develop/)** - Ethereum development
 
