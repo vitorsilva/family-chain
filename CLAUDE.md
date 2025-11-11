@@ -256,7 +256,19 @@ Claude: "The issue is... here's the fix..."
 1. **Check current progress:**
    - Read `COURSE_PLAN.md` to see the latest completed week
    - Check `docs/README.md` for week completion status
-   - Review `docs/weekN-learning-notes.md` for the most recent week
+
+  COURSE_PLAN.md = The Roadmap (all weeks, planning/navigation)
+  - Full course structure
+  - Learning objectives
+  - Reading assignments
+  - Completion checklists
+  - Links to completed guides
+
+  docs/README.md = The Catalog (completed weeks only, reference)
+  - Completed guides only
+  - What was actually built
+  - Guide statistics
+  - How to use guides   
 
 2. **Determine next step:**
    - If week is incomplete: Continue with remaining classes
@@ -291,7 +303,6 @@ Claude: "The issue is... here's the fix..."
 
 2. **Update progress tracking:**
    - Update `docs/README.md` if week status changed
-   - Update `docs/week0-learning_notes.md` master index if needed
    - Mark any completed deliverables
 
 3. **Update COURSE_PLAN.md completion checklist (if week is complete):**
