@@ -535,6 +535,12 @@ Before moving to Week 5, complete the self-assessment:
 **Duration:** 1 week
 **Goal:** Write and test your first smart contracts
 
+**📚 Learning Guides:**
+- [Class 5.1: Solidity Basics and Development Tools](docs/week5-class5.1-solidity-basics.md)
+- [Class 5.2: Writing the Family Wallet Contract](docs/week5-class5.2-family-wallet-contract.md)
+- [Class 5.3: Testing Smart Contracts](docs/week5-class5.3-testing-smart-contracts.md)
+- [Class 5.4: Deploying to Testnet](docs/week5-class5.4-deploying-to-testnet.md)
+
 - **Class 5.1:** Solidity Basics and Development Tools
   - Solidity syntax and structure
   - Data types and variables

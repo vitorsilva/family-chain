@@ -137,7 +137,32 @@ weekXX-classX.X-topic-name.md
 
 ---
 
-### Future Weeks (5-26)
+#### Week 5: Smart Contract Foundations - Part 1
+
+| Class | Guide | Duration | Status |
+|-------|-------|----------|--------|
+| **5.1** | [Solidity Basics and Development Tools](week5-class5.1-solidity-basics.md) | 3-4 hours | ✅ Complete |
+| **5.2** | [Writing the Family Wallet Contract](week5-class5.2-family-wallet-contract.md) | 4-5 hours | ✅ Complete |
+| **5.3** | [Testing Smart Contracts](week5-class5.3-testing-smart-contracts.md) | 4-5 hours | ✅ Complete |
+| **5.4** | [Deploying to Testnet](week5-class5.4-deploying-to-testnet.md) | 3-4 hours | ✅ Complete |
+
+**What We Built:**
+- Comprehensive Solidity knowledge (types, functions, modifiers, events, storage vs memory)
+- FamilyWallet.sol contract with multi-user support and access control
+- OpenZeppelin integration (Ownable, ReentrancyGuard)
+- Checks-Effects-Interactions pattern for reentrancy protection
+- Custom errors for gas-efficient error handling
+- 36+ comprehensive tests using Hardhat 3 + Mocha + Chai + TypeScript
+- Fixture pattern for 10-100x faster test execution
+- Reentrancy attack simulation demonstrating security vulnerabilities
+- Hardhat keystore configuration for secure key management
+- Deployment scripts with error handling and cost estimation
+- Contract verification on Etherscan
+- Contract interaction scripts
+
+---
+
+### Future Weeks (6-26)
 
 🔜 **Learning guides will be created after completing each week**
 
@@ -166,11 +191,11 @@ For upcoming course structure, see [COURSE_PLAN.md](../COURSE_PLAN.md)
 
 | Metric | Count |
 |--------|-------|
-| **Total Guides Created** | 11 |
-| **Weeks Completed** | 4 (+ Week 27 Class 1) |
-| **Total Words (Current)** | ~50,000 words |
-| **Average Guide Length** | ~4,500 words |
-| **Guides Remaining** | ~69 (estimated) |
+| **Total Guides Created** | 15 |
+| **Weeks Completed** | 5 (+ Week 27 Class 1) |
+| **Total Words (Current)** | ~79,000 words |
+| **Average Guide Length** | ~5,267 words |
+| **Guides Remaining** | ~65 (estimated) |
 
 ---
 
@@ -337,9 +362,9 @@ As you use these guides:
 
 ---
 
-**Last Updated:** 2025-01-10 (Week 4 Complete!)
-**Course Progress:** Week 1 ✅ | Week 2 ✅ | Week 3 ✅ | Week 4 ✅ COMPLETE | Week 5 🔜 Next
-**Total Learning Guides:** 11 of ~80 planned (Week 1: 3, Week 2: 4, Week 3: 4)
+**Last Updated:** 2025-01-11 (Week 5 Guides Prepared!)
+**Course Progress:** Week 1 ✅ | Week 2 ✅ | Week 3 ✅ | Week 4 ✅ | Week 5 📚 Prepared | Week 6 🔜 Next
+**Total Learning Guides:** 15 of ~80 planned (Week 1: 3, Week 2: 4, Week 3: 4, Week 5: 4)
 **Self-Assessment:** Week 4 - 10/10 (100%) ✅
 
 ---
