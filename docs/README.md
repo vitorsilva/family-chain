@@ -119,6 +119,10 @@ weekXX-classX.X-topic-name.md
 | **4.3** | Data Modeling for Financial Systems | 3-4 hours | ✅ Complete |
 | **4.4** | Database Security and Encryption | 3-4 hours | ✅ Complete |
 
+**Architecture Diagrams:**
+- [week4-architecture-diagram.md](week4-architecture-diagram.md) - ASCII/Markdown version
+- [week4-architecture-diagram.svg](week4-architecture-diagram.svg) - Visual SVG version
+
 **What We Built:**
 - PostgreSQL 18 schema (family_members, accounts, ledger_entries with double-entry bookkeeping)
 - Redis caching with Docker (50-108x speedup measured!)
