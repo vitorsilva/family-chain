@@ -418,6 +418,100 @@ const { expect } = require("chai");     // ❌ WRONG - No types
 
 ---
 
+## Testing Approach
+
+### Leverage Existing Testing Infrastructure
+
+**CRITICAL: Always use the project's established testing frameworks.**
+
+**When creating tests to verify functionality:**
+
+1. ✅ **Use Mocha + Chai** (already configured in the project)
+   - Mocha: Test runner and structure (`describe`, `it`, `beforeEach`, `afterEach`)
+   - Chai: Assertion library (`expect`, `assert`)
+   - Already integrated with Hardhat 3
+
+2. ✅ **Follow the existing test patterns**
+   - Check `test/` directory for examples
+   - Use consistent structure across all test files
+   - Leverage existing test helpers and utilities
+
+3. ✅ **Hardhat Testing Features**
+   - Use `loadFixture` for efficient test setup (gas optimization)
+   - Use `time` helpers for time-based testing
+   - Use `mine` for block manipulation
+   - Use network helpers for blockchain state management
+
+4. ✅ **TypeScript test files**
+   - All tests in `.ts` files (required by Hardhat 3)
+   - Use TypeChain-generated types for type safety
+   - Import contract types from `../typechain-types`
+
+**Example Test Structure (CORRECT):**
+```typescript
+import { ethers } from "hardhat";
+import { expect } from "chai";
+import { loadFixture } from "@nomicfoundation/hardhat-toolbox/network-helpers";
+import type { FamilyWallet } from "../typechain-types";
+import type { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers";
+
+describe("FamilyWallet", function () {
+  // Fixture for efficient test setup
+  async function deployFixture() {
+    const [owner, addr1, addr2]: SignerWithAddress[] = await ethers.getSigners();
+    const FamilyWallet = await ethers.getContractFactory("FamilyWallet");
+    const wallet = await FamilyWallet.deploy();
+    return { wallet, owner, addr1, addr2 };
+  }
+
+  describe("Deployment", function () {
+    it("Should set the right owner", async function () {
+      const { wallet, owner } = await loadFixture(deployFixture);
+      expect(await wallet.owner()).to.equal(owner.address);
+    });
+  });
+
+  describe("Transactions", function () {
+    it("Should receive and store funds", async function () {
+      const { wallet, addr1 } = await loadFixture(deployFixture);
+      const depositAmount = ethers.parseEther("1.0");
+
+      await expect(
+        addr1.sendTransaction({ to: wallet.target, value: depositAmount })
+      ).to.changeEtherBalance(wallet, depositAmount);
+    });
+  });
+});
+```
+
+**What NOT to do:**
+- ❌ Don't create standalone test scripts without using Mocha/Chai
+- ❌ Don't use `console.log` for verification - use `expect` assertions
+- ❌ Don't skip using fixtures when testing similar scenarios
+- ❌ Don't ignore existing test utilities in the project
+
+**Running Tests:**
+```powershell
+# Run all tests
+npx hardhat test
+
+# Run specific test file
+npx hardhat test test/FamilyWallet.test.ts
+
+# Run with gas reporting
+REPORT_GAS=true npx hardhat test
+
+# Run with coverage
+npx hardhat coverage
+```
+
+**Test Organization:**
+- `test/` - All test files
+- `test/helpers/` - Shared test utilities (if needed)
+- `test/fixtures/` - Reusable deployment fixtures (if complex)
+
+---
+
 ## Learning Guides
 
 ### Philosophy: Document After Doing
