@@ -932,3 +932,360 @@ Exception during run: SyntaxError: Unexpected token ':'
 **Session End:** 2025-01-10 (paused)
 **Resume Point:** Fix syntax error in test imports (connection.ts loading issue)
 **Next Session:** Complete Class 4.4, then Week 4 wrap-up and self-assessment
+
+---
+
+## Session 5: Class 4.4 Completion & Week 4 Self-Assessment (2025-01-10 continued)
+
+### 📋 Session Overview
+**Duration:** 2 hours
+**Status:** ✅ Week 4 COMPLETE!
+
+### ✅ Final Accomplishments
+
+#### Fixed RBAC Permission Issues
+**Problem:** Tests failing due to missing table permissions
+- `api_service` couldn't INSERT/UPDATE/DELETE on tables
+- `migration_service` couldn't CREATE TABLE (no schema permissions)
+
+**Solution:** Granted comprehensive permissions to all roles
+```sql
+-- Schema access
+GRANT USAGE ON SCHEMA public TO app_readwrite, app_readonly, app_admin;
+
+-- Readwrite permissions (api_service)
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES TO app_readwrite;
+GRANT USAGE, SELECT ON ALL SEQUENCES TO app_readwrite;
+
+-- Admin permissions (migration_service)
+GRANT ALL PRIVILEGES ON ALL TABLES TO app_admin;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES TO app_admin;
+GRANT CREATE ON SCHEMA public TO app_admin;
+
+-- Readonly permissions (analytics_service)
+GRANT SELECT ON ALL TABLES TO app_readonly;
+
+-- Apply to future tables
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO app_readwrite;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON TABLES TO app_admin;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO app_readonly;
+```
+
+**Results:**
+- ✅ All 62 tests passing (encryption, GDPR, transactions, RBAC)
+- ✅ `analytics_service` correctly denied write operations
+- ✅ `api_service` can read/write but not DDL
+- ✅ `migration_service` has full admin access
+
+#### Created Database Backup Script
+
+**File:** `blockchain/scripts/week4/backup-database.ps1`
+
+**Features:**
+- Timestamped backups (`familychain_backup_YYYYMMDD_HHMMSS.sql`)
+- Automatic cleanup of old backups (30-day retention)
+- Full path to `pg_dump.exe` (Windows compatibility)
+- Backup size reporting
+- List of current backups
+
+**Usage:**
+```powershell
+.\blockchain\scripts\week4\backup-database.ps1
+```
+
+**Output example:**
+```
+✅ Backup completed successfully!
+   Size: 45.23 KB
+   Location: .\backups\familychain_backup_20251110_192020.sql
+```
+
+**Fix applied:** Used full path to PostgreSQL binaries
+```powershell
+$pgDumpPath = "C:\Program Files\PostgreSQL\18\bin\pg_dump.exe"
+& $pgDumpPath -U $PostgresUser -d $DatabaseName -F p -f $backupFile
+```
+
+#### Verified Encrypted Data
+
+**Verification command:**
+```powershell
+psql -U postgres -d familychain -c "SELECT id, name, email, iban_encrypted, nif_encrypted FROM family_members WHERE iban_encrypted IS NOT NULL LIMIT 3;"
+```
+
+**Confirmed:**
+- ✅ IBANs stored as encrypted base64 strings (not plaintext)
+- ✅ NIFs stored as encrypted base64 strings
+- ✅ Emails visible (not encrypted - design decision)
+- ✅ Names visible (low sensitivity data)
+
+**Screenshot taken:** Encrypted data in PostgreSQL
+
+#### Tested GDPR Export
+
+**Created:** `blockchain/scripts/week4/db/test-gdpr-export.ts`
+
+**Verified export includes:**
+- ✅ User profile with **decrypted** sensitive data (IBAN, NIF)
+- ✅ All accounts for the user
+- ✅ All transactions (as sender or receiver)
+- ✅ Audit logs
+- ✅ GDPR compliance metadata
+- ✅ Export timestamp
+- ✅ Privacy notice
+
+**Screenshot taken:** Full GDPR export JSON
+
+### 🎓 Week 4 Self-Assessment Results
+
+**Score: 10/10 (100%) ✅**
+
+**Class 4.1: PostgreSQL Setup and Schema Design**
+
+**Q1: Why NUMERIC instead of FLOAT for money?**
+- User answer: "FLOAT stores as binary fractions which lead to rounding errors. NUMERIC specifies exact precision (8 decimals)."
+- ✅ Perfect! Understood binary fraction issue and precision control.
+
+**Q2: What does ON DELETE CASCADE do?**
+- User answer: "Deletes related information on child end of foreign key. In financial services, should never use it."
+- ✅ Correct with excellent insight! CASCADE is dangerous for financial data - use soft deletes or anonymization instead.
+
+**Class 4.2: Redis Configuration and Caching Patterns**
+
+**Q3: Explain Cache-Aside pattern**
+- User answer: "Check fast datasource (cache) first. On miss, load from slow datasource, then update cache for next time."
+- ✅ Perfect! Clear understanding of the pattern and performance benefit (50-108x speedup).
+
+**Q4: Why SETEX instead of SET?**
+- User answer: "To include expiration date. Otherwise cache grows forever. In-memory database = dire consequences."
+- ✅ Exactly right! TTL prevents memory leaks and stale data.
+
+**Class 4.3: Data Modeling for Financial Systems**
+
+**Q5: What is double-entry bookkeeping?**
+- User answer: "Every transaction = 2 entries (debit where money leaves, credit where money goes). Benefits: full record, faster queries, self-auditing (sum of credits = sum of debits)."
+- ✅ Excellent! Captured all three key benefits: audit trail, performance, verification.
+
+**Q6: Why immutability?**
+- User answer: "Never lose trace of history. For mistakes, create reversing transaction (+10 mistake → -10 reversal)."
+- ✅ Perfect! This is exactly how professional accounting systems work.
+
+**Q7: Why FOR UPDATE?**
+- User answer: "Lock rows to prevent race conditions. Between balance check and transfer, another transaction could drain the account."
+- ✅ Correct! Identified TOCTOU (Time-Of-Check to Time-Of-Use) problem.
+
+**Class 4.4: Database Security and Encryption**
+
+**Q8: Why AES-256-GCM instead of CBC?**
+- User answer: "GCM = authenticated encryption (detects tampering). Auth tag verifies integrity. CBC lacks authentication (padding oracle attacks)."
+- ✅ Perfect! Understood GCM advantages and CBC vulnerabilities.
+
+**Q9: Principle of least privilege example?**
+- User answer: "analytics_service = readonly (can't write). api_service = readwrite (can't do DDL). migration_service = admin (full access). Limits blast radius if compromised."
+- ✅ Excellent! Clear understanding with real examples from our implementation.
+
+**Q10: Two GDPR rights implemented?**
+- User answer:
+  - "Right to Erasure: Delete/anonymize data. For financial services, anonymize to preserve audit trail ('Deleted User 123')."
+  - "Right to Data Portability: Export all data in machine-readable format (JSON). User owns their data."
+- ✅ Both perfect! Correctly distinguished erasure requirements for financial vs non-financial systems.
+
+**Standout Insights:**
+- 🌟 Recognized CASCADE is dangerous in financial systems (most students miss this!)
+- 🌟 Understood all three benefits of double-entry bookkeeping
+- 🌟 Clear grasp of race conditions and TOCTOU problem
+- 🌟 Distinguished between general GDPR deletion and financial anonymization requirements
+
+### 📂 Files Created (Session 5)
+
+**Created:**
+- `blockchain/scripts/week4/backup-database.ps1` - Automated backup script
+- `blockchain/scripts/week4/db/test-gdpr-export.ts` - GDPR export verification
+
+**Modified:**
+- PostgreSQL permissions (GRANT statements for all roles)
+- `blockchain/test/integration/rbac.test.ts` - Added before() hook for cleanup, fixed DROP TABLE test
+
+**Screenshots Captured:**
+- Encrypted data in PostgreSQL (IBANs and NIFs as base64)
+- GDPR export JSON with decrypted user data
+
+### 💡 Key Learnings (Session 5)
+
+**PostgreSQL Permissions:**
+1. **Table permissions ≠ Schema permissions** - Need both!
+2. **GRANT on existing tables ≠ future tables** - Use ALTER DEFAULT PRIVILEGES
+3. **Sequences need explicit grants** - For SERIAL columns to work
+4. **Error messages vary** - "permission denied" vs "must be owner" (both mean no access)
+
+**Testing Best Practices:**
+1. **Cleanup before tests** - Use before() hook to remove leftover test data
+2. **Accept equivalent errors** - Multiple error messages can mean the same thing
+3. **Test RBAC thoroughly** - Verify both allowed AND denied operations
+
+**Backup Strategy:**
+1. **Automated backups essential** - Can't rely on manual backups
+2. **Retention policy prevents disk bloat** - Auto-delete old backups
+3. **Test restoration regularly** - Backups are useless if you can't restore
+4. **3-2-1 rule** - 3 copies, 2 media types, 1 offsite (not implemented yet, production topic)
+
+### 📊 Week 4 Final Statistics
+
+**Total Duration:** ~16 hours across 5 sessions
+**Classes Completed:** 4/4 (100%)
+**Tests Created:** 62 tests across 5 test files
+**Test Pass Rate:** 100% (62/62)
+
+**Test Breakdown:**
+- Unit tests: 16 (encryption)
+- Integration tests: 46 (GDPR: 14, Transactions: 18, RBAC: 14)
+
+**Files Created (Week 4):**
+- Database scripts: 15+ files
+- Test files: 5 files
+- Utility modules: 3 files (encryption, connection, GDPR)
+- Documentation: 4 learning guides
+
+**Database Objects Created:**
+- Tables: 9 (family_members, accounts, transactions, ledger_entries, audit_log, blockchain_transactions, exchange_rates, etc.)
+- Roles: 3 (app_readonly, app_readwrite, app_admin)
+- Users: 3 (analytics_service, api_service, migration_service)
+- Functions: 2 (create_transfer_transaction, audit_trigger_func)
+- Triggers: 2 (audit_accounts, audit_transactions)
+- Indexes: 8 (performance optimization)
+
+**Key Achievements:**
+- ✅ Production-ready database schema with financial precision
+- ✅ 50-108x performance improvement with Redis caching
+- ✅ Double-entry bookkeeping implementation (55% faster with stored procedures)
+- ✅ Real blockchain transaction integration (Sepolia testnet)
+- ✅ AES-256-GCM encryption for sensitive PII
+- ✅ Role-Based Access Control (RBAC) with least privilege
+- ✅ GDPR compliance (export + anonymization)
+- ✅ Automated backup system
+- ✅ Comprehensive test coverage
+
+### 🎯 Week 4 Completion Checklist
+
+**Class 4.1: PostgreSQL Setup and Schema Design**
+- ✅ PostgreSQL 18 installed and configured
+- ✅ Schema designed (family_members, accounts, transactions)
+- ✅ Foreign keys with CASCADE behavior
+- ✅ NUMERIC types for financial precision
+- ✅ Node.js integration with pg library
+- ✅ Connection pooling configured
+- ✅ Self-assessment: 2/2 questions correct
+
+**Class 4.2: Redis Configuration and Caching Patterns**
+- ✅ Redis installed via Docker
+- ✅ Cache-Aside pattern implemented
+- ✅ 50-108x performance improvement measured
+- ✅ TTL configured (60s for balances, 300s for profiles)
+- ✅ Pub/Sub pattern demonstrated
+- ✅ ioredis client configured
+- ✅ Self-assessment: 2/2 questions correct
+
+**Class 4.3: Data Modeling for Financial Systems**
+- ✅ Double-entry bookkeeping implemented
+- ✅ Ledger entries table with balance tracking
+- ✅ Immutable transaction design
+- ✅ Row locking (FOR UPDATE) for race condition prevention
+- ✅ Stored procedures (55% faster than application-level)
+- ✅ JSONB audit logging with triggers
+- ✅ Real blockchain transaction linked (Sepolia 0x8532...)
+- ✅ NUMERIC(28, 18) for ETH precision
+- ✅ Self-assessment: 3/3 questions correct
+
+**Class 4.4: Database Security and Encryption**
+- ✅ AES-256-GCM encryption utility
+- ✅ Encrypted IBANs and NIFs
+- ✅ ENCRYPTION_KEY in .env (not committed)
+- ✅ RBAC with 3 roles (readonly, readwrite, admin)
+- ✅ Principle of least privilege applied
+- ✅ GDPR Right to Portability (export)
+- ✅ GDPR Right to Erasure (anonymization)
+- ✅ Automated backup script
+- ✅ 62 tests passing (100% pass rate)
+- ✅ Self-assessment: 3/3 questions correct
+
+**Overall Week 4:**
+- ✅ All 4 classes complete
+- ✅ All deliverables achieved
+- ✅ Self-assessment: 10/10 (100%)
+- ✅ Reading completed: Bitcoin Book Ch 6, 11; Ethereum Book Ch 6, 13
+
+### 🔜 Next Steps
+
+**Week 5: Smart Contract Foundations - Part 1**
+
+You'll learn:
+- Solidity language basics and syntax
+- Writing the FamilyWallet contract
+- Hardhat 3 testing framework
+- Contract deployment to testnet
+- Contract verification on Etherscan
+- Gas optimization basics
+
+**Prerequisites verified:**
+- ✅ Node.js v22.14.0 installed
+- ✅ Hardhat 3.0.8 installed (Week 1)
+- ✅ MetaMask configured with Sepolia testnet (Week 1)
+- ✅ Sepolia ETH available (0.80 ETH balance - Week 2)
+- ✅ Database foundation ready (Week 4)
+- ✅ Understanding of blockchain fundamentals (Weeks 1-3)
+
+**Preparation:**
+- Review `COURSE_PLAN.md` Week 5 section
+- Think about: "What family finance features need smart contracts vs traditional backend?"
+- Refresh Solidity basics from Week 1 HelloFamily.sol
+
+### 📊 Overall Course Progress
+
+**Phase 1: Blockchain Foundation (Weeks 1-8)**
+- Week 1: ✅ Complete (3 classes) - Environment setup, blockchain theory, first smart contract
+- Week 2: ✅ Complete (3 classes) - Running Ethereum node (Geth), testnet ETH
+- Week 3: ✅ Complete (4 classes) - CLI wallet creation, transactions, Hardhat exploration
+- Week 4: ✅ Complete (4 classes) - PostgreSQL, Redis, financial data modeling, security
+- Week 5: 🔜 Next - Smart contract foundations
+- Week 6-7: 🔜 Pending
+- Week 8: 🔜 Buffer week (integration and review)
+
+**Progress:** 14/24 classes complete (58% of Phase 1)
+
+---
+
+## 🎉 Week 4 COMPLETE - Session Wrap-Up
+
+**Today's Session Highlights:**
+- Fixed RBAC permissions for all database roles
+- Created automated backup script with retention policy
+- Verified encryption working (screenshots captured)
+- Tested GDPR export functionality
+- Completed comprehensive self-assessment (10/10)
+- Updated learning notes with full session documentation
+
+**What We Built This Week:**
+A production-ready database foundation with:
+- Financial-grade precision (NUMERIC types)
+- 50-108x performance improvement (Redis caching)
+- Double-entry bookkeeping with audit trails
+- Military-grade encryption (AES-256-GCM)
+- Role-based access control (RBAC)
+- GDPR compliance (export + anonymization)
+- Automated backups with retention
+
+**Portfolio Highlight:**
+This week's work demonstrates:
+- Full-stack database architecture
+- Security best practices
+- Financial systems knowledge
+- Regulatory compliance (GDPR)
+- Test-driven development (62 tests)
+- DevOps automation (backup scripts)
+
+---
+
+**Session End:** 2025-01-10 (Week 4 COMPLETE!)
+**Next Session:** Week 5 Class 5.1 - Solidity Basics and Development Tools
+**Total Week 4 Duration:** ~16 hours
+**Achievement Unlocked:** 🏆 Database & Security Foundations Master
