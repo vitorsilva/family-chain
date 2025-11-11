@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(Select-Object FullName)",
-      "Bash(psql:*)"
+      "Bash(psql:*)",
+      "Bash(Get-ChildItem -Path \"C:\\Users\\vitor410rodrigues\\source\\repos\\FamilyChain\" -Recurse -Depth 2 -File)",
+      "Bash(Out-String -Width 300)"
     ],
     "deny": [],
     "ask": []

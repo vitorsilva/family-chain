@@ -294,13 +294,21 @@ Claude: "The issue is... here's the fix..."
    - Update `docs/week0-learning_notes.md` master index if needed
    - Mark any completed deliverables
 
-3. **Create session summary:**
+3. **Update COURSE_PLAN.md completion checklist (if week is complete):**
+   - Add/update the "Week X Completion Checklist" in COURSE_PLAN.md
+   - Include all quiz questions from class guides
+   - List all deliverables with checkmarks (✅)
+   - Mark reading assignments as complete
+   - Ensure checklist matches what was actually accomplished
+   - Format: Insert after "Deliverable" and "Early Win" sections of each week
+
+4. **Create session summary:**
    - List what was accomplished today
    - List what's ready for next session
    - Note current progress (e.g., "Week X, Class X.Y complete")
    - Provide clear starting point for next session
 
-4. **Verify all changes saved:**
+5. **Verify all changes saved:**
    - Confirm all file edits were successful
    - Note any files that were created or modified
 

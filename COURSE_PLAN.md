@@ -269,6 +269,37 @@ Before moving to Week 2, complete the self-assessment:
 
 **Early Win:** Successfully receive testnet ETH and view it on Etherscan
 
+**Week 2 Completion Checklist:**
+
+Before moving to Week 3, complete the self-assessment:
+
+- [ ] **Class 2.1 Quiz:** Complete all questions in Installing Geth guide
+  - Can you explain the difference between execution clients and consensus clients?
+  - Why do you need both Geth and Lighthouse?
+  - What is JWT authentication and why is it needed?
+
+- [ ] **Class 2.2 Quiz:** Complete all questions in Node Operations guide
+  - What are the different sync modes and which did you use?
+  - How do you monitor node sync progress?
+  - What does "peer discovery" mean?
+
+- [ ] **Class 2.3 Quiz:** Complete all questions in Getting Testnet ETH guide
+  - How do you get testnet ETH from faucets?
+  - What's the difference between testnet and mainnet?
+  - How do you verify your balance on Etherscan?
+
+- [ ] **Deliverables Verified:**
+  - ✅ Geth v1.16.5 installed (or RPC provider like Alchemy configured)
+  - ✅ Understanding of node architecture (execution + consensus)
+  - ✅ Testnet ETH received and verified
+  - ✅ Helper scripts created for node management
+
+- [ ] **Reading Completed:**
+  - ✅ Bitcoin Book: Chapter 3 (Bitcoin Core - Running a Node)
+  - ✅ Ethereum Book: Chapter 3 (Clients - Running an Ethereum Client)
+
+**If you can answer all self-assessment questions confidently, you're ready for Week 3!**
+
 ---
 
 #### Week 3: Command Line Blockchain Interactions
@@ -309,6 +340,43 @@ Before moving to Week 2, complete the self-assessment:
 
 **Early Win:** Send a transaction from command line and see it confirmed
 
+**Week 3 Completion Checklist:**
+
+Before moving to Week 4, complete the self-assessment:
+
+- [ ] **Class 3.1 Quiz:** Complete all questions in Creating Wallets CLI guide
+  - How do you generate a wallet address?
+  - What's the difference between private keys and mnemonics?
+  - Why must you NEVER share your private key?
+
+- [ ] **Class 3.2 Quiz:** Complete all questions in Sending First Transaction guide
+  - What are the required parameters for a transaction?
+  - How do you estimate gas for a transaction?
+  - How do you check if a transaction was confirmed?
+
+- [ ] **Class 3.3 Quiz:** Complete all questions in Querying Blockchain Data guide
+  - How do you check an address balance?
+  - What information can you get from a block explorer?
+  - How do you query transaction history?
+
+- [ ] **Class 3.4 Quiz:** Complete all questions in Hardhat Project Exploration guide
+  - What is the Hardhat project structure?
+  - What's the difference between artifacts and cache folders?
+  - What command builds contracts in Hardhat 3?
+
+- [ ] **Deliverables Verified:**
+  - ✅ Wallet created and backed up securely
+  - ✅ Testnet transaction sent successfully
+  - ✅ Balance queries working
+  - ✅ Hardhat project structure understood
+  - ✅ `npx hardhat build` command works
+
+- [ ] **Reading Completed:**
+  - ✅ Bitcoin Book: Chapters 4-5 (Keys, Wallets)
+  - ✅ Ethereum Book: Chapters 4-5 (Keys and Addresses, Wallets)
+
+**If you can answer all self-assessment questions confidently, you're ready for Week 4!**
+
 ---
 
 #### Week 4: Database Design & Architecture
@@ -346,6 +414,46 @@ Before moving to Week 2, complete the self-assessment:
 - Ethereum Book: Chapter 13 (EVM - Ethereum State, Account State)
 
 **Deliverable:** Complete database schema with sample data
+
+**Week 4 Completion Checklist:**
+
+Before moving to Week 5, complete the self-assessment:
+
+- [ ] **Class 4.1 Quiz:** Complete all questions in PostgreSQL Setup guide
+  - Why use NUMERIC instead of FLOAT for money?
+  - What does ON DELETE CASCADE do and when should you NOT use it?
+
+- [ ] **Class 4.2 Quiz:** Complete all questions in Redis Caching guide
+  - Explain the Cache-Aside pattern
+  - Why use SETEX instead of SET for caching?
+
+- [ ] **Class 4.3 Quiz:** Complete all questions in Data Modeling guide
+  - What is double-entry bookkeeping and why use it?
+  - Why make transactions immutable?
+  - Why use row locking (FOR UPDATE)?
+
+- [ ] **Class 4.4 Quiz:** Complete all questions in Database Security guide
+  - Why AES-256-GCM instead of CBC?
+  - Give an example of principle of least privilege
+  - Name two GDPR rights you implemented
+
+- [ ] **Deliverables Verified:**
+  - ✅ PostgreSQL 18 installed with complete schema
+  - ✅ Redis running (Docker or native)
+  - ✅ Cache-Aside pattern showing 50-108x speedup
+  - ✅ Double-entry bookkeeping implemented
+  - ✅ Real blockchain transaction linked (Sepolia)
+  - ✅ AES-256-GCM encryption for sensitive data
+  - ✅ RBAC with 3 roles (readonly, readwrite, admin)
+  - ✅ GDPR compliance (export + anonymization)
+  - ✅ Automated backup script created
+  - ✅ All 62 tests passing
+
+- [ ] **Reading Completed:**
+  - ✅ Bitcoin Book: Chapters 6, 11 (Transactions, Blockchain)
+  - ✅ Ethereum Book: Chapters 6, 13 (Transactions, EVM)
+
+**If you can answer all self-assessment questions confidently, you're ready for Week 5!**
 
 ---
 
