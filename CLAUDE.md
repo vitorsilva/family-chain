@@ -587,7 +587,56 @@ This course uses TWO distinct types of documentation with different purposes and
 
 ---
 
-### Key Difference
+### 3. Architecture Diagrams (Created at END of week)
+
+**What they are:** Visual representations showing how all tools, frameworks, and concepts from the week interconnect.
+
+**Purpose:** Provide a clear visual map of the week's technical architecture and data flow.
+
+**When created:** At the END of the week after completing all classes.
+
+**Formats:** TWO versions required:
+- **ASCII/Markdown:** `weekN-architecture-diagram.md` (text-based, readable in any editor)
+- **SVG:** `weekN-architecture-diagram.svg` (visual, rendered in browsers/docs)
+
+**Examples:**
+- `week1-architecture-diagram.md` ✅ + `week1-architecture-diagram.svg` (not created yet)
+- `week2-architecture-diagram.md` ✅ + `week2-architecture-diagram.svg` ✅
+- `week3-architecture-diagram.svg` ✅ (ASCII version not created yet)
+
+**Location:** `docs/` folder
+
+**Content includes:**
+- Tool hierarchy and dependencies
+- Network communication flows
+- Data storage architecture
+- Command examples and data flows
+- Key concepts visualized
+- Integration points between components
+
+**Creation process:**
+1. Review all learning notes from the week
+2. Identify all tools, frameworks, networks, and concepts covered
+3. Map relationships and data flows between components
+4. Create ASCII/Markdown version first (easier to iterate)
+5. Create SVG version (more visually detailed)
+6. **IMPORTANT:** Validate SVG as valid XML before finalizing
+   ```powershell
+   # Verify SVG is valid XML
+   [xml]$svg = Get-Content docs\weekN-architecture-diagram.svg
+   ```
+
+**SVG Best Practices:**
+- Use clear color coding for different component types
+- Include legends/keys for symbols and colors
+- Add text annotations for key concepts
+- Show arrows for data flow direction
+- Include code snippets in relevant sections
+- Make it standalone (understandable without reading guides)
+
+---
+
+### Key Differences
 
 | Aspect | Learning Guides | Learning Notes |
 |--------|----------------|----------------|
