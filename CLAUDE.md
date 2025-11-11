@@ -512,32 +512,98 @@ npx hardhat coverage
 
 ---
 
-## Learning Guides
+## Learning Documentation: Two Types
 
-### Philosophy: Document After Doing
+This course uses TWO distinct types of documentation with different purposes and timing:
 
-**Learning guides are created at the END of each week**, not before. This ensures:
-- Content reflects actual experience, not assumptions
-- Troubleshooting includes real issues encountered
-- Time estimates are accurate
-- Best practices are battle-tested
+### 1. Learning Guides (Created BEFORE the week)
 
-**📚 For complete guide structure and creation process, see [docs/README.md](docs/README.md)**
+**What they are:** Structured teaching materials that guide you through each class.
 
-### File Naming Convention
+**Purpose:** Provide clear instruction on what to learn and how to do it.
+
+**When created:** BEFORE starting the week (end of previous week or beginning of current week).
 
 **Format:** `weekXX-classX.X-topic-name.md`
 
 **Examples:**
-- `week1-class1.1-environment-setup.md`
-- `week1-class1.2-blockchain-theory.md`
-- `week27-class27.1-mutation-testing.md`
+- `week1-class1.1-environment-setup.md` ✅
+- `week1-class1.3-first-smart-contract.md` ✅
+- `week4-class4.4-database-security-encryption.md` ✅
 
-**Location:** All learning guides in `docs/` folder
+**Location:** `docs/` folder
 
-### Preparing Classes Before a New Week
+**Structure includes:**
+- Overview (duration, prerequisites, why it matters)
+- Learning Objectives (3-7 measurable outcomes)
+- Key Concepts (tables, examples, analogies)
+- Hands-On Activities (step-by-step with PowerShell commands)
+- Expected Outputs (so learner knows if correct)
+- Deliverables (clear success criteria)
+- Common Issues & Solutions (anticipate problems)
+- Self-Assessment Quiz (5-10 questions with expandable answers)
+- Key Takeaways
+- Next Steps
+- Teaching Notes (for Claude Code guidance)
+- Reading References (relevant Bitcoin/Ethereum book chapters)
 
-**IMPORTANT:** Before the user starts a new week, prepare the class documents to guide the learning process.
+**📚 For complete guide structure template, see [docs/README.md](docs/README.md)**
+
+---
+
+### 2. Learning Notes (Created DURING the week)
+
+**What they are:** Session-by-session documentation of actual learning experience.
+
+**Purpose:** Capture what was learned, questions asked, issues encountered, and decisions made.
+
+**When created:** DURING the week as you complete each class (real-time documentation).
+
+**Format:** `weekN-learning-notes.md`
+
+**Examples:**
+- `week3-learning-notes.md` ✅
+- `week4-learning-notes.md` ✅
+
+**Location:** `docs/` folder
+
+**Structure includes:**
+- Session date and duration
+- Activities completed
+- User questions and insights
+- Technical concepts learned
+- Issues encountered and solutions
+- Files created/modified
+- Key takeaways
+- Next steps for next session
+
+**Purpose:** These notes document YOUR actual learning journey, including:
+- Questions you asked during class
+- Doubts you presented to Claude
+- Issues encountered and how they were resolved
+- Insights gained during the session
+- Time spent on each activity
+- Progress tracking within the week
+
+---
+
+### Key Difference
+
+| Aspect | Learning Guides | Learning Notes |
+|--------|----------------|----------------|
+| **Timing** | BEFORE the week | DURING the week |
+| **Purpose** | What TO teach | What WAS learned |
+| **Audience** | Instructional (for you) | Documentary (your journey) |
+| **Content** | Planned activities | Actual experience |
+| **Created by** | Claude (instructor) | Claude (documenting your session) |
+| **Questions** | Anticipated FAQs | Your actual questions |
+| **Issues** | Common problems | Issues you encountered |
+
+---
+
+### Preparing Learning Guides Before a New Week
+
+**IMPORTANT:** Before the user starts a new week, prepare the learning guide documents to guide the learning process.
 
 When the user says "Let's prepare for Week X" or "What's next in the course?":
 
