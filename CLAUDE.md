@@ -254,7 +254,7 @@ Claude: "The issue is... here's the fix..."
 **IMPORTANT: When the user asks "What's next?" or similar phrases ("What should I do next?", "What comes next?", "Ready to continue", etc.):**
 
 1. **Check current progress:**
-   - Read `learning_notes.md` to see the latest completed week
+   - Read `docs/week0-learning_notes.md` to see the latest completed week
    - Check `docs/README.md` for week completion status
    - Review `docs/weekN-learning-notes.md` for the most recent week
 
@@ -291,7 +291,7 @@ Claude: "The issue is... here's the fix..."
 
 2. **Update progress tracking:**
    - Update `docs/README.md` if week status changed
-   - Update `learning_notes.md` master index if needed
+   - Update `docs/week0-learning_notes.md` master index if needed
    - Mark any completed deliverables
 
 3. **Create session summary:**
@@ -1173,7 +1173,7 @@ The course includes 4 buffer weeks for consolidation, catch-up, and integration:
 
 ### Key Documentation
 - `first_thought.md`: Original project ideation and pivot to family finance
-- `learning_notes.md`: Master index with pre-course planning and course structure decisions
+- `docs/week0-learning_notes.md`: Master index with pre-course planning and course structure decisions
 - `docs/weekN-learning-notes.md`: Week-by-week session notes and learning insights
 - `course_critique.md`: Professional course builder review and recommendations (led to 30-week restructure)
 

@@ -47,7 +47,7 @@ This document tracks all questions, insights, and learning moments throughout th
 **Q4: Learning Documentation**
 - **Question:** Document all questions made during the course in a learning_notes file
 - **Context:** Need to track learning progress and key decisions
-- **Decision:** Created this file (learning_notes.md) to capture questions, insights, and decisions
+- **Decision:** Created this file (week0-learning_notes.md) to capture questions, insights, and decisions
 
 **Q5: PSD2 Module Placement** ⚠️ **MAJOR REORGANIZATION**
 - **Question:** Module 2 (Portuguese Banking & PSD2) is going to be complicated - interacting with Portuguese financial institutions is usually difficult. Move it later in the course.
