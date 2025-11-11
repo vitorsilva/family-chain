@@ -23,7 +23,7 @@ This document tracks all questions, insights, and learning moments throughout th
 #### Questions & Decisions
 
 **Q1: Course Plan Review**
-- **Question:** Read first_thought.md and provide feedback on the learning project idea
+- **Question:** Read docs/week0-first_thought.md and provide feedback on the learning project idea
 - **Context:** Reviewing the initial conversation about building a blockchain project to learn crypto development
 - **Key Insight:** The pivot from complex "DEX Aggregator" to "FamilyChain" (family finance) made the project more relatable and immediately applicable
 
@@ -82,7 +82,7 @@ This document tracks all questions, insights, and learning moments throughout th
   - Milestone 2 (Week 10): Core Platform + Banking Integration
 
 **Q6: Adding DeFi/DEX Technical Depth** 🔧 **ENHANCEMENT**
-- **Question:** Include technical concepts from first_thought.md (DEX aggregator project) like liquidity pools, bridge transactions, multi-chain deployment, etc.
+- **Question:** Include technical concepts from docs/week0-first_thought.md (DEX aggregator project) like liquidity pools, bridge transactions, multi-chain deployment, etc.
 - **Context:** The original DEX aggregator idea had valuable DeFi concepts that shouldn't be lost in the family-focused pivot:
   - DEX protocols (Uniswap, SushiSwap, Curve)
   - Liquidity pools and AMM mechanics
