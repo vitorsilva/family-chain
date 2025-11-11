@@ -67,19 +67,10 @@ weekXX-classX.X-topic-name.md
 | **1.2** | [Blockchain Theory](week1-class1.2-blockchain-theory.md) | 2-3 hours | ✅ Complete |
 | **1.3** | [First Smart Contract](week1-class1.3-first-smart-contract.md) | 3-4 hours | ✅ Complete |
 
-**Week 1 Learning Outcomes:**
-- ✅ Development environment configured (Git, Node.js, VS Code, Hardhat 3)
-- ✅ Understanding of blockchain fundamentals (blocks, chains, consensus)
-- ✅ Bitcoin vs Ethereum differences
-- ✅ Gas mechanism and wallet security
-- ✅ First smart contract written (HelloFamily.sol)
-- ✅ Comprehensive tests written and passing
-- ✅ Contract deployed to Sepolia testnet
-- ✅ **Early Win:** Live smart contract on public blockchain!
-
-**Reading References (Week 1):**
-- Bitcoin Book: Chapter 1 (Introduction), Chapter 2 (How Bitcoin Works)
-- Ethereum Book: Chapter 1 (What Is Ethereum), Chapter 2 (Intro)
+**What We Built:**
+- Development environment (Git, Node.js v22.14.0, VS Code, Hardhat 3.0.8)
+- HelloFamily.sol smart contract with comprehensive tests
+- Deployed to Sepolia testnet: [View on Etherscan](https://sepolia.etherscan.io/)
 
 ---
 
@@ -91,19 +82,12 @@ weekXX-classX.X-topic-name.md
 | **2.2** | [Node Operations and Monitoring](week2-class2.2-node-operations.md) | 3-4 hours | ✅ Complete |
 | **2.3** | [Getting Testnet ETH](week2-class2.3-testnet-eth.md) | 1-2 hours | ✅ Complete |
 
-**Week 2 Learning Outcomes:**
-- ✅ Understanding execution clients (Geth) vs consensus clients (Lighthouse)
-- ✅ Installing Geth v1.16.5 and Lighthouse v8.0.0-rc.2 (WSL Ubuntu)
-- ✅ Configuring JWT authentication between clients
-- ✅ Hybrid approach: RPC provider (Alchemy) for development, local node ready for Week 11+
-- ✅ Systemd services and helper scripts created
-- ✅ Understanding sync modes, node types, peer discovery
-- ✅ Wallet balance verified (0.80 SepoliaETH)
-- ✅ **Early Win:** Infrastructure ready for both development approaches!
-
-**Reading References (Week 2):**
-- Bitcoin Book: Chapter 3 (Bitcoin Core - Running a Node)
-- Ethereum Book: Chapter 3 (Clients - Running an Ethereum Client)
+**What We Built:**
+- Geth v1.16.5 + Lighthouse v8.0.0-rc.2 (WSL Ubuntu)
+- JWT authentication configuration
+- Systemd services and helper scripts
+- Hybrid infrastructure: Alchemy RPC for dev + local node ready for Week 11+
+- Wallet funded with 0.80 SepoliaETH
 
 ---
 
@@ -116,33 +100,13 @@ weekXX-classX.X-topic-name.md
 | **3.3** | [Querying Blockchain Data](week3-class3.3-querying-blockchain-data.md) | 1-2 hours | ✅ Complete |
 | **3.4** | [Hardhat Project Exploration](week3-class3.4-hardhat-project-exploration.md) | 1-2 hours | ✅ Complete |
 
-**Week 3 Learning Outcomes (ALL COMPLETE):**
-- ✅ Create wallets programmatically (random, mnemonic, HD derivation)
-- ✅ Hardhat 3 network connection patterns (`network.connect()`, `getSigners()`)
-- ✅ Understanding wallet components (mnemonic, private key, address)
-- ✅ Wallet recovery and HD wallet concepts
-- ✅ Send ETH transactions via CLI with gas estimation
-- ✅ Estimate gas costs before sending transactions
-- ✅ Check transaction status and confirmations
-- ✅ Handle transaction errors gracefully
-- ✅ Query account balances from blockchain
-- ✅ Explore block data (headers, transactions, utilization, parent hash)
-- ✅ Get transaction history using Etherscan API V2
-- ✅ Identify transaction types (ETH transfers vs contract deployments)
-- ✅ Understand blockchain immutability via parent hash chain
-- ✅ Monitor blockchain in real-time (polling pattern)
-- ✅ Configure and compare mainnet vs testnet (28M times cost difference!)
-- ✅ Understand Hardhat 3 project structure (contracts, artifacts, tests, scripts)
-- ✅ Master Hardhat tasks (build, clean, test, node)
-- ✅ Understand artifacts (ABI + bytecode in JSON)
-- ✅ Run both Solidity and Mocha tests (10 tests passing)
-- ✅ Start and use local Hardhat blockchain (instant mining, 10,000 ETH accounts)
-- ✅ **Early Win:** Send ETH programmatically! (0x85324acc...)
-- ✅ **Bonus:** Fixed formatEther bug, configured mainnet monitoring, verified docs with MCP tools
-
-**Reading References (Week 3):**
-- Bitcoin Book: Chapter 4 (Keys), Chapter 5 (Wallets), Chapter 6 (Transactions)
-- Ethereum Book: Chapter 4 (Keys and Addresses), Chapter 5 (Wallets), Chapter 6 (Transactions)
+**What We Built:**
+- CLI scripts for wallet creation (random, mnemonic, HD derivation)
+- Transaction sending with gas estimation (tx: 0x85324acc...)
+- Blockchain query tools (balances, blocks, transaction history via Etherscan API V2)
+- Hardhat 3 project structure mastery (build, test, node commands)
+- Local Hardhat blockchain setup (instant mining, 10,000 ETH test accounts)
+- Mainnet monitoring configuration (discovered 28M times cost difference!)
 
 ---
 
@@ -155,46 +119,31 @@ weekXX-classX.X-topic-name.md
 | **4.3** | Data Modeling for Financial Systems | 3-4 hours | ✅ Complete |
 | **4.4** | Database Security and Encryption | 3-4 hours | ✅ Complete |
 
-**Week 4 Learning Outcomes (ALL COMPLETE):**
-- ✅ PostgreSQL 18 setup with schema design (family_members, accounts)
-- ✅ Redis caching with Docker (50-108x speedup!)
-- ✅ Double-entry bookkeeping with ledger_entries
-- ✅ Stored procedures (55% faster than application-level)
-- ✅ Audit logging with JSONB and triggers
-- ✅ **Real Sepolia blockchain integration** (linked actual transaction!)
-- ✅ NUMERIC precision for financial data
-- ✅ Row locking (FOR UPDATE) to prevent race conditions
-- ✅ AES-256-GCM encryption for sensitive PII (IBANs, NIFs)
-- ✅ Role-Based Access Control (RBAC) with 3 database roles
-- ✅ GDPR compliance (Right to Portability + Right to Erasure)
-- ✅ Automated backup system with retention policy
-- ✅ 62 comprehensive tests (100% pass rate)
-
-**Reading References (Week 4):**
-- Bitcoin Book: Chapter 6 (Transactions), Chapter 11 (Blockchain)
-- Ethereum Book: Chapter 6 (Transactions), Chapter 13 (EVM)
+**What We Built:**
+- PostgreSQL 18 schema (family_members, accounts, ledger_entries with double-entry bookkeeping)
+- Redis caching with Docker (50-108x speedup measured!)
+- Stored procedures for financial operations (55% faster than application-level)
+- Audit logging with JSONB and triggers
+- Real Sepolia blockchain integration (linked actual transaction)
+- AES-256-GCM encryption for sensitive PII (IBANs, NIFs)
+- RBAC with 3 database roles (readonly, readwrite, admin)
+- GDPR compliance tools (export + anonymization)
+- Automated backup script with retention policy
+- 62 comprehensive tests (100% pass rate)
 
 ---
 
-#### Weeks 5-8
+### Future Weeks (5-26)
 
 🔜 **Learning guides will be created after completing each week**
 
----
-
-### Phase 2: Core Platform (Weeks 9-16)
-
-🔜 **Learning guides will be created after completing each week**
-
----
-
-### Phase 3: Advanced Features (Weeks 17-24)
-
-🔜 **Learning guides will be created after completing each week**
+For upcoming course structure, see [COURSE_PLAN.md](../COURSE_PLAN.md)
 
 ---
 
 ### Phase 4: Production (Weeks 25-30)
+
+🔜 **Most weeks pending completion**
 
 #### Week 27: Testing Strategies
 
@@ -202,14 +151,10 @@ weekXX-classX.X-topic-name.md
 |-------|-------|----------|--------|
 | **27.1** | [Unit Testing + Mutation Testing](week27-class27.1-mutation-testing.md) | 4-5 hours | ✅ Complete |
 
-**Week 27 Class 27.1 Learning Outcomes:**
-- ✅ Understanding test quality vs code coverage
-- ✅ Manual mutation exercises (weak vs strong tests)
-- ✅ Installing Gambit mutation testing tool
-- ✅ Running mutation tests on contracts
-- ✅ Interpreting mutation reports and scores
-- ✅ Fixing surviving mutants
-- ✅ Target: >80% mutation score for critical contracts
+**What We Built:**
+- Gambit mutation testing framework setup
+- Manual mutation exercises (weak vs strong test analysis)
+- Mutation test reports with >80% mutation score target
 
 ---
 
@@ -217,10 +162,11 @@ weekXX-classX.X-topic-name.md
 
 | Metric | Count |
 |--------|-------|
-| **Total Guides Created** | 7 |
-| **Guides Remaining** | ~77 (estimated based on 30-week course) |
+| **Total Guides Created** | 11 |
+| **Weeks Completed** | 4 (+ Week 27 Class 1) |
 | **Total Words (Current)** | ~50,000 words |
-| **Average Guide Length** | ~7,000 words |
+| **Average Guide Length** | ~4,500 words |
+| **Guides Remaining** | ~69 (estimated) |
 
 ---
 

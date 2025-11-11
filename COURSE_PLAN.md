@@ -164,6 +164,15 @@ By completing this course, you will be able to:
 #### Week 1: Environment Setup & Blockchain Theory
 **Duration:** 1 week
 **Goal:** Set up development environment and understand blockchain fundamentals
+**Week 1 Learning Outcomes:**
+- Development environment configured (Git, Node.js, VS Code, Hardhat 3)
+- Understanding of blockchain fundamentals (blocks, chains, consensus)
+- Bitcoin vs Ethereum differences
+- Gas mechanism and wallet security
+- First smart contract written (HelloFamily.sol)
+- Comprehensive tests written and passing
+- Contract deployed to Sepolia testnet
+- **Early Win:** Live smart contract on public blockchain!
 
 - **Class 1.1:** Minimal Development Environment Setup
   - Install Git and create GitHub account
@@ -244,6 +253,16 @@ Before moving to Week 2, complete the self-assessment:
 **Duration:** 1 week
 **Goal:** Run and interact with an Ethereum node
 
+**Week 2 Learning Outcomes:**
+- Understanding execution clients (Geth) vs consensus clients (Lighthouse)
+- Installing Geth v1.16.5 and Lighthouse v8.0.0-rc.2 (WSL Ubuntu)
+- Configuring JWT authentication between clients
+- Hybrid approach: RPC provider (Alchemy) for development, local node ready for Week 11+
+- Systemd services and helper scripts created
+- Understanding sync modes, node types, peer discovery
+- Wallet balance verified (0.80 SepoliaETH)
+- **Early Win:** Infrastructure ready for both development approaches!
+- 
 - **Class 2.1:** Installing and Configuring Geth
   - **SETUP:** Install Geth (Ethereum client)
   - Understanding node types (full, light, archive)
@@ -268,6 +287,11 @@ Before moving to Week 2, complete the self-assessment:
 **Deliverable:** Running Geth node synced to Sepolia testnet
 
 **Early Win:** Successfully receive testnet ETH and view it on Etherscan
+
+**Learning Guides:**
+- 📖 [Class 2.1: Installing and Configuring Geth](docs/week2-class2.1-installing-geth.md) ✅
+- 📖 [Class 2.2: Node Operations and Monitoring](docs/week2-class2.2-node-operations.md) ✅
+- 📖 [Class 2.3: Getting Testnet ETH](docs/week2-class2.3-testnet-eth.md) ✅
 
 **Week 2 Completion Checklist:**
 
@@ -305,7 +329,30 @@ Before moving to Week 3, complete the self-assessment:
 #### Week 3: Command Line Blockchain Interactions
 **Duration:** 1 week
 **Goal:** Interact with blockchain via command line and deploy first contract
-
+**Week 3 Learning Outcomes:**
+- Create wallets programmatically (random, mnemonic, HD derivation)
+- Hardhat 3 network connection patterns (`network.connect()`, `getSigners()`)
+- Understanding wallet components (mnemonic, private key, address)
+- Wallet recovery and HD wallet concepts
+- Send ETH transactions via CLI with gas estimation
+- Estimate gas costs before sending transactions
+- Check transaction status and confirmations
+- Handle transaction errors gracefully
+- Query account balances from blockchain
+- Explore block data (headers, transactions, utilization, parent hash)
+- Get transaction history using Etherscan API V2
+- Identify transaction types (ETH transfers vs contract deployments)
+- Understand blockchain immutability via parent hash chain
+- Monitor blockchain in real-time (polling pattern)
+- Configure and compare mainnet vs testnet (28M times cost difference!)
+- Understand Hardhat 3 project structure (contracts, artifacts, tests, scripts)
+- Master Hardhat tasks (build, clean, test, node)
+- Understand artifacts (ABI + bytecode in JSON)
+- Run both Solidity and Mocha tests (10 tests passing)
+- Start and use local Hardhat blockchain (instant mining, 10,000 ETH accounts)
+- **Early Win:** Send ETH programmatically! (0x85324acc...)
+- **Bonus:** Fixed formatEther bug, configured mainnet monitoring, verified docs with MCP tools
+- 
 - **Class 3.1:** Creating Wallets via CLI
   - Generate wallet addresses
   - Understanding private keys and mnemonics
@@ -339,6 +386,12 @@ Before moving to Week 3, complete the self-assessment:
 **Deliverable:** Command-line wallet operations + Hardhat project initialized
 
 **Early Win:** Send a transaction from command line and see it confirmed
+
+**Learning Guides:**
+- 📖 [Class 3.1: Creating Wallets via CLI](docs/week3-class3.1-creating-wallets-cli.md) ✅
+- 📖 [Class 3.2: Sending Your First Transaction](docs/week3-class3.2-sending-first-transaction.md) ✅
+- 📖 [Class 3.3: Querying Blockchain Data](docs/week3-class3.3-querying-blockchain-data.md) ✅
+- 📖 [Class 3.4: Hardhat Project Exploration](docs/week3-class3.4-hardhat-project-exploration.md) ✅
 
 **Week 3 Completion Checklist:**
 
@@ -383,6 +436,21 @@ Before moving to Week 4, complete the self-assessment:
 **Duration:** 1 week
 **Goal:** Design database schema for family finance system
 
+**Week 4 Learning Outcomes:**
+- PostgreSQL 18 setup with schema design (family_members, accounts)
+- Redis caching with Docker (50-108x speedup!)
+- Double-entry bookkeeping with ledger_entries
+- Stored procedures (55% faster than application-level)
+- Audit logging with JSONB and triggers
+- **Real Sepolia blockchain integration** (linked actual transaction!)
+- NUMERIC precision for financial data
+- Row locking (FOR UPDATE) to prevent race conditions
+- AES-256-GCM encryption for sensitive PII (IBANs, NIFs)
+- Role-Based Access Control (RBAC) with 3 database roles
+- GDPR compliance (Right to Portability + Right to Erasure)
+- Automated backup system with retention policy
+- 62 comprehensive tests (100% pass rate)
+
 - **Class 4.1:** PostgreSQL Setup and Schema Design
   - **SETUP:** Install PostgreSQL and pgAdmin
   - Design family members table
@@ -414,6 +482,12 @@ Before moving to Week 4, complete the self-assessment:
 - Ethereum Book: Chapter 13 (EVM - Ethereum State, Account State)
 
 **Deliverable:** Complete database schema with sample data
+
+**Learning Guides:**
+- 📖 Class 4.1: PostgreSQL Setup and Schema Design 🔜 (to be created)
+- 📖 Class 4.2: Redis Configuration and Caching Patterns 🔜 (to be created)
+- 📖 Class 4.3: Data Modeling for Financial Systems 🔜 (to be created)
+- 📖 Class 4.4: Database Security and Encryption 🔜 (to be created)
 
 **Week 4 Completion Checklist:**
 
