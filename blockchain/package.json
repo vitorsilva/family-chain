@@ -4,15 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-      "test": "mocha",
-      "test:unit": "mocha 'test/unit/**/*.test.ts'",
-      "test:integration": "mocha 'test/integration/**/*.test.ts'",
-      "test:contracts": "hardhat test",
-      "test:encryption": "mocha test/unit/encryption.test.ts",
-      "test:transactions": "mocha test/integration/transactions.test.ts",
-      "test:gdpr": "mocha test/integration/gdpr.test.ts",
-      "test:rbac": "mocha test/integration/rbac.test.ts",
-      "test:all": "npm run test:unit && npm run test:contracts"
+    "test": "mocha",
+    "test:unit": "mocha 'test/unit/**/*.test.ts'",
+    "test:integration": "mocha 'test/integration/**/*.test.ts'",
+    "test:contracts": "hardhat test",
+    "test:encryption": "mocha test/unit/encryption.test.ts",
+    "test:transactions": "mocha test/integration/transactions.test.ts",
+    "test:gdpr": "mocha test/integration/gdpr.test.ts",
+    "test:rbac": "mocha test/integration/rbac.test.ts",
+    "test:all": "npm run test:unit && npm run test:contracts"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +21,7 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-ignition": "^3.0.3",
     "@nomicfoundation/hardhat-toolbox-mocha-ethers": "^3.0.0",
+    "@openzeppelin/contracts": "^5.4.0",
     "@types/chai": "^4.3.20",
     "@types/chai-as-promised": "^8.0.2",
     "@types/mocha": "^10.0.10",
