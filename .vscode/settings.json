@@ -8,6 +8,7 @@
         "lpush",
         "lrange",
         "ltrim",
-        "Millis"
+        "Millis",
+        "Reentrancy"
     ]
 }
