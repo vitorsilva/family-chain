@@ -2,7 +2,7 @@
 ## Smart Contract Foundations - Part 1
 
 **Week Duration:** January 11, 2025 - TBD
-**Current Status:** Class 5.2 Complete ✅
+**Current Status:** Class 5.4 In Progress (Deployment Complete, Verification Pending)
 
 ---
 
@@ -747,4 +747,579 @@ Compiled 1 Solidity file with solc 0.8.28 (evm target: cancun)
 
 ---
 
-*These notes capture the actual learning experience, questions asked, and insights gained during Week 5, Class 5.2.*
+## Session 3: Class 5.3 - Testing Smart Contracts
+
+**Date:** November 17, 2025
+**Duration:** ~1.5 hours
+**Status:** ✅ Complete
+
+### Activities Completed
+
+1. ✅ **Activity 1:** Set up test environment with Hardhat 3 patterns
+2. ✅ **Activity 2:** Test member management (add/remove, access control)
+3. ✅ **Activity 3:** Test deposits and withdrawals
+4. ✅ **Activity 4:** Test owner withdrawal (parental control)
+5. ✅ **Activity 5:** Test edge cases
+
+**Final Result:** 19 tests passing
+
+---
+
+## Key Concepts Learned
+
+### 1. Hardhat 3 Import Patterns
+
+**Learning Guide was outdated!** Hardhat 3 uses different imports:
+
+**Old (Hardhat 2):**
+```typescript
+import { ethers } from "hardhat";
+import { loadFixture } from "@nomicfoundation/hardhat-toolbox/network-helpers";
+```
+
+**New (Hardhat 3):**
+```typescript
+import { network } from "hardhat";
+const { ethers } = await network.connect();
+```
+
+**Key insight:** Always check existing project code (HelloFamily.ts) for correct patterns.
+
+---
+
+### 2. Custom Error Testing with Try/Catch
+
+**Problem:** `.to.be.reverted` is deprecated in Hardhat 3.
+
+**Solution:** Use try/catch pattern:
+```typescript
+try {
+  await wallet.connect(alice).addMember(bob.address);
+  expect.fail("Expected transaction to revert");
+} catch (error: any) {
+  expect(error.message).to.include("OwnableUnauthorizedAccount");
+}
+```
+
+**User insight:** "Shouldn't we test the specific error, not just any revert?"
+- Yes! Testing specific errors ensures failure for the RIGHT reason
+- `error.message.includes("ErrorName")` validates the exact error
+
+---
+
+### 3. Contract Accounts vs EOA
+
+**User Question:** "The contract has a balance property? Is it inherited?"
+
+**Understanding Achieved:**
+- Every Ethereum address (EOA or Contract) can hold Ether
+- Built into protocol, not inherited from a class
+- `address(this).balance` = contract's total ETH
+- Contract = bank vault, `balances` mapping = individual account records
+
+**Analogy:**
+- Contract = Bank building (holds all money)
+- `balances` mapping = Individual account ledgers
+- `address(this).balance` = Total cash in vault
+
+---
+
+### 4. wallet.connect(user) vs Membership
+
+**User Question:** "If Alice isn't a member, can she even connect?"
+
+**Critical Distinction:**
+- `.connect(alice)` = Set Alice as msg.sender (transaction caller)
+- NOT "add Alice to member list"
+- Anyone can CALL a contract
+- Contract's code decides if call SUCCEEDS
+
+**Example:**
+```typescript
+wallet.connect(alice).deposit({ value: amount });
+// Alice sends transaction, but contract checks:
+// if (!familyMembers[msg.sender]) revert NotAMember();
+```
+
+---
+
+### 5. OpenZeppelin vs Custom Errors
+
+**User Observation:** "OwnableUnauthorizedAccount is from OpenZeppelin, right?"
+
+**Understanding:**
+- `OwnableUnauthorizedAccount` = OpenZeppelin's Ownable error
+- `NotAMember`, `ZeroAddress`, `AlreadyAMember` = Your custom errors
+- Contract inherits from Ownable, so uses its error for `onlyOwner` checks
+- Your custom validation uses your custom errors
+
+---
+
+### 6. Deploy Return Value
+
+**User Question:** "What does FamilyWallet.deploy(owner.address) return?"
+
+**Understanding Achieved:**
+- `getContractFactory()` = Factory that knows how to deploy
+- `.deploy(args)` = Sends deployment transaction to blockchain
+- Returns contract instance with all functions as methods
+- `wallet.target` = Contract's deployed address
+- Contract address similar to EOA address but controlled by code, not private key
+
+---
+
+## User Questions and Insights
+
+### Excellent Questions Asked:
+
+1. ✅ "What does FamilyWallet.deploy return?" (Understanding deployment)
+2. ✅ "Contract has balance property - is it inherited?" (Protocol-level understanding)
+3. ✅ "If Alice isn't a member, can she connect?" (msg.sender vs membership)
+4. ✅ "Shouldn't we test specific errors?" (Test quality improvement)
+5. ✅ "Shouldn't we have 'Member cannot remove member' test?" (Test coverage thinking)
+6. ✅ "OwnableUnauthorizedAccount is from OpenZeppelin?" (Inheritance understanding)
+
+### Key Insights Demonstrated:
+
+1. **Caught outdated patterns** in learning guide (Hardhat 3 imports)
+2. **Proactively improved tests** by suggesting additional test cases
+3. **Questioned test quality** - specific errors vs any revert
+4. **Connected concepts** - contract accounts, EOAs, protocol-level features
+5. **Understood inheritance** - which errors come from where
+
+---
+
+## Technical Concepts Mastered
+
+### Testing Patterns
+- ✅ Hardhat 3 import patterns (`network.connect()`)
+- ✅ Test fixtures for efficient setup
+- ✅ Testing access control (owner vs non-owner)
+- ✅ Custom error testing with try/catch
+- ✅ Financial operation testing (deposits, withdrawals)
+- ✅ Edge case identification and testing
+
+### Ethereum Concepts
+- ✅ Contract accounts vs EOAs
+- ✅ Protocol-level balance tracking
+- ✅ msg.sender and transaction callers
+- ✅ Contract deployment and instances
+- ✅ OpenZeppelin inheritance and errors
+
+### TypeScript Testing
+- ✅ Mocha describe/it structure
+- ✅ Chai expect assertions
+- ✅ Error typing (`error: any`)
+- ✅ Async/await in tests
+- ✅ ethers.parseEther() for Wei conversion
+
+---
+
+## Files Created/Modified
+
+### Test Files
+- `test/FamilyWallet.test.ts` - Comprehensive test suite (19 tests)
+
+### Test Structure
+1. **Deployment** (3 tests)
+   - Owner set correctly
+   - Zero initial members
+   - Zero initial balance
+
+2. **Member Management** (5 tests)
+   - Owner can add member
+   - Non-owner cannot add member
+   - Cannot add zero address
+   - Cannot add duplicate member
+   - Non-owner cannot remove member
+
+3. **Deposits** (3 tests)
+   - Member can deposit
+   - Non-member cannot deposit
+   - Cannot deposit zero
+
+4. **Withdrawals** (4 tests)
+   - Member can withdraw
+   - Cannot exceed balance
+   - Non-member cannot withdraw
+   - Owner can withdraw from member (parental control)
+
+5. **Edge Cases** (4 tests)
+   - Owner can add themselves
+   - Cannot withdraw zero
+   - Cannot remove non-existent member
+   - getMembers returns correct list
+
+---
+
+## Compilation/Test Results
+
+**Final Test Output:**
+```
+FamilyWallet
+  Deployment
+    ✔ Should set the right owner
+    ✔ Should start with zero members
+    ✔ Should start with zero balance
+  Member Management
+    ✔ Owner can add a member
+    ✔ Non-owner cannot add members
+    ✔ Cannot add zero address
+    ✔ Cannot add same member twice
+    ✔ Non-owner cannot remove members
+  Deposits
+    ✔ Member can deposit
+    ✔ Non-member cannot deposit
+    ✔ Cannot deposit zero amount
+  Withdrawals
+    ✔ Member can withdraw their balance
+    ✔ Cannot withdraw more than balance
+    ✔ Non-member cannot withdraw
+    ✔ Owner can withdraw from member's balance
+  Edge Cases
+    ✔ Owner can add themselves as member
+    ✔ Cannot withdraw zero amount
+    ✔ Cannot remove non-existent member
+    ✔ getMembers returns correct list
+
+19 passing
+```
+
+---
+
+## Issues Encountered
+
+### Issue 1: Hardhat 3 Import Changes
+**Problem:** Learning guide used Hardhat 2 import patterns
+- `import { ethers } from "hardhat"` → Doesn't work
+- `loadFixture` import path wrong
+
+**Resolution:** Checked existing HelloFamily.ts for correct pattern:
+```typescript
+import { network } from "hardhat";
+const { ethers } = await network.connect();
+```
+
+### Issue 2: Deprecated Revert Matcher
+**Problem:** `.to.be.reverted` deprecated in Hardhat 3
+
+**Error:** `HHE70024: The .reverted matcher has been deprecated`
+
+**Resolution:** Use try/catch pattern with specific error checking:
+```typescript
+try {
+  await transaction();
+  expect.fail("Expected to revert");
+} catch (error: any) {
+  expect(error.message).to.include("CustomError");
+}
+```
+
+### Issue 3: TypeChain Types Not Generated
+**Problem:** No typechain-types folder for type imports
+
+**Resolution:** Use dynamic typing (like HelloFamily.ts):
+```typescript
+const wallet = await FamilyWallet.deploy(owner.address);
+// No explicit type annotation, TypeScript infers
+```
+
+---
+
+## Time Breakdown
+
+- **Activity 1 (Setup + Hardhat 3 fixes):** ~25 minutes
+- **Activity 2 (Member Management):** ~20 minutes
+- **Activity 3 (Deposits/Withdrawals):** ~15 minutes
+- **Activity 4 (Owner Withdrawal):** ~5 minutes
+- **Activity 5 (Edge Cases):** ~10 minutes
+- **Questions and discussions:** ~15 minutes
+
+**Total:** ~1.5 hours
+
+---
+
+## Key Takeaways
+
+### Most Important Concepts:
+1. **Hardhat 3 has breaking changes** - Always verify patterns with existing code
+2. **Test specific errors** - Not just "did it revert?" but "did it revert correctly?"
+3. **Contract accounts hold ETH** - Protocol feature, not inheritance
+4. **connect() sets msg.sender** - Not membership, just caller identity
+5. **Comprehensive testing prevents costly bugs** - Smart contracts are immutable
+
+### Testing Best Practices Learned:
+- Group tests by functionality (describe blocks)
+- Test both success and failure cases
+- Test edge cases (zero values, duplicates, non-existent)
+- Verify specific errors, not just any revert
+- Test access control thoroughly (owner vs non-owner vs non-member)
+
+---
+
+## Next Steps
+
+**Class 5.4: Deploying to Testnet** (3-4 hours)
+- Configure Hardhat for Sepolia deployment
+- Secure key management with Hardhat keystore
+- Deploy FamilyWallet to testnet
+- Verify contract on Etherscan
+- Interact with deployed contract
+- Write deployment scripts
+
+**Prerequisites Completed:**
+- ✅ FamilyWallet contract complete
+- ✅ 19 comprehensive tests passing
+- ✅ Security patterns implemented
+- ✅ Edge cases covered
+- ✅ Ready for production deployment
+
+---
+
+## Personal Notes
+
+### Learning Style Observations:
+- **Validates learning materials** - Caught outdated Hardhat 3 patterns
+- **Proactively suggests improvements** - Added "Member cannot remove member" test
+- **Seeks deeper understanding** - Asked about contract accounts, deploy returns
+- **Quality-focused** - Insisted on testing specific errors
+- **Connects concepts** - Linked EOAs, contract accounts, inheritance
+
+### Areas of Strength:
+1. Critical evaluation of provided materials
+2. Test quality awareness (specific vs generic)
+3. Understanding protocol-level features
+4. Asking clarifying questions before proceeding
+5. Independent thinking on test coverage
+
+### Teaching Adjustments Made:
+1. Used existing project code as reference (HelloFamily.ts)
+2. Provided try/catch pattern for Hardhat 3 custom errors
+3. Explained protocol-level features (not just Solidity)
+4. Distinguished OpenZeppelin vs custom errors
+5. Validated user's test improvement suggestions
+
+---
+
+**Session End:** November 17, 2025
+**Next Session:** Class 5.4 - Deploying to Testnet
+**Status:** 19 tests passing, ready for deployment
+
+---
+
+*These notes capture the actual learning experience, questions asked, and insights gained during Week 5, Class 5.3.*
+
+---
+
+## Session 4: Class 5.4 - Deploying to Testnet
+
+**Date:** November 17, 2025
+**Duration:** In Progress
+**Status:** 🚧 In Progress
+
+### Activities Completed
+
+1. ✅ **Activity 1:** Verified keystore setup (development keystore with all secrets)
+2. ✅ **Activity 2:** Created Ignition deployment module
+3. ✅ **Activity 3:** Deployed FamilyWallet to Sepolia
+
+---
+
+## Key Concepts Learned
+
+### 1. Hardhat Keystore Types
+
+**User already knew:** Hardhat 3 uses encrypted keystore, not .env files
+
+**Key Discovery:** Two keystore types exist:
+- **Production keystore** - `npx hardhat keystore list`
+- **Development keystore** - `npx hardhat keystore list --dev`
+
+User had configured development keystore during Week 1 with:
+- SEPOLIA_RPC_URL
+- SEPOLIA_PRIVATE_KEY
+- ALCHEMY_API_KEY
+- ETHERSCAN_API_KEY
+- MAINNET_RPC_URL
+- DB_PASSWORD
+
+---
+
+### 2. Hardhat Ignition Module Convention
+
+**User Question:** "Why save in ignition/modules? Is it a convention?"
+
+**Understanding Achieved:**
+- Yes, official Hardhat Ignition convention
+- Framework expects modules in this directory
+- Declarative deployment (describe what you want)
+- Automatic state tracking and dependency resolution
+- Separation from contracts/, test/, scripts/
+
+**Benefits over old scripts:**
+- Only deploys what changed
+- Tracks deployment history per network
+- Manages complex dependencies automatically
+
+---
+
+### 3. Deployment Command Correction
+
+**Learning Guide Error:** Used `--dev` flag incorrectly
+
+**Wrong:**
+```powershell
+npx hardhat ignition deploy ... --dev  # Error HHE504
+```
+
+**Correct:**
+```powershell
+npx hardhat ignition deploy ignition/modules/FamilyWallet.ts --network sepolia
+```
+
+**Key Insight:** `--dev` is for keystore commands only, not for deployment. Hardhat automatically uses development keystore when deploying.
+
+---
+
+## Deployment Results
+
+**Contract:** FamilyWallet
+**Network:** Sepolia (Chain ID: 11155111)
+**Address:** `0xaa8ffF534A8BC8a6e6C8AEad795d5a5E373e716e`
+**Etherscan:** https://sepolia.etherscan.io/address/0xaa8ffF534A8BC8a6e6C8AEad795d5a5E373e716e
+
+---
+
+## Files Created
+
+### Ignition Modules
+- `ignition/modules/FamilyWallet.ts` - Deployment module
+
+### Auto-Generated (by Ignition)
+- `ignition/deployments/chain-11155111/` - Deployment state for Sepolia
+
+---
+
+## Issues Encountered
+
+### Issue 1: Production vs Development Keystore
+**Problem:** `npx hardhat keystore list` showed "No production keystore found"
+
+**Resolution:** Use `--dev` flag: `npx hardhat keystore list --dev`
+
+### Issue 2: Invalid --dev Flag on Deploy
+**Problem:** `--dev` flag not recognized for ignition deploy command
+
+**Error:** `Error HHE504: Invalid option "--dev"`
+
+**Resolution:** Don't use `--dev` for deployment. Correct command:
+```powershell
+npx hardhat ignition deploy ignition/modules/FamilyWallet.ts --network sepolia
+```
+
+---
+
+## User Questions and Insights
+
+### Questions Asked:
+
+1. ✅ "Why save in ignition/modules? Is it a convention?" (Framework conventions)
+2. ✅ "How do I check development keystore?" (keystore --dev flag)
+
+### Key Insights Demonstrated:
+
+1. **Remembered keystore concept** from Week 1 correctly
+2. **Caught command errors** (--dev flag placement)
+3. **Asked about conventions** rather than just accepting them
+4. **Requested documentation updates** when commands differed from guides
+
+---
+
+## Time Breakdown
+
+- **Activity 1 (Keystore verification):** ~10 minutes
+- **Activity 2 (Ignition module creation):** ~10 minutes
+- **Activity 3 (Deployment):** ~15 minutes
+- **Activity 4 (Etherscan verification - blocked):** ~20 minutes
+- **Questions and discussions:** ~15 minutes
+
+**Total so far:** ~1 hour (session paused)
+
+---
+
+## Blockers Encountered
+
+### Blocker: Etherscan Verification Config Issue
+
+**Problem:** Hardhat 3 verification plugin not reading ETHERSCAN_API_KEY
+
+**Attempted Solutions:**
+1. Added `etherscan.apiKey` to config → "API key is empty"
+2. Changed to `verify.etherscan.apiKey` (per context7 docs) → "No config exported" error
+
+**Root Cause:** Likely syntax error in hardhat.config.ts after edits
+
+**Next Session:**
+1. Check hardhat.config.ts for syntax errors
+2. Run `npx hardhat build` to validate config
+3. Fix config structure for Hardhat 3 verification
+4. Complete verification and contract interaction
+
+**Fallback:** Can verify manually on Etherscan website if programmatic fails
+
+---
+
+## Key Takeaways So Far
+
+### Most Important Concepts:
+1. **Hardhat Ignition is declarative** - Describe what to deploy, not how
+2. **Convention over configuration** - ignition/modules/ is the standard location
+3. **Development keystore is fine for testnets** - No real money at risk
+4. **Deployment succeeded** - Contract live on Sepolia!
+5. **Hardhat 3 docs need careful reading** - Config structure differs from v2
+
+### Commands to Remember:
+```powershell
+# Check development keystore
+npx hardhat keystore list --dev
+
+# Deploy with Ignition
+npx hardhat ignition deploy ignition/modules/FamilyWallet.ts --network sepolia
+
+# Verify (when config is fixed)
+npx hardhat ignition verify chain-11155111 --network sepolia
+```
+
+---
+
+## Personal Notes
+
+### Learning Style Observations:
+- **Documents as you go** - Requested learning notes update
+- **Catches discrepancies** - Noticed --dev flag wasn't for deploy command
+- **Seeks understanding** - Asked why ignition/modules convention exists
+- **Practical focus** - Wants to know correct commands for future reference
+
+### Areas of Strength:
+1. Recognizing when documentation is wrong
+2. Requesting updates for future reference
+3. Understanding the difference between testnet and mainnet security
+4. Patience when hitting blockers
+
+---
+
+**Session Paused:** November 17, 2025
+**Next Session:** Fix Etherscan verification, interact with contract
+**Status:** Contract deployed successfully! Verification blocked by config issue.
+
+---
+
+## Next Steps (When Resuming)
+
+1. **Fix hardhat.config.ts** - Resolve syntax/export error
+2. **Verify on Etherscan** - Make source code visible
+3. **Interact with contract** - Add members, deposit ETH, test features
+4. **Complete Week 5** - Self-assessment quiz
+5. **Prepare for Week 6** - Frontend development with React/Next.js
+
+---
