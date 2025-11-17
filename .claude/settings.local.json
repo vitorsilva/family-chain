@@ -1,13 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(Select-Object FullName)",
-      "Bash(psql:*)",
-      "Bash(Get-ChildItem -Path \"C:\\Users\\vitor410rodrigues\\source\\repos\\FamilyChain\" -Recurse -Depth 2 -File)",
-      "Bash(Out-String -Width 300)",
-      "Bash([xml]$svg = Get-Content docsweek4-architecture-diagram.svg)",
-      "Bash(Write-Host \"✅ SVG is valid XML!\" -ForegroundColor Green)",
-      "Bash(pwsh -Command:*)"
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__get-library-docs"
     ],
     "deny": [],
     "ask": []

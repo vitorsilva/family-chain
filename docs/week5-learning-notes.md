@@ -2,7 +2,7 @@
 ## Smart Contract Foundations - Part 1
 
 **Week Duration:** January 11, 2025 - TBD
-**Current Status:** Class 5.1 Complete ✅
+**Current Status:** Class 5.2 Complete ✅
 
 ---
 
@@ -431,4 +431,320 @@ Compiled 8 Solidity files successfully (evm target: cancun).
 
 ---
 
-*These notes capture the actual learning experience, questions asked, and insights gained during Week 5, Class 5.1.*
+## Session 2: Class 5.2 - Writing the Family Wallet Contract
+
+**Date:** November 17, 2025
+**Duration:** ~1.5 hours
+**Status:** ✅ Complete
+
+### Activities Completed
+
+1. ✅ **Activity 1:** Created basic FamilyWallet structure with state variables and events
+2. ✅ **Activity 2:** Implemented member management (addMember, removeMember)
+3. ✅ **Activity 3:** Implemented deposit functionality
+4. ✅ **Activity 4:** Implemented withdrawal with reentrancy protection
+5. ✅ **Activity 5:** Added owner withdrawal (parental control)
+6. ✅ **Activity 6:** Added helper view functions
+
+---
+
+## Key Concepts Learned
+
+### 1. Dual Data Structures for Members
+
+**User Insight:** Correctly identified why we need both mapping AND array:
+- `familyMembers` mapping → O(1) lookup for membership check
+- `memberList` array → Enables iteration (list all members, count them)
+
+**Trade-off understood:** Extra gas to maintain both, but gains important functionality for UI/frontend.
+
+---
+
+### 2. Contract Architecture Design Decision
+
+**Critical Discussion:** Owner as separate role vs. family member
+
+**Option A:** Owner IS automatically a family member
+- Simpler but less flexible
+- Constructor adds owner to memberList
+
+**Option B:** Owner is SEPARATE (chosen design)
+- Owner is administrator role
+- Owner can optionally add themselves as member
+- Cleaner separation of concerns
+- More flexible for different use cases
+
+**User's Reasoning:**
+- Caught logical inconsistency in learning guide
+- Asked "shouldn't owner be able to add themselves if Option B?"
+- Correctly identified that preventing owner from being member contradicts flexibility goal
+
+**Resolution:** Removed `OwnerCannotBeMember` check entirely, allowing owner to optionally join as member.
+
+---
+
+### 3. Bug Detection in Learning Guide
+
+**User Caught Error:**
+```solidity
+// WRONG (in original guide):
+if (member == owner()) revert CannotRemoveOwner();  // In addMember - wrong error!
+
+// CORRECT:
+// Either use proper error name or remove check entirely
+```
+
+**User's observation:** "Shouldn't it be AlreadyAMember since owner was created in constructor?"
+
+This led to the architecture discussion above and better contract design.
+
+---
+
+### 4. Checks-Effects-Interactions Pattern
+
+**Understanding Demonstrated:**
+
+User correctly explained why we update balance BEFORE external call:
+> "We first remove the value from our side (balances[]) so that if other call is made to the contract before the transfer is made, the balance already reflects what is expected"
+
+**Reentrancy Attack Prevention:**
+1. CHECKS - Validate all inputs
+2. EFFECTS - Update state (balance -= amount)
+3. INTERACTIONS - External call (send Ether)
+
+If reversed, attacker could re-enter and drain contract.
+
+---
+
+### 5. Unsigned Integer Safety
+
+**User Question:** "Shouldn't we test if msg.value < 0?"
+
+**Understanding Achieved:**
+- `uint256` is unsigned - cannot be negative by definition
+- Compiler/EVM enforces this at protocol level
+- Eliminates entire class of edge cases
+- Only need to check for zero (if that's invalid)
+
+---
+
+### 6. View Functions and Gas Costs
+
+**User Understanding:**
+> "They are marked as view to say that they don't affect state, and in this way they cost a lot less"
+
+**Clarification Added:**
+- `view` functions cost **zero gas** when called externally
+- Only cost gas if called from within a transaction
+- Perfect for frontend queries (free balance checks)
+
+---
+
+### 7. OpenZeppelin Constructor Inheritance
+
+**User Question:** "What does `Ownable(initialOwner)` do in the constructor?"
+
+**Understanding via Documentation:**
+- Similar to C#'s `: base(initialOwner)` syntax
+- Passes initial owner to parent Ownable contract
+- Ownable stores this internally and provides `onlyOwner` modifier
+- Official docs: https://docs.openzeppelin.com/contracts/5.x/api/access#Ownable
+
+---
+
+## User Questions and Insights
+
+### Excellent Questions Asked:
+
+1. ✅ "Why do we need both mapping and array for members?" (Dual data structure reasoning)
+2. ✅ "Shouldn't the error be AlreadyAMember, not CannotRemoveOwner?" (Bug detection!)
+3. ✅ "If owner is separate, shouldn't they be able to add themselves?" (Logical consistency)
+4. ✅ "What does Ownable(initialOwner) do?" (Constructor inheritance)
+5. ✅ "Shouldn't we test if msg.value < 0?" (Unsigned integer understanding)
+6. ✅ "Why update balance BEFORE external call?" (Reentrancy protection)
+7. ✅ "Why send to msg.sender in ownerWithdraw?" (Security design)
+
+### Key Insights Demonstrated:
+
+1. **Caught bug in learning guide** - Critical thinking about error naming
+2. **Questioned design decisions** - Not accepting things at face value
+3. **Connected concepts** - Linked mapping limitations from Class 5.1
+4. **Security awareness** - Understood reentrancy attack vector
+5. **Type system understanding** - Grasped unsigned integer implications
+
+---
+
+## Technical Concepts Mastered
+
+### Contract Architecture
+- ✅ Multi-role access control (Owner vs Members)
+- ✅ Dual data structures (mapping + array for different use cases)
+- ✅ Event-driven design for off-chain monitoring
+- ✅ Custom errors for gas efficiency
+
+### Security Patterns
+- ✅ Checks-Effects-Interactions pattern
+- ✅ ReentrancyGuard (nonReentrant modifier)
+- ✅ Input validation (zero address, zero amount, insufficient balance)
+- ✅ Owner-only administrative functions
+
+### Solidity Specifics
+- ✅ Constructor inheritance with OpenZeppelin
+- ✅ Payable functions for receiving Ether
+- ✅ View functions for gas-free queries
+- ✅ Safe Ether transfer with `.call{value: amount}("")`
+
+---
+
+## Files Created/Modified
+
+### Contracts
+- `contracts/FamilyWallet.sol` - Complete family wallet implementation
+
+### Contract Features Implemented
+1. **State Variables:**
+   - `familyMembers` mapping (address => bool)
+   - `balances` mapping (address => uint256)
+   - `memberList` array (address[])
+
+2. **Events:**
+   - MemberAdded (indexed member, timestamp)
+   - MemberRemoved (indexed member, timestamp)
+   - Deposited (indexed member, amount, newBalance, timestamp)
+   - Withdrawn (indexed member, amount, remainingBalance, timestamp)
+
+3. **Custom Errors:**
+   - NotAMember()
+   - AlreadyAMember()
+   - ZeroAddress()
+   - ZeroAmount()
+   - InsufficientBalance(uint256 requested, uint256 available)
+   - CannotRemoveOwner()
+
+4. **Functions:**
+   - addMember() - Owner only
+   - removeMember() - Owner only
+   - deposit() - Members only, payable
+   - withdraw() - Members only, nonReentrant
+   - ownerWithdraw() - Owner only, nonReentrant
+   - isMember() - View
+   - getMembers() - View
+   - getMemberCount() - View
+   - getBalance() - View
+   - getTotalBalance() - View
+
+---
+
+## Compilation Results
+
+**Final Build:**
+```
+Compiled 7 Solidity files with solc 0.8.28 (evm target: cancun)
+Compiled 1 Solidity file with solc 0.8.28 (evm target: cancun)
+```
+
+**All contracts compiling:**
+- HelloFamily.sol
+- SimpleStorage.sol
+- DataTypesDemo.sol
+- FunctionsDemo.sol
+- SecureWallet.sol
+- FamilyWallet.sol (NEW)
+- OpenZeppelin imports
+
+---
+
+## Issues Encountered
+
+### Issue 1: Learning Guide Bug
+**Problem:** `addMember` had wrong custom error (`CannotRemoveOwner` instead of something like `OwnerCannotBeMember`)
+
+**Resolution:** User caught it, led to architecture redesign where we allow owner to optionally add themselves as member.
+
+### Issue 2: Logical Inconsistency
+**Problem:** Option B design said owner can add themselves, but code prevented it
+
+**Resolution:** Removed the restriction, making design consistent with stated goals.
+
+---
+
+## Time Breakdown
+
+- **Architecture discussion:** ~20 minutes (owner as member vs separate)
+- **Activity 1 (Structure):** ~15 minutes
+- **Activity 2 (Member Management):** ~20 minutes (included bug fix discussion)
+- **Activity 3 (Deposit):** ~10 minutes
+- **Activity 4 (Withdraw):** ~15 minutes (reentrancy discussion)
+- **Activity 5 (Owner Withdraw):** ~5 minutes
+- **Activity 6 (Helper Functions):** ~5 minutes
+
+**Total:** ~1.5 hours (faster than estimated 3-4 hours due to solid Class 5.1 foundation)
+
+---
+
+## Key Takeaways
+
+### Most Important Concepts:
+1. **Dual data structures solve mapping limitations** - Array for iteration, mapping for O(1) lookup
+2. **Design decisions have trade-offs** - Flexibility vs. simplicity in role separation
+3. **Question everything** - Even learning guides can have bugs!
+4. **Checks-Effects-Interactions is critical** - Order matters for security
+5. **Type system helps** - uint256 eliminates negative value bugs
+6. **View functions are free** - Great for frontend queries
+
+### Design Decisions Made:
+- Owner is SEPARATE from members (can optionally join)
+- Members tracked in both mapping (fast lookup) and array (iteration)
+- Parental control via ownerWithdraw sends funds to owner, not member
+- Custom errors over require strings for gas efficiency
+
+---
+
+## Next Steps
+
+**Class 5.3: Testing Smart Contracts** (4-5 hours)
+- Write comprehensive tests for FamilyWallet
+- Test all functions and edge cases
+- Test security (reentrancy attempts)
+- Use Hardhat testing framework
+- Apply knowledge from Week 3 testing
+
+**Prerequisites Completed:**
+- ✅ FamilyWallet.sol complete and compiling
+- ✅ Understanding of all contract features
+- ✅ Security patterns implemented
+- ✅ Ready to verify functionality with tests
+
+---
+
+## Personal Notes
+
+### Learning Style Observations:
+- **Catches inconsistencies** - Spotted bug in learning guide immediately
+- **Questions design decisions** - Doesn't accept things without understanding why
+- **Thinks through implications** - Considered practical usage scenarios
+- **Builds on previous knowledge** - Connected mapping limitations from 5.1
+
+### Areas of Strength:
+1. Critical thinking about code correctness
+2. Understanding security implications
+3. Connecting concepts across classes
+4. Asking clarifying questions
+5. Validating design decisions against use cases
+
+### Teaching Adjustments Made:
+1. Allowed user to drive architecture decisions
+2. Provided options rather than single answers
+3. Used context7 MCP for official OpenZeppelin docs
+4. Validated user's bug finding rather than dismissing
+5. Kept activities focused on core functionality
+
+---
+
+**Session End:** November 17, 2025
+**Next Session:** Class 5.3 - Testing Smart Contracts
+**Status:** FamilyWallet complete, ready for comprehensive testing
+
+---
+
+*These notes capture the actual learning experience, questions asked, and insights gained during Week 5, Class 5.2.*

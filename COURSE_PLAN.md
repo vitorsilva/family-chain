@@ -1738,4 +1738,4 @@ This course plan is open-source and available for anyone to use for learning pur
 **Ready to start? Head to Week 1 and let's build something amazing!**
 
 *Course Version: 2.0 (30-week structure)*
-*Last Updated: January 2025*
+*Last Updated: November 2025*
