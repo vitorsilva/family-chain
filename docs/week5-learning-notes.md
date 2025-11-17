@@ -1309,17 +1309,295 @@ npx hardhat ignition verify chain-11155111 --network sepolia
 ---
 
 **Session Paused:** November 17, 2025
-**Next Session:** Fix Etherscan verification, interact with contract
-**Status:** Contract deployed successfully! Verification blocked by config issue.
+**Session Resumed:** November 17, 2025
+**Status:** ✅ Complete
 
 ---
 
-## Next Steps (When Resuming)
+## Session 4 Continuation: Completing Class 5.4
 
-1. **Fix hardhat.config.ts** - Resolve syntax/export error
-2. **Verify on Etherscan** - Make source code visible
-3. **Interact with contract** - Add members, deposit ETH, test features
-4. **Complete Week 5** - Self-assessment quiz
-5. **Prepare for Week 6** - Frontend development with React/Next.js
+**Date:** November 17, 2025
+**Duration:** ~1.5 hours additional
+**Status:** ✅ Complete
+
+### Activities Completed (Continued)
+
+4. ✅ **Activity 4:** Fixed Etherscan verification configuration
+5. ✅ **Activity 5:** Verified contract on Etherscan (manual process)
+6. ✅ **Activity 6:** Interacted with deployed contract
+7. ✅ **Activity 7:** Completed Week 5 self-assessment
 
 ---
+
+### 4. Etherscan Verification Configuration
+
+**Problem:** Hardhat 3 wasn't reading ETHERSCAN_API_KEY from keystore
+
+**Solution:** Added `verify.etherscan` section to hardhat.config.ts:
+```typescript
+verify: {
+  etherscan: {
+    apiKey: configVariable("ETHERSCAN_API_KEY"),
+  },
+},
+```
+
+**Key Insight:** The keystore holds the secrets, but the config tells Hardhat WHERE to look. `configVariable("ETHERSCAN_API_KEY")` is a reference to the secret, not the secret itself.
+
+---
+
+### 5. Bytecode Mismatch Issue (Major Learning!)
+
+**Problem:** Automated verification failed with "bytecode mismatch"
+
+**Root Cause:** Contract was deployed with **optimization enabled** (production profile), but verification attempted with **optimization disabled** (default profile).
+
+**Same source code + different compiler settings = different bytecode!**
+
+**Attempted Solutions:**
+1. `npx hardhat ignition verify` → Error HHE80009
+2. `npx hardhat verify --network sepolia <address>` → Same error
+3. Manual verification on Etherscan → SUCCESS!
+
+---
+
+### 6. Manual Etherscan Verification Process
+
+**Why Manual:** Automated verification kept failing due to bytecode mismatch.
+
+**Step 1: Flatten contract code**
+```powershell
+npx hardhat flatten contracts/FamilyWallet.sol > FamilyWallet_flat.sol
+```
+
+**Problem:** Hardhat flatten ordered files incorrectly:
+- FamilyWallet (uses Ownable, ReentrancyGuard) came FIRST
+- Ownable, ReentrancyGuard came AFTER
+- Solidity needs dependencies BEFORE dependents
+
+**Solution:** Manually reordered to:
+1. Context (base)
+2. Ownable (uses Context)
+3. ReentrancyGuard
+4. FamilyWallet (uses Ownable, ReentrancyGuard)
+
+Created `FamilyWallet_flat_ordered.sol` with correct order.
+
+**Step 2: Etherscan verification form**
+- Compiler: v0.8.28+commit.7893614a
+- **Optimization: Yes** (CRITICAL!)
+- **Runs: 200**
+- License: MIT
+- Constructor Arguments: `000000000000000000000000b09b5449d8bb84312fbc4293baf122e0e1875736`
+
+**Result:** ✅ Verification successful!
+
+**User Insight:** "We didn't select the optimized code option" - Correctly identified the root cause!
+
+---
+
+### 7. Contract Interaction
+
+**Created interaction script:** `scripts/interact-wallet.ts`
+
+**Actions performed on live Sepolia contract:**
+1. ✅ Added self as family member
+   - Transaction: `0x8d66a170dcc632752fbc1c240c0dfa36dcc55867e5b86ee930f128cee26e030a`
+2. ✅ Deposited 0.001 ETH
+   - Transaction: `0xd0a5e5f921325ad282ef7c9d677e2e1a3f382bb055fc6a10ea15f63b59f3f832`
+3. ✅ Verified balances updated correctly
+
+**Final State:**
+- Member count: 1
+- Your balance in contract: 0.001 ETH
+- Contract total balance: 0.001 ETH
+
+---
+
+### 8. Week 5 Self-Assessment Results
+
+**Q1: Storage vs Memory vs Calldata** ✅
+- Calldata: Function parameters (read-only, cheapest ~3 gas)
+- Memory: Temporary during processing (~3 gas)
+- Storage: Persisted on blockchain (expensive ~20,000 gas)
+- User correctly identified all three purposes
+
+**Q2: Checks-Effects-Interactions Pattern** ✅
+- Prevents reentrancy attacks
+- Update state BEFORE external calls
+- User gave excellent example with withdrawal scenario
+
+**Q3: nonReentrant vs CEI** ⚠️ Clarified
+- User initially thought they were the same
+- **CEI** = Code pattern (order of operations)
+- **nonReentrant** = Lock mechanism (prevents re-entry)
+- Use BOTH together for defense-in-depth
+
+**Q4: Bytecode Mismatch** ✅
+- User correctly identified: "We didn't select the optimized code option"
+- Same source + different settings = different bytecode
+
+**Q5: Purpose of Verification** ✅
+- Makes source code visible
+- Builds trust and transparency
+- Enables direct interaction via Etherscan UI
+
+---
+
+## Additional Issues Resolved
+
+### Pool Connection Error in Tests
+
+**Problem:** "Cannot use a pool after calling end on the pool"
+
+**Root Cause:** `rbac.test.ts` was calling `pool.end()` in its `after` hook, but tests run alphabetically, so `transactions.test.ts` (t > r) ran after and couldn't use the closed pool.
+
+**Solution:** Removed `pool.end()` calls from individual test files. Let Node.js handle cleanup on process exit.
+
+**User Question:** "If I remove that line won't the pool remain open?"
+
+**Answer:** Yes, but that's fine! Process exit cleans up automatically. Shared resources shouldn't be closed by individual test files.
+
+**User Follow-up:** "So I should close it in the last file alphabetically?"
+
+**Answer:** Yes, but better to use global Mocha hooks or rely on process exit. Alphabetic ordering is fragile.
+
+---
+
+### Deployment Artifacts Decision
+
+**User Question:** "Should I add ignition/deployments to source control?"
+
+**Answer:** YES! Add them because:
+1. Records deployment history
+2. Contains contract addresses (`deployed_addresses.json`)
+3. Portfolio evidence of live deployment
+4. No secrets in these files (those are in keystore)
+
+```powershell
+git add ignition/deployments/
+git commit -m "feat: add FamilyWallet deployment to Sepolia"
+```
+
+---
+
+## Files Created This Session
+
+1. `FamilyWallet_flat.sol` - Auto-generated flattened (wrong order)
+2. `FamilyWallet_flat_ordered.sol` - Manually reordered for verification
+3. `scripts/interact-wallet.ts` - Contract interaction script
+4. Updated `hardhat.config.ts` - Added verify.etherscan config
+
+---
+
+## Key Concepts Mastered (Session 4 Completion)
+
+### Deployment & Verification
+- ✅ Hardhat 3 verify configuration (`verify.etherscan.apiKey`)
+- ✅ Bytecode depends on compiler settings (optimization matters!)
+- ✅ Manual Etherscan verification process
+- ✅ Contract flattening and dependency ordering
+- ✅ Constructor argument ABI encoding
+
+### Contract Interaction
+- ✅ Attaching to deployed contracts
+- ✅ Calling contract functions from scripts
+- ✅ Transaction confirmation and receipts
+- ✅ Reading contract state (balances, members)
+
+### Testing Best Practices
+- ✅ Shared resources (pools) across test files
+- ✅ Process exit vs explicit cleanup
+- ✅ Test execution order (alphabetical)
+
+---
+
+## Time Breakdown (Session 4 Completion)
+
+- **Etherscan config fix:** ~15 minutes
+- **Verification troubleshooting:** ~30 minutes
+- **Manual verification process:** ~20 minutes
+- **Contract interaction script:** ~15 minutes
+- **Self-assessment quiz:** ~10 minutes
+- **Additional fixes (pools, artifacts):** ~15 minutes
+
+**Total Session 4:** ~2.5 hours (1 hour previous + 1.5 hours this session)
+
+---
+
+## Week 5 Complete Summary
+
+**Total Time:** ~8-9 hours across 4 classes
+- Class 5.1: ~3.5 hours
+- Class 5.2: ~1.5 hours
+- Class 5.3: ~1.5 hours
+- Class 5.4: ~2.5 hours
+
+**Major Achievements:**
+1. ✅ Mastered Solidity fundamentals (storage, memory, calldata, modifiers, events)
+2. ✅ Built production-quality FamilyWallet contract with security patterns
+3. ✅ Created comprehensive test suite (19 tests)
+4. ✅ Deployed to Sepolia testnet
+5. ✅ Verified on Etherscan (learned optimization settings importance)
+6. ✅ Interacted with live contract (add member, deposit ETH)
+7. ✅ 0.001 ETH deposited in contract
+
+**Contract Details:**
+- Address: `0xaa8ffF534A8BC8a6e6C8AEad795d5a5E373e716e`
+- Network: Sepolia (Chain ID: 11155111)
+- Owner: `0xB09b5449D8BB84312Fbc4293baf122E0e1875736`
+- Balance: 0.001 ETH
+- Members: 1 (owner)
+
+---
+
+## Personal Notes
+
+### Learning Style Observations:
+- **Direct feedback appreciated** - Corrected me when I asked unnecessary questions
+- **Efficient problem-solver** - Quickly identified bytecode mismatch cause
+- **Asks the right questions** - Pool lifecycle, artifact versioning
+- **Connects concepts** - CEI pattern to reentrancy, optimization to bytecode
+
+### Areas of Strength:
+1. Debugging complex issues (bytecode mismatch)
+2. Understanding underlying mechanics (not just "it works")
+3. Version control best practices (what to commit)
+4. Test isolation and shared resources
+5. Security pattern differentiation (CEI vs nonReentrant)
+
+---
+
+## Recommended Reading (Week 5)
+
+**Bitcoin Book:**
+- Chapter 7: Authorization and Authentication - Scripts
+
+**Ethereum Book:**
+- Chapter 7: Smart Contracts and Solidity - Introduction, Data Types, Functions
+
+---
+
+## Next Steps (Week 6)
+
+**Week 6: Smart Contract Foundations Part 2 + Frontend Basics**
+- Gas optimization techniques
+- Contract verification & security basics
+- React/Next.js setup for Web3
+- MetaMask integration
+- Building a frontend that interacts with your deployed FamilyWallet!
+
+**Prerequisites Complete:**
+- ✅ FamilyWallet deployed and verified
+- ✅ Contract interaction scripts working
+- ✅ Understanding of Solidity and security patterns
+- ✅ Ready to build UI around your smart contract
+
+---
+
+**Week 5 Complete:** November 17, 2025
+**Status:** ✅ All objectives achieved!
+
+---
+
+*These notes capture the complete learning experience for Week 5, including all questions asked, issues encountered, and insights gained.*

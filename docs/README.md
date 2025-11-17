@@ -147,18 +147,17 @@ weekXX-classX.X-topic-name.md
 | **5.4** | [Deploying to Testnet](week5-class5.4-deploying-to-testnet.md) | 3-4 hours | ✅ Complete |
 
 **What We Built:**
-- Comprehensive Solidity knowledge (types, functions, modifiers, events, storage vs memory)
-- FamilyWallet.sol contract with multi-user support and access control
+- Comprehensive Solidity knowledge (types, functions, modifiers, events, storage vs memory vs calldata)
+- FamilyWallet.sol contract with multi-user support and parental controls
 - OpenZeppelin integration (Ownable, ReentrancyGuard)
 - Checks-Effects-Interactions pattern for reentrancy protection
 - Custom errors for gas-efficient error handling
-- 36+ comprehensive tests using Hardhat 3 + Mocha + Chai + TypeScript
-- Fixture pattern for 10-100x faster test execution
-- Reentrancy attack simulation demonstrating security vulnerabilities
-- Hardhat keystore configuration for secure key management
-- Deployment scripts with error handling and cost estimation
-- Contract verification on Etherscan
-- Contract interaction scripts
+- 19 FamilyWallet tests (89 total project tests passing!)
+- Hardhat Ignition deployment module
+- Deployed to Sepolia: `0xaa8ffF534A8BC8a6e6C8AEad795d5a5E373e716e`
+- Verified on Etherscan (learned optimization settings affect bytecode!)
+- Contract interaction scripts (add member, deposit ETH)
+- 0.001 ETH deposited in live contract
 
 ---
 
@@ -362,10 +361,10 @@ As you use these guides:
 
 ---
 
-**Last Updated:** 2025-11-17 (Week 5 In Progress - Classes 5.1, 5.2, 5.3 Complete!)
-**Course Progress:** Week 1 ✅ | Week 2 ✅ | Week 3 ✅ | Week 4 ✅ | Week 5 🚧 Class 5.4 Next | Week 6 🔜 After Week 5
+**Last Updated:** 2025-11-17 (Week 5 Complete!)
+**Course Progress:** Week 1 ✅ | Week 2 ✅ | Week 3 ✅ | Week 4 ✅ | Week 5 ✅ | Week 6 🔜 Next
 **Total Learning Guides:** 15 of ~80 planned (Week 1: 3, Week 2: 4, Week 3: 4, Week 5: 4)
-**Self-Assessment:** Week 4 - 10/10 (100%) ✅
+**Self-Assessment:** Week 5 - Passed (nonReentrant vs CEI clarified)
 
 ---
 
