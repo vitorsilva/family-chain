@@ -201,8 +201,8 @@
 
     // Close pools after all tests
     after(async function () {
-      await pool.end();
-      await adminPool.end();
-      await readonlyPool.end();
+      //await pool.end();
+      //await adminPool.end();
+      //await readonlyPool.end();
     });
   });
