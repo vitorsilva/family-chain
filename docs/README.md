@@ -165,13 +165,26 @@ weekXX-classX.X-topic-name.md
 
 | Class | Guide | Duration | Status |
 |-------|-------|----------|--------|
-| **6.1** | [Gas Optimization Techniques](week6-class6.1-gas-optimization.md) | 3-4 hours | 📘 Prepared |
+| **6.1** | [Gas Optimization Techniques](week6-class6.1-gas-optimization.md) | 3-4 hours | ✅ Complete |
 | **6.2** | [Contract Security Audit with Slither](week6-class6.2-contract-security-slither.md) | 3-4 hours | 📘 Prepared |
 | **6.3** | [Next.js + MetaMask Setup](week6-class6.3-nextjs-metamask-setup.md) | 4-5 hours | 📘 Prepared |
 | **6.4** | [Interacting with FamilyWallet Contract](week6-class6.4-contract-interaction.md) | 3-4 hours | 📘 Prepared |
 
-**What You'll Build:**
-- Gas optimization report with before/after comparisons
+**What We Built (Class 6.1):**
+- Gas analysis test suite with manual tracking (GasAnalysis.test.ts)
+- Gas baseline report documenting current costs
+- Complete gas optimization report (week6-gas-optimization-report.md)
+- Understanding of cold vs warm storage (17,100 gas difference measured!)
+- Loop optimization pattern (isMemberInList function)
+- Storage packing knowledge for future contracts
+
+**Gas Costs Measured:**
+- addMember: 75,596 gas ($11.34 at 50 gwei, $3k ETH)
+- deposit (first): 48,334 gas (cold storage)
+- deposit (second): 31,234 gas (warm storage - 35% savings!)
+- withdraw: 41,423 gas
+
+**What You'll Build (Remaining Classes):**
 - Security audit using Slither static analyzer (92+ vulnerability detectors)
 - Next.js 15 frontend with TypeScript + Tailwind CSS
 - MetaMask wallet connection with ethers.js v6
@@ -385,10 +398,11 @@ As you use these guides:
 
 ---
 
-**Last Updated:** 2025-11-18 (Week 6 Guides Prepared!)
-**Course Progress:** Week 1 ✅ | Week 2 ✅ | Week 3 ✅ | Week 4 ✅ | Week 5 ✅ | Week 6 📘 Ready
+**Last Updated:** 2025-11-18 (Week 6 Class 6.1 Complete!)
+**Course Progress:** Week 1 ✅ | Week 2 ✅ | Week 3 ✅ | Week 4 ✅ | Week 5 ✅ | Week 6 🔄 In Progress (Class 6.1 ✅)
 **Total Learning Guides:** 19 of ~80 planned (Week 1: 3, Week 2: 3, Week 3: 4, Week 4: 0*, Week 5: 4, Week 6: 4, Week 27: 1)
-**Self-Assessment:** Week 5 - Passed (nonReentrant vs CEI clarified)
+**Current Status:** Week 6, Class 6.1 complete - Gas optimization mastered!
+**Next:** Class 6.2 - Contract Security Audit with Slither
 
 *Week 4 guides exist but were completed interactively, not yet formatted as standalone guides
 

@@ -121,6 +121,24 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
           return balances[member];
       }      
 
+    /**
+     * @notice Check if an address is in the member list (educational example)
+     * @param member Address to check
+     * @return exists True if member is in the list
+     * @dev This demonstrates loop optimization - in production, use isMember() mapping 
+     instead
+    */
+    function isMemberInList(address member) external view returns (bool exists) {
+        uint256 length = memberList.length; // ✅ Cache length (1 SLOAD)
+        for (uint256 i = 0; i < length; i++) {
+            if (memberList[i] == member) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
       /**
        * @notice Withdraw from your own balance
        * @param amount Amount in Wei to withdraw
