@@ -161,7 +161,30 @@ weekXX-classX.X-topic-name.md
 
 ---
 
-### Future Weeks (6-26)
+#### Week 6: Smart Contract Foundations - Part 2 + Frontend Basics
+
+| Class | Guide | Duration | Status |
+|-------|-------|----------|--------|
+| **6.1** | [Gas Optimization Techniques](week6-class6.1-gas-optimization.md) | 3-4 hours | 📘 Prepared |
+| **6.2** | [Contract Security Audit with Slither](week6-class6.2-contract-security-slither.md) | 3-4 hours | 📘 Prepared |
+| **6.3** | [Next.js + MetaMask Setup](week6-class6.3-nextjs-metamask-setup.md) | 4-5 hours | 📘 Prepared |
+| **6.4** | [Interacting with FamilyWallet Contract](week6-class6.4-contract-interaction.md) | 3-4 hours | 📘 Prepared |
+
+**What You'll Build:**
+- Gas optimization report with before/after comparisons
+- Security audit using Slither static analyzer (92+ vulnerability detectors)
+- Next.js 15 frontend with TypeScript + Tailwind CSS
+- MetaMask wallet connection with ethers.js v6
+- Zustand state management for wallet data
+- Deposit/withdraw ETH via UI (real blockchain transactions!)
+- Transaction lifecycle handling (pending/success/error states)
+- Network detection (Sepolia vs Mainnet)
+
+**Early Win:** Build a full DApp where clicking "Deposit" triggers a MetaMask popup, confirms on Sepolia, and updates your UI in real-time—exactly like Uniswap!
+
+---
+
+### Future Weeks (7-26)
 
 🔜 **Learning guides will be created after completing each week**
 
@@ -190,11 +213,12 @@ For upcoming course structure, see [COURSE_PLAN.md](../COURSE_PLAN.md)
 
 | Metric | Count |
 |--------|-------|
-| **Total Guides Created** | 15 |
+| **Total Guides Created** | 19 |
 | **Weeks Completed** | 5 (+ Week 27 Class 1) |
-| **Total Words (Current)** | ~79,000 words |
-| **Average Guide Length** | ~5,267 words |
-| **Guides Remaining** | ~65 (estimated) |
+| **Weeks Prepared** | 6 (guides ready, not yet taught) |
+| **Total Words (Current)** | ~104,000 words |
+| **Average Guide Length** | ~5,474 words |
+| **Guides Remaining** | ~61 (estimated) |
 
 ---
 
@@ -361,10 +385,12 @@ As you use these guides:
 
 ---
 
-**Last Updated:** 2025-11-17 (Week 5 Complete!)
-**Course Progress:** Week 1 ✅ | Week 2 ✅ | Week 3 ✅ | Week 4 ✅ | Week 5 ✅ | Week 6 🔜 Next
-**Total Learning Guides:** 15 of ~80 planned (Week 1: 3, Week 2: 4, Week 3: 4, Week 5: 4)
+**Last Updated:** 2025-11-18 (Week 6 Guides Prepared!)
+**Course Progress:** Week 1 ✅ | Week 2 ✅ | Week 3 ✅ | Week 4 ✅ | Week 5 ✅ | Week 6 📘 Ready
+**Total Learning Guides:** 19 of ~80 planned (Week 1: 3, Week 2: 3, Week 3: 4, Week 4: 0*, Week 5: 4, Week 6: 4, Week 27: 1)
 **Self-Assessment:** Week 5 - Passed (nonReentrant vs CEI clarified)
+
+*Week 4 guides exist but were completed interactively, not yet formatted as standalone guides
 
 ---
 
