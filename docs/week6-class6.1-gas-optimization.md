@@ -185,39 +185,181 @@ function withdraw(uint256 amount) external {
 
 ## Hands-On Activities
 
-### Activity 1: Set Up Gas Reporting
+### Activity 1: Enable Hardhat 3 Native Gas Statistics
 
-**Goal:** Enable Hardhat's built-in gas reporter to measure current costs.
+**Goal:** Use Hardhat 3's built-in gas reporting to measure current costs.
 
-**Step 1:** Gas reporting is already included in `@nomicfoundation/hardhat-toolbox`.
+**Background:** Hardhat 3 includes native gas statistics—no plugin installation needed! This replaces the old `hardhat-gas-reporter` plugin which doesn't support Hardhat 3.
 
-**Step 2:** Run tests with gas reporting enabled:
+**Step 1:** Run tests with gas statistics enabled:
 
 ```powershell
-$env:REPORT_GAS="true"; npx hardhat test test/FamilyWallet.test.ts
+cd blockchain
+npx hardhat test --gas-stats
 ```
 
 **Expected Output:**
 ```
-·-----------------------------------------|----------------------------|-------------|-----------------------------·
-|   Solc version: 0.8.28                  ·  Optimizer enabled: false  ·  Runs: 200  ·  Block limit: 30000000 gas  │
-··········································|····························|·············|······························
-|  Methods                                                                                                          │
-····························|·············|··············|·············|·············|···············|··············
-|  Contract                 ·  Method     ·  Min         ·  Max        ·  Avg        ·  # calls      ·  usd (avg)  │
-····························|·············|··············|·············|·············|···············|··············
-|  FamilyWallet             ·  addMember  ·       48000  ·      65000  ·      56500  ·            5  ·          -  │
-····························|·············|··············|·············|·············|···············|··············
-|  FamilyWallet             ·  deposit    ·       32000  ·      49000  ·      40500  ·            8  ·          -  │
-····························|·············|··············|·············|·············|···············|··············
-|  FamilyWallet             ·  withdraw   ·       28000  ·      45000  ·      36500  ·            6  ·          -  │
-····························|·············|··············|·············|·············|···············|··············
+  FamilyWallet
+    ✓ Should set the right owner (1234ms)
+    ✓ Should add a family member (987ms)
+    ✓ Should receive and track deposits (1543ms)
+
+  3 passing (5s)
+
+·---------------------------|---------------------------|-------------|-----------------------------·
+|    Solc version: 0.8.28   ·  Optimizer enabled: false ·  Runs: 200  ·  Block limit: 30000000 gas  │
+·---------------------------|---------------------------|-------------|-----------------------------·
+|  Methods                                                                                            │
+·························|··········|··········|··········|··········|··············|···············
+|  Contract              ·  Method  ·  Min     ·  Max     ·  Avg     ·  # calls     ·  usd (avg)   │
+·························|··········|··········|··········|··········|··············|···············
+|  FamilyWallet          ·  deposit ·   45234  ·   67891  ·   56562  ·     10       ·       -      │
+·························|··········|··········|··········|··········|··············|···············
+|  FamilyWallet          ·  withdraw·   29456  ·   41234  ·   35345  ·      5       ·       -      │
+·························|··········|··········|··········|··········|··············|···············
 ```
 
-**Save this output** - you'll compare it later!
+**What you see:**
+- **Min/Max/Avg:** Gas costs for each function call
+- **# calls:** How many times each function was called in tests
+- **usd (avg):** Would show USD cost if you configured a price feed
+
+**Step 2:** Save the output for later comparison:
+
+```powershell
+npx hardhat test --gas-stats > gas-report-before.txt
+```
+
+**Step 3:** View the saved report:
+
+```powershell
+cat gas-report-before.txt
+```
+
+**Key Insight:** This baseline shows your current gas costs. After optimizations, you'll run this again and compare!
 
 ---
 
+### Activity 1b: Manual Gas Tracking (Advanced - Optional)
+
+**Goal:** Learn how to track gas for specific transactions in tests.
+
+For more detailed analysis, you can manually measure gas in your test files. This is useful when you want to:
+- Track internal function calls (not shown in `--gas-stats`)
+- Set gas thresholds as test assertions
+- Create custom gas reports
+
+**Step 1:** Create a gas tracking test: `test/GasAnalysis.test.ts`
+
+```typescript
+import { ethers } from "hardhat";
+import { expect } from "chai";
+import { loadFixture } from "@nomicfoundation/hardhat-toolbox-mocha-ethers/network-helpers";
+import type { FamilyWallet } from "../typechain-types";
+
+describe("FamilyWallet - Gas Analysis", function () {
+  async function deployFixture() {
+    const [owner, addr1, addr2] = await ethers.getSigners();
+    const FamilyWallet = await ethers.getContractFactory("FamilyWallet");
+    const wallet = await FamilyWallet.deploy();
+    
+    // Add addr1 as a member
+    await wallet.addMember(addr1.address);
+    
+    return { wallet, owner, addr1, addr2 };
+  }
+
+  it("Should track gas for deposit transaction", async function () {
+    const { wallet, addr1 } = await loadFixture(deployFixture);
+    
+    // Send deposit transaction
+    const tx = await wallet.connect(addr1).deposit({
+      value: ethers.parseEther("0.1")
+    });
+    
+    // Wait for receipt
+    const receipt = await tx.wait();
+    
+    // Log gas used
+    const gasUsed = receipt?.gasUsed ?? 0n;
+    console.log(`\n  💰 Deposit gas used: ${gasUsed.toString()}`);
+    
+    // Optional: Assert gas is below threshold
+    expect(gasUsed).to.be.lessThan(60000n, "Deposit should use less than 60k gas");
+  });
+
+  it("Should track gas for withdrawal transaction", async function () {
+    const { wallet, addr1 } = await loadFixture(deployFixture);
+    
+    // First deposit
+    await wallet.connect(addr1).deposit({ value: ethers.parseEther("0.1") });
+    
+    // Then withdraw
+    const tx = await wallet.connect(addr1).withdraw(ethers.parseEther("0.05"));
+    const receipt = await tx.wait();
+    
+    const gasUsed = receipt?.gasUsed ?? 0n;
+    console.log(`\n  💸 Withdraw gas used: ${gasUsed.toString()}`);
+    
+    expect(gasUsed).to.be.lessThan(50000n, "Withdraw should use less than 50k gas");
+  });
+
+  it("Should compare gas: first deposit vs. second deposit", async function () {
+    const { wallet, addr1 } = await loadFixture(deployFixture);
+    
+    // First deposit (writes to empty storage slot)
+    const tx1 = await wallet.connect(addr1).deposit({ value: ethers.parseEther("0.1") });
+    const receipt1 = await tx1.wait();
+    const gas1 = receipt1?.gasUsed ?? 0n;
+    
+    // Second deposit (updates existing storage slot)
+    const tx2 = await wallet.connect(addr1).deposit({ value: ethers.parseEther("0.1") });
+    const receipt2 = await tx2.wait();
+    const gas2 = receipt2?.gasUsed ?? 0n;
+    
+    console.log(`\n  📊 Gas Comparison:`);
+    console.log(`     First deposit (write new):     ${gas1.toString()} gas`);
+    console.log(`     Second deposit (update):       ${gas2.toString()} gas`);
+    console.log(`     Difference:                    ${(gas1 - gas2).toString()} gas saved`);
+    
+    // First write costs more than update (SSTORE cold vs warm)
+    expect(gas1).to.be.greaterThan(gas2, "First write should cost more than update");
+  });
+});
+```
+
+**Step 2:** Run the gas analysis tests:
+
+```powershell
+npx hardhat test test/GasAnalysis.test.ts
+```
+
+**Expected Output:**
+```
+  FamilyWallet - Gas Analysis
+  
+  💰 Deposit gas used: 52341
+    ✓ Should track gas for deposit transaction (1234ms)
+  
+  💸 Withdraw gas used: 38456
+    ✓ Should track gas for withdrawal transaction (987ms)
+  
+  📊 Gas Comparison:
+     First deposit (write new):     52341 gas
+     Second deposit (update):       37234 gas
+     Difference:                    15107 gas saved
+    ✓ Should compare gas: first deposit vs. second deposit (1543ms)
+
+  3 passing (4s)
+```
+
+**Key Insights:**
+- **First write costs more:** Writing to empty storage (~20,000 gas) vs. updating (~5,000 gas)
+- **Manual tracking shows details:** `--gas-stats` won't show this granularity
+- **Test assertions enforce limits:** Prevents gas regressions in CI/CD
+
+---
 ### Activity 2: Analyze FamilyWallet's Storage Layout
 
 **Goal:** Understand current storage usage and identify optimization opportunities.
@@ -324,33 +466,34 @@ function setFamilyName(string calldata name) external onlyOwner {
 
 ### Activity 5: Generate Gas Report and Compare
 
-**Goal:** Re-run tests with gas reporting and compare to Activity 1 baseline.
+**Goal:** Re-run tests with gas statistics and compare to Activity 1 baseline.
 
-**Step 1:** If you added `isMemberInList`, run tests:
+**Step 1:** If you added `isMemberInList`, run tests with gas statistics:
 
 ```powershell
-$env:REPORT_GAS="true"; npx hardhat test
+npx hardhat test --gas-stats
+```
+
+**Or save to a file for easier comparison:**
+
+```powershell
+npx hardhat test --gas-stats > gas-report-after.txt
 ```
 
 **Step 2:** Compare the reports:
 
-**Baseline (Activity 1):**
+**Baseline (Activity 1) - gas-report-before.txt:**
 ```
-|  FamilyWallet  ·  addMember  ·  56500  |
-|  FamilyWallet  ·  deposit    ·  40500  |
-```
-
-**After optimization (Activity 5):**
-```
-|  FamilyWallet  ·  addMember  ·  56500  |  (no change - already optimal)
-|  FamilyWallet  ·  deposit    ·  40500  |  (no change - already optimal)
-|  FamilyWallet  ·  isMemberInList  ·  24500  |  (new function, loop optimized)
+|  FamilyWallet  ·  addMember  ·  56500  avg |
+|  FamilyWallet  ·  deposit    ·  40500  avg |
 ```
 
-**Key insight:** Your FamilyWallet was already well-optimized! You learned the patterns for future contracts.
-
----
-
+**After optimization (Activity 5) - gas-report-after.txt:**
+```
+|  FamilyWallet  ·  addMember        ·  56500  avg |  (no change - already optimal)
+|  FamilyWallet  ·  deposit          ·  40500  avg |  (no change - already optimal)
+|  FamilyWallet  ·  isMemberInList   ·  24500  avg |  (new function, loop optimized)
+```
 ### Activity 6: Create a Gas Optimization Report
 
 **Goal:** Document your findings in a structured report.
@@ -447,17 +590,36 @@ By the end of this class, you should have:
 
 ## Common Issues & Solutions
 
-### Issue 1: Gas Report Not Showing
+### Issue 1: Gas Statistics Not Showing
 
-**Symptoms:** Running `$env:REPORT_GAS="true"; npx hardhat test` doesn't show gas table
+**Symptoms:** Running `npx hardhat test --gas-stats` doesn't show gas table
 
 **Solution:**
-- Ensure you're using `@nomicfoundation/hardhat-toolbox` (already in your project)
-- Try: `$env:REPORT_GAS="1"; npx hardhat test`
-- Check that tests actually call the functions (deployment doesn't show in gas report)
+1. **Verify you're using Hardhat 3.0.8+:**
+   ```powershell
+   npx hardhat --version
+   ```
+   Should show: `3.0.8` or higher
 
----
+2. **Check that tests actually call the functions:**
+   - Gas statistics only track functions called **directly by tests**
+   - Deployment alone doesn't show in gas stats
+   - Internal function calls aren't tracked (use manual tracking for those)
 
+3. **Ensure tests are passing:**
+   - Failed tests won't show gas statistics
+   - Run `npx hardhat test` first to verify tests pass
+
+4. **Try with a specific test file:**
+   ```powershell
+   npx hardhat test test/FamilyWallet.test.ts --gas-stats
+   ```
+
+5. **If still not showing, check your Hardhat config:**
+   - Ensure you're using `@nomicfoundation/hardhat-toolbox-mocha-ethers`
+   - This includes the gas statistics feature
+
+**Alternative:** Use manual gas tracking (see Activity 1b) for more control.
 ### Issue 2: "Optimizer Enabled: false" in Report
 
 **Symptoms:** Gas report shows "Optimizer enabled: false"

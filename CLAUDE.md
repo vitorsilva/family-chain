@@ -671,6 +671,40 @@ When the user says "Let's prepare for Week X" or "What's next in the course?":
 
 ### MCP Tools for Class Preparation (MANDATORY)
 
+
+**STEP 0: Hardhat 3 Compatibility Verification** (MANDATORY - DO THIS FIRST!)
+
+Before writing ANY code examples or commands in class guides:
+
+**Critical Hardhat 3 Syntax Checks:**
+- [ ] ✅ Use `npx hardhat build` (NOT `compile`)
+- [ ] ✅ Use `npx hardhat keystore` for secrets (NOT `.env` files)
+- [ ] ✅ All test files must be `.ts` (NOT `.js`)
+- [ ] ✅ Use `hre.vars.get()` for config variables (NOT `dotenv`)
+- [ ] ✅ Use `await network.connect()` pattern (NOT `hre.ethers.provider` directly)
+- [ ] ✅ Review learning notes (`docs/weekN-learning-notes.md`) for Hardhat 2→3 migration issues
+
+**Verification Process:**
+1. **Cross-reference with existing code** in the project before writing examples
+2. **Check learning notes** for version-specific issues encountered
+3. **Use context7 MCP** to verify current API for Hardhat 3.0.8+ specifically
+4. **Test commands mentally** against Hardhat 3 syntax before including in guides
+
+**Common Hardhat 2→3 Breaking Changes:**
+
+| Old (Hardhat 2) | New (Hardhat 3) | Status |
+|-----------------|-----------------|--------|
+| `npx hardhat compile` | `npx hardhat build` | ✅ Use new |
+| `.env` files for secrets | `npx hardhat keystore` | ✅ Use new |
+| JavaScript tests (`.js`) | TypeScript tests (`.ts`) | ✅ Required |
+| `hre.ethers.provider` | `await network.connect().ethers.provider` | ✅ Use new |
+| `dotenv` config | `configVariable()` or `vars.get()` | ✅ Use new |
+
+**If unsure about ANY command:**
+- Query context7: "Hardhat 3.0.8 [specific feature]"
+- Check existing scripts in `scripts/` directory
+- Review `docs/week1-learning-notes.md` for Hardhat 3 setup notes
+
 **STEP 1: Verify Current Project Versions**
 - [ ] Check "Current Project Versions" section below
 - [ ] Note exact versions for week's topics
