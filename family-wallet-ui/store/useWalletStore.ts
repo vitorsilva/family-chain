@@ -11,7 +11,7 @@ interface WalletState {
     chainId: string | null;
     connect: () => Promise<void>;
     disconnect: () => void;
-    //updateBalance: () => Promise<void>;
+    updateBalance: () => Promise<void>;
 }
 
   // Create Zustand store with persistence
@@ -98,7 +98,20 @@ interface WalletState {
           }
         },
 
-        // Other actions will go here next
+        // Update balance action
+        updateBalance: async () => {
+          const { address } = get();
+          if (!address || typeof window.ethereum === 'undefined') return;
+
+          try {
+            const provider = new ethers.BrowserProvider(window.ethereum!);
+            const balanceWei = await provider.getBalance(address);
+            const balance = ethers.formatEther(balanceWei);
+            set({ balance });
+          } catch (error) {
+            console.error('Failed to update balance:', error);
+          }
+        },
 
       }),
       {
