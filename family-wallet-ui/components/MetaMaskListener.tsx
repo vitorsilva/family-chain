@@ -1,43 +1,50 @@
   'use client';
 
-  import { useEffect } from 'react';
+  import { useEffect, useRef } from 'react';
   import { useWalletStore } from '@/store/useWalletStore';
 
   export default function MetaMaskListener() {
-    const { address, connect, disconnect } = useWalletStore();
+    const address = useWalletStore((state) => state.address);
+    const connectRef = useRef(useWalletStore.getState().connect);
+    const disconnectRef = useRef(useWalletStore.getState().disconnect);
 
     useEffect(() => {
-      if (typeof window.ethereum === 'undefined') return;
+      console.log('🎯 Setting up MetaMask listeners');
 
-      // Handle account changes
-      const handleAccountsChanged = (accounts: unknown) => {
-        const accountsArray = accounts as string[];
-        if (accountsArray.length === 0) {
-          // User disconnected all accounts
-          disconnect();
-        } else if (accountsArray[0] !== address) {
-          // User switched account
-          connect();
-        }
-      };
+      if (!window.ethereum) {
+        console.log('❌ No MetaMask');
+        return;
+      }
 
-      // Handle network changes
-      const handleChainChanged = () => {
-        // Reload the page on network change (recommended by MetaMask)
+      const handleChainChanged = (chainId: unknown) => {
+        console.log('🔔 CHAIN CHANGED EVENT FIRED! New chain:', chainId);
         window.location.reload();
       };
 
-      // Subscribe to events
-      window.ethereum!.on('accountsChanged', handleAccountsChanged);
-      window.ethereum!.on('chainChanged', handleChainChanged);
+      const handleAccountsChanged = (accounts: unknown) => {
+        console.log('🔔 ACCOUNTS CHANGED EVENT FIRED!', accounts);
+        const accs = accounts as string[];
 
-      // Cleanup
-      return () => {
-        if (typeof window.ethereum === 'undefined') return;
-        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);       
-        window.ethereum.removeListener('chainChanged', handleChainChanged);
+        if (accs.length === 0) {
+          disconnectRef.current();
+        } else if (accs[0] !== address) {
+          connectRef.current();
+        }
       };
-    }, [address, connect, disconnect]);
+
+      console.log('📡 Attaching event listeners...');
+      window.ethereum.on('chainChanged', handleChainChanged);
+      window.ethereum.on('accountsChanged', handleAccountsChanged);
+      console.log('✅ Event listeners attached successfully!');
+
+      return () => {
+        console.log('🧹 Removing event listeners');
+        if (window.ethereum) {
+          window.ethereum.removeListener('chainChanged', handleChainChanged);
+          window.ethereum.removeListener('accountsChanged', handleAccountsChanged);     
+        }
+      };
+    }, []); // Empty dependencies - only run once on mount!
 
     return null;
   }

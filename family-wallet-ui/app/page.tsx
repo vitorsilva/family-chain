@@ -1,3 +1,5 @@
+'use client';
+
 import ConnectWalletButton from '@/components/ConnectWalletButton';
 import WalletInfo from '@/components/WalletInfo';
 import MetaMaskListener from '@/components/MetaMaskListener';
