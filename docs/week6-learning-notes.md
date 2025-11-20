@@ -407,14 +407,272 @@ FamilyChain/
 
 ---
 
-## Next Session Plan
+---
 
-**Resume with:**
-- Class 6.3 completion (MetaMask event listener)
-- Full end-to-end testing
-- Move to Class 6.4 (Contract Interaction UI)
+## Session: 2025-11-20
+
+### Week 6, Class 6.4 - COMPLETE ✅
+
+**Duration:** ~4 hours
+**Class:** Contract Interaction UI
 
 ---
 
-**Session Paused:** 2025-11-19
-**Overall Week 6:** 75% Complete (3/4 classes in progress/done)
+#### Activities Completed:
+
+**1. Contract ABI Integration**
+- Copied FamilyWallet.json from Hardhat artifacts to Next.js frontend
+- Created `lib/contracts/FamilyWallet.ts` with contract address and ABI
+- Fixed JSON import issues with proper TypeScript declarations
+- Created `types/json.d.ts` for JSON module typing
+
+**Key learning:** ABIs are the "instruction manual" that tells ethers.js how to encode/decode function calls.
+
+---
+
+**2. Custom React Hook: useFamilyWallet**
+- Created `hooks/useFamilyWallet.ts` for contract interactions
+- Implemented provider vs signer pattern (read vs write operations)
+- Built read functions: `fetchContractBalance()`, `fetchMemberStatus()`
+- Built transaction functions: `deposit()`, `withdraw()`
+- Added proper error handling with TypeScript type guards
+- Used `useCallback` to prevent infinite loops in `useEffect`
+
+**Key pattern learned: Provider vs Signer**
+- **Provider** = Read-only, free, no MetaMask popup (for view functions)
+- **Signer** = Can send transactions, costs gas, requires MetaMask approval
+
+**Transaction lifecycle:**
+1. Call contract function with signer
+2. MetaMask popup appears
+3. User confirms transaction
+4. `await tx.wait()` - wait for block confirmation (~15-30 seconds)
+5. Refetch data to update UI
+
+---
+
+**3. FamilyWalletActions Component**
+- Created deposit/withdraw UI with input validation
+- Conditional rendering based on connection and member status
+- Loading states during transactions
+- Real-time balance display from contract
+- Transaction pending indicators
+
+**UI States:**
+- Not connected → "Connect your wallet" message
+- Not a member → Warning message
+- Is a member → Full deposit/withdraw interface
+
+---
+
+**4. Integration & Testing**
+- Updated `app/page.tsx` to include FamilyWalletActions component
+- Added Etherscan contract link to footer
+- Verified wallet is family member (0.002 ETH already in contract)
+- **Successfully tested deposit transaction:** 0.001 ETH deposited
+- **Successfully tested withdraw transaction:** 0.001 ETH withdrawn
+
+**Testing Results:**
+- ✅ MetaMask popup triggered correctly
+- ✅ Transaction confirmation waited properly
+- ✅ UI updated automatically after confirmation
+- ✅ Balance displayed correctly (0.002 → 0.003 → 0.002 ETH)
+- ✅ Loading states worked during transactions
+- ✅ Success alerts appeared after confirmation
+
+---
+
+#### Issues Encountered & Fixed:
+
+**Issue 1: Turbopack Font Loading Error**
+- **Error:** Module not found errors for Google Fonts with Turbopack
+- **Attempted fix:** Disable Turbopack (couldn't set `turbopack: false`)
+- **Final solution:** Worked through it, fonts loaded eventually
+
+**Issue 2: Empty FamilyWalletActions Component**
+- **Error:** "Element type is invalid: expected a string... but got: object"
+- **Cause:** Component file only had 1 line (didn't save properly)
+- **Solution:** Re-created the complete component code
+
+**Issue 3: JSON Import TypeScript Errors**
+- **Error:** Can't import JSON properly, TypeScript complaints
+- **Solution:** Created `types/json.d.ts` with proper module declaration
+- **Learning:** Next.js needs explicit type declarations for JSON imports
+
+**Issue 4: useEffect Dependencies Warning**
+- **Error:** ESLint warning about missing dependencies in useEffect
+- **Solution:** Wrapped `fetchContractBalance` and `fetchMemberStatus` with `useCallback`
+- **Why:** Prevents functions from changing on every render, avoids infinite loops
+
+**Issue 5: error: any TypeScript Warning**
+- **Error:** ESLint complaining about `any` type in catch blocks
+- **Solution:** Changed to `error: unknown` with proper type guards
+- **Pattern:** Check `typeof error === 'object'` and `'code' in error` before accessing properties
+
+---
+
+#### Key Technical Insights:
+
+**1. Contract ABI Structure:**
+```json
+{
+  "name": "deposit",
+  "type": "function",
+  "stateMutability": "payable",
+  "inputs": [],
+  "outputs": []
+}
+```
+- Describes function signatures
+- Required for ethers.js to encode calls
+
+**2. Provider vs Signer Pattern:**
+```typescript
+// Read-only (view functions)
+const contract = new ethers.Contract(address, abi, provider);
+const balance = await contract.getBalance(addr); // Free, instant
+
+// Read-write (transactions)
+const signer = await provider.getSigner();
+const contract = new ethers.Contract(address, abi, signer);
+await contract.deposit({ value: ethers.parseEther("0.1") }); // Costs gas
+```
+
+**3. Transaction Flow:**
+```
+User clicks button
+  ↓
+Call contract.deposit()
+  ↓
+MetaMask popup (user approves)
+  ↓
+tx.wait() - wait for confirmation
+  ↓
+Refetch data
+  ↓
+UI updates
+```
+
+**4. Error Handling Best Practices:**
+```typescript
+catch (error: unknown) {
+  if (error && typeof error === 'object' && 'code' in error) {
+    const errorCode = (error as { code: string | number }).code;
+    if (errorCode === 'ACTION_REJECTED' || errorCode === 4001) {
+      // User rejected transaction
+    }
+  }
+}
+```
+
+**5. useCallback for Stable Functions:**
+- Prevents functions from changing on every render
+- Required when function is a useEffect dependency
+- Only recreates function when dependencies change
+
+---
+
+#### User Questions & Learning Moments:
+
+**Excellent understanding demonstrated:**
+1. "getBalance doesn't need signing, it's free and doesn't trigger MetaMask popup since it's only reading information from the blockchain. deposit is expensive and trigger popup"
+   - **Perfect answer!** User fully understands view vs transaction functions
+
+**Good troubleshooting approach:**
+- Identified component file was empty
+- Suggested checking files directly instead of asking for content
+- Pragmatic about moving forward when things worked
+
+---
+
+#### Files Created/Modified:
+
+**New Files:**
+- `lib/contracts/FamilyWallet.json` (copied from Hardhat)
+- `lib/contracts/FamilyWallet.ts` (ABI export)
+- `types/json.d.ts` (TypeScript declarations)
+- `hooks/useFamilyWallet.ts` (contract interaction hook)
+- `components/FamilyWalletActions.tsx` (deposit/withdraw UI)
+
+**Modified Files:**
+- `app/page.tsx` (added FamilyWalletActions component)
+
+**Final File Structure:**
+```
+family-wallet-ui/
+├── app/
+│   └── page.tsx (updated with contract UI)
+├── components/
+│   ├── ConnectWalletButton.tsx
+│   ├── WalletInfo.tsx
+│   ├── MetaMaskListener.tsx
+│   └── FamilyWalletActions.tsx (NEW)
+├── hooks/
+│   └── useFamilyWallet.ts (NEW)
+├── lib/
+│   └── contracts/
+│       ├── FamilyWallet.json (NEW)
+│       └── FamilyWallet.ts (NEW)
+├── store/
+│   └── useWalletStore.ts
+└── types/
+    ├── window.d.ts
+    └── json.d.ts (NEW)
+```
+
+---
+
+## Progress Tracker
+
+| Class | Status | Date |
+|-------|--------|------|
+| 6.1 - Gas Optimization | ✅ Complete | 2025-11-18 |
+| 6.2 - Security Audit | ✅ Complete | 2025-11-18 |
+| 6.3 - Next.js + MetaMask | ✅ Complete | 2025-11-19 |
+| 6.4 - Contract Interaction | ✅ Complete | 2025-11-20 |
+
+**Week 6 Status:** 100% Complete! 🎉
+
+---
+
+## Week 6 Complete - What We Built
+
+**🎉 You've built a FULL-STACK DApp with:**
+
+1. ✅ **Gas-optimized smart contract** (FamilyWallet.sol)
+2. ✅ **Security-audited with Slither** (8 findings analyzed, 0 high/medium issues)
+3. ✅ **Modern Next.js 16 frontend** with TypeScript + Tailwind CSS
+4. ✅ **MetaMask wallet integration** with ethers.js v6
+5. ✅ **Real blockchain transactions** (deposit/withdraw ETH)
+6. ✅ **Full transaction lifecycle handling** (pending → confirmed → UI update)
+7. ✅ **Error handling** (user rejection, insufficient funds, reverts)
+8. ✅ **Zustand state management** with localStorage persistence
+9. ✅ **Network detection** (Sepolia vs other networks)
+10. ✅ **Account/network change detection** (polling-based fallback)
+
+**This is the EXACT same architecture used by:**
+- Uniswap (swap tokens)
+- Aave (deposit/borrow)
+- OpenSea (buy/sell NFTs)
+
+You just built production-ready DApp infrastructure! 🚀
+
+---
+
+## Next Session Plan
+
+**Week 7: Web3 Integration** (~1 week, 4 classes)
+
+**What you'll build:**
+- Backend blockchain event listener (Node.js + ethers.js)
+- Real-time UI updates when transactions occur
+- Store blockchain events in PostgreSQL
+- Event-driven architecture (listen → store → update)
+
+**Early Win:** Your DApp will automatically detect when someone deposits/withdraws (even from another device) and update the UI without manual refresh!
+
+---
+
+**Session Ended:** 2025-11-20
+**Overall Week 6:** ✅ 100% Complete! All 4 classes done!
+**Total Session Time (Week 6):** ~11 hours across 3 sessions
