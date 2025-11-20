@@ -1,6 +1,7 @@
 'use client';
 
 import ConnectWalletButton from '@/components/ConnectWalletButton';
+import FamilyWalletActions from '@/components/FamilyWalletActions';
 import WalletInfo from '@/components/WalletInfo';
 import MetaMaskListener from '@/components/MetaMaskListener';
 
@@ -28,11 +29,24 @@ export default function Home() {
           {/* Wallet Info Section */}
           <WalletInfo />
 
-          {/* Footer */}
-          <div className="text-center text-sm text-gray-500">
-            <p>Built with Next.js 15, ethers.js v6, and Zustand</p>
-            <p className="mt-1">FamilyWallet Contract: Sepolia Testnet</p>
-          </div>
+          {/* Contract Interaction Section */}
+          <FamilyWalletActions />
+
+  {/* Footer */}
+  <div className="text-center text-sm text-gray-500">
+    <p>Built with Next.js 16, ethers.js v6, and Zustand</p>
+    <p className="mt-1">
+      FamilyWallet:{' '}
+      <a
+        href="https://sepolia.etherscan.io/address/0xaa8ffF534A8BC8a6e6C8AEad795d5a5E373e716e"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-500 hover:text-blue-700 underline font-mono"
+      >
+        0xaa8f...716e
+      </a>
+    </p>
+  </div>
         </div>
       </main>
     </>
