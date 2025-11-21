@@ -1,4 +1,4 @@
-  import { network } from "hardhat";
+  import { WebSocketProvider } from "ethers";
   import { EventListenerService } from "../../services/EventListenerService.js";
   import dotenv from "dotenv";
 
@@ -14,9 +14,23 @@
   async function runEventListener() {
     console.log("=== FamilyWallet Event Listener Service ===\n");
 
-    // Connect to blockchain
-    const connection = await network.connect("sepolia");
-    const provider = connection.ethers.provider;
+    // Get WebSocket URL from command line
+    const wsUrl = process.argv[2];
+
+    if (!wsUrl) {
+      console.error("❌ WebSocket URL required!");
+      console.log("\nUsage:");
+      console.log("  npx tsx scripts/week7/run-event-listener.ts wss://eth-sepolia.g.alchemy.com/v2/YOUR_API_KEY");
+      console.log("\n💡 Convert your HTTP URL to WebSocket:");
+      console.log("  https:// → wss://");
+      process.exit(1);
+    }
+
+    // Create WebSocket provider for instant event detection
+    console.log("🔌 Connecting to WebSocket...");
+    const provider = new WebSocketProvider(wsUrl);
+    await provider.ready;
+    console.log("✅ WebSocket connected!\n");
 
     // Create service
     const service = new EventListenerService({
@@ -48,17 +62,22 @@
       console.log(`   Events: ${status.eventNames.join(", ")}`);
     }, 60000); // Every 60 seconds
 
+    // Handle WebSocket errors
+    provider.on("error", (error) => {
+      console.error("❌ WebSocket error:", error);
+    });
+
     // Graceful shutdown on Ctrl+C
     process.on("SIGINT", async () => {
       console.log("\n\n🛑 Shutting down gracefully...");
       await service.shutdown();
+      provider.destroy();
       process.exit(0);
     });
 
     console.log("💡 Service running! Press Ctrl+C to stop");
     console.log("💡 Try making deposits to see real-time updates:");
-    console.log("   - Frontend: http://localhost:3000");
-    console.log("   - Backend: npx tsx scripts/week7/backend-deposit.ts");
+    console.log("   Backend: npx tsx scripts/week7/backend-deposit.ts");
   }
 
   runEventListener()

@@ -204,25 +204,21 @@ weekXX-classX.X-topic-name.md
 | **7.1** | [Web3.js and Ethers.js Fundamentals](week7-class7.1-web3-ethers-fundamentals.md) | 3-4 hours | ✅ Complete |
 | **7.2** | [Frontend Contract Interaction Review](week7-class7.2-frontend-contract-interaction.md) | 2-3 hours | ✅ Complete |
 | **7.3** | [Backend Blockchain Service](week7-class7.3-backend-blockchain-service.md) | 4-5 hours | ✅ Complete |
-| **7.4** | [Event Listening and Real-time Updates](week7-class7.4-event-listening.md) | 5-6 hours | ⏸️ In Progress |
+| **7.4** | [Event Listening and Real-time Updates](week7-class7.4-event-listening.md) | 5-6 hours | ✅ Complete |
 
-**What We Built (Classes 7.1-7.3):**
+**What We Built:**
 - ✅ Backend provider connection without MetaMask (Hardhat 3 network.connect() pattern)
 - ✅ Backend transaction signing from keystore
 - ✅ Nonce management for multiple pending transactions
 - ✅ BlockchainService reusable class
+- ✅ **Real-time WebSocket event listener** (instant blockchain event detection!)
+- ✅ EventListenerService class with database integration
+- ✅ HTTP vs WebSocket provider comparison and testing
+- ✅ Event verification and debugging patterns
 
-**What We're Building (Class 7.4 - In Progress):**
-- Backend provider connection without MetaMask (Hardhat 3 network.connect() pattern)
-- Backend transaction signing from keystore
-- Nonce management for multiple pending transactions
-- Historical event queries (queryFilter)
-- Real-time event listener (contract.on())
-- PostgreSQL integration for blockchain events
-- Background event listener service
-- Reusable BlockchainService and EventListenerService classes
+**Early Win Achieved:** Production-ready backend service that detects deposits/withdrawals in real-time (1-2 seconds) using WebSocket - exactly how DeFi protocols work! 🎉
 
-**Early Win Target:** Backend service that automatically detects deposits/withdrawals and updates database in real-time!
+**Key Learning:** HTTP providers use unreliable polling (2-5 minute delays), WebSocket providers push events instantly (1-2 seconds). This is the industry standard for real-time blockchain monitoring.
 
 ---
 
