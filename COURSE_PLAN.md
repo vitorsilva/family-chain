@@ -619,34 +619,42 @@ Before moving to Week 5, complete the self-assessment:
 
 - **Class 7.1:** Web3.js and Ethers.js Fundamentals
   - Understanding Web3 libraries
-  - Connecting to blockchain nodes
-  - Reading blockchain data
-  - Choosing between Web3.js and Ethers.js
+  - Connecting to blockchain nodes (Hardhat 3 network.connect() pattern)
+  - Reading blockchain data from backend
+  - Provider vs Signer (frontend vs backend)
 
-- **Class 7.2:** Frontend Contract Interaction
-  - Call contract functions from React
-  - Handle transaction confirmations
-  - Display contract data in UI
+- **Class 7.2:** Frontend Contract Interaction Review
+  - Review Week 6 useFamilyWallet hook architecture
+  - Complete transaction lifecycle (11 steps)
+  - Compare frontend vs backend code patterns
   - Error handling and user feedback
 
 - **Class 7.3:** Backend Blockchain Service
-  - Building a Node.js service
-  - Environment configuration
-  - Managing private keys securely
-  - Transaction management
+  - Building backend blockchain service
+  - Loading wallet from Hardhat keystore
+  - Backend transaction signing (no MetaMask)
+  - Nonce management for multiple pending transactions
 
 - **Class 7.4:** Event Listening and Real-time Updates
-  - Listening to smart contract events
+  - Listening to smart contract events (queryFilter, contract.on())
   - Processing blockchain events
-  - Storing event data in PostgreSQL
-  - Real-time UI updates
+  - Storing event data in PostgreSQL (Week 4 integration)
+  - Background event listener service
+  - Real-time monitoring
 
 **Reading:**
 - Ethereum Book: Appendix (Web3.js Tutorial)
+- Ethereum Book: Chapter 11 (Oracles - Event Patterns)
 
-**Deliverable:** Full-stack app (React + Node.js + Smart Contract) with live blockchain data
+**Deliverable:** Full-stack app (React + Node.js + Smart Contract) with backend event listener and database integration
 
-**Early Win:** Click a button in your UI and see a blockchain transaction execute!
+**Early Win:** Backend service automatically detects deposits/withdrawals and updates database in real-time!
+
+**Learning Guides:**
+- 📖 [Class 7.1: Web3.js and Ethers.js Fundamentals](docs/week7-class7.1-web3-ethers-fundamentals.md)
+- 📖 [Class 7.2: Frontend Contract Interaction Review](docs/week7-class7.2-frontend-contract-interaction.md)
+- 📖 [Class 7.3: Backend Blockchain Service](docs/week7-class7.3-backend-blockchain-service.md)
+- 📖 [Class 7.4: Event Listening and Real-time Updates](docs/week7-class7.4-event-listening.md)
 
 ---
 

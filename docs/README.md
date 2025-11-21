@@ -197,7 +197,30 @@ weekXX-classX.X-topic-name.md
 
 ---
 
-### Future Weeks (7-26)
+#### Week 7: Web3 Integration
+
+| Class | Guide | Duration | Status |
+|-------|-------|----------|--------|
+| **7.1** | [Web3.js and Ethers.js Fundamentals](week7-class7.1-web3-ethers-fundamentals.md) | 3-4 hours | ✅ Complete |
+| **7.2** | [Frontend Contract Interaction Review](week7-class7.2-frontend-contract-interaction.md) | 2-3 hours | ✅ Complete |
+| **7.3** | [Backend Blockchain Service](week7-class7.3-backend-blockchain-service.md) | 4-5 hours | ✅ Complete |
+| **7.4** | [Event Listening and Real-time Updates](week7-class7.4-event-listening.md) | 5-6 hours | ✅ Complete |
+
+**What We'll Build:**
+- Backend provider connection without MetaMask (Hardhat 3 network.connect() pattern)
+- Backend transaction signing from keystore
+- Nonce management for multiple pending transactions
+- Historical event queries (queryFilter)
+- Real-time event listener (contract.on())
+- PostgreSQL integration for blockchain events
+- Background event listener service
+- Reusable BlockchainService and EventListenerService classes
+
+**Early Win Target:** Backend service that automatically detects deposits/withdrawals and updates database in real-time!
+
+---
+
+### Future Weeks (8-26)
 
 🔜 **Learning guides will be created after completing each week**
 
@@ -226,12 +249,12 @@ For upcoming course structure, see [COURSE_PLAN.md](../COURSE_PLAN.md)
 
 | Metric | Count |
 |--------|-------|
-| **Total Guides Created** | 19 |
-| **Weeks Completed** | 5 (+ Week 27 Class 1) |
-| **Weeks Prepared** | 6 (guides ready, not yet taught) |
-| **Total Words (Current)** | ~104,000 words |
-| **Average Guide Length** | ~5,474 words |
-| **Guides Remaining** | ~61 (estimated) |
+| **Total Guides Created** | 23 |
+| **Weeks Completed** | 6 (+ Week 27 Class 1) |
+| **Weeks Prepared** | 7 (guides ready, not yet taught) |
+| **Total Words (Current)** | ~150,000 words |
+| **Average Guide Length** | ~6,522 words |
+| **Guides Remaining** | ~57 (estimated) |
 
 ---
 
@@ -398,11 +421,11 @@ As you use these guides:
 
 ---
 
-**Last Updated:** 2025-11-20 (Week 6 Complete!)
+**Last Updated:** 2025-11-21 (Week 7 Prepared!)
 **Course Progress:** Week 1 ✅ | Week 2 ✅ | Week 3 ✅ | Week 4 ✅ | Week 5 ✅ | Week 6 ✅ Complete!
-**Total Learning Guides:** 19 of ~80 planned (Week 1: 3, Week 2: 3, Week 3: 4, Week 4: 0*, Week 5: 4, Week 6: 4, Week 27: 1)
-**Current Status:** Week 6 complete - Full-stack DApp built and tested!
-**Next:** Week 7 - Web3 Integration (Event listeners, real-time updates, backend services)
+**Total Learning Guides:** 23 of ~80 planned (Week 1: 3, Week 2: 3, Week 3: 4, Week 4: 0*, Week 5: 4, Week 6: 4, Week 7: 4, Week 27: 1)
+**Current Status:** Week 6 complete - Full-stack DApp built and tested! Week 7 guides prepared!
+**Next:** Week 7 - Web3 Integration (Backend services, event listeners, real-time updates)
 
 *Week 4 guides exist but were completed interactively, not yet formatted as standalone guides
 
