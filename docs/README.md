@@ -204,9 +204,15 @@ weekXX-classX.X-topic-name.md
 | **7.1** | [Web3.js and Ethers.js Fundamentals](week7-class7.1-web3-ethers-fundamentals.md) | 3-4 hours | ✅ Complete |
 | **7.2** | [Frontend Contract Interaction Review](week7-class7.2-frontend-contract-interaction.md) | 2-3 hours | ✅ Complete |
 | **7.3** | [Backend Blockchain Service](week7-class7.3-backend-blockchain-service.md) | 4-5 hours | ✅ Complete |
-| **7.4** | [Event Listening and Real-time Updates](week7-class7.4-event-listening.md) | 5-6 hours | ✅ Complete |
+| **7.4** | [Event Listening and Real-time Updates](week7-class7.4-event-listening.md) | 5-6 hours | ⏸️ In Progress |
 
-**What We'll Build:**
+**What We Built (Classes 7.1-7.3):**
+- ✅ Backend provider connection without MetaMask (Hardhat 3 network.connect() pattern)
+- ✅ Backend transaction signing from keystore
+- ✅ Nonce management for multiple pending transactions
+- ✅ BlockchainService reusable class
+
+**What We're Building (Class 7.4 - In Progress):**
 - Backend provider connection without MetaMask (Hardhat 3 network.connect() pattern)
 - Backend transaction signing from keystore
 - Nonce management for multiple pending transactions
