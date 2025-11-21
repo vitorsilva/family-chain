@@ -656,6 +656,47 @@ Before moving to Week 5, complete the self-assessment:
 - 📖 [Class 7.3: Backend Blockchain Service](docs/week7-class7.3-backend-blockchain-service.md)
 - 📖 [Class 7.4: Event Listening and Real-time Updates](docs/week7-class7.4-event-listening.md)
 
+**Week 7 Completion Checklist:**
+
+**Class 7.1 Quiz:**
+- [x] When would you use BrowserProvider vs JsonRpcProvider?
+- [x] Why don't view functions need a signer?
+- [x] What's the security concern with backend signers?
+
+**Class 7.2 Quiz:**
+- [x] Why does getContract() have needsSigner parameter?
+- [x] When does fetchContractBalance() pass needsSigner: true or false?
+- [x] Why does deposit() call fetchContractBalance() after tx.wait()?
+
+**Class 7.3 Quiz:**
+- [x] How does backend signing differ from frontend?
+- [x] Why is nonce management important?
+- [x] When would you use BlockchainService pattern?
+
+**Class 7.4 Quiz:**
+- [x] What's the difference between queryFilter() and contract.on()?
+- [x] Why use WebSocket instead of HTTP for events?
+- [x] Why store events in PostgreSQL?
+- [x] What's the production pattern for real-time monitoring?
+
+**Deliverables:**
+- [x] Backend provider connection without MetaMask
+- [x] Backend transaction signing from keystore
+- [x] Nonce management implementation
+- [x] BlockchainService reusable class
+- [x] **Real-time WebSocket event listener (1-2 second latency!)**
+- [x] EventListenerService with database integration
+- [x] HTTP vs WebSocket comparison
+- [ ] Historical event backfilling (optional, paused)
+
+**Reading Assignments:**
+- [x] Ethereum Book: Appendix (Web3.js Tutorial)
+- [x] Ethereum Book: Chapter 11 (Oracles - Event Patterns)
+
+**Early Win Achieved:** ✅ Production-ready backend service that detects deposits/withdrawals in real-time using WebSocket - exactly how DeFi protocols work!
+
+**If you can answer all questions confidently and have completed the deliverables, you're ready for Week 8 (Buffer Week)!**
+
 ---
 
 #### Week 8: BUFFER WEEK - Integration & Review
@@ -676,13 +717,13 @@ Before moving to Week 5, complete the self-assessment:
 
 Use this buffer week to review all self-assessment quizzes from Weeks 1-7:
 
-- [ ] **Week 1:** Environment, blockchain theory, first smart contract
-- [ ] **Week 2:** Ethereum node operations, testnet interactions
-- [ ] **Week 3:** Wallets, transactions, blockchain queries
-- [ ] **Week 4:** Database design, PostgreSQL, Redis
-- [ ] **Week 5:** Smart contract foundations (Part 1)
-- [ ] **Week 6:** Gas optimization, security basics, frontend
-- [ ] **Week 7:** Web3 integration, event listening
+- [x] **Week 1:** Environment, blockchain theory, first smart contract ✅
+- [x] **Week 2:** Ethereum node operations, testnet interactions ✅
+- [x] **Week 3:** Wallets, transactions, blockchain queries ✅
+- [x] **Week 4:** Database design, PostgreSQL, Redis ✅
+- [x] **Week 5:** Smart contract foundations (Part 1) ✅
+- [x] **Week 6:** Gas optimization, security basics, frontend ✅
+- [x] **Week 7:** Web3 integration, event listening ✅
 
 **Comprehension Check:**
 - Can you explain Phase 1 concepts to someone else?
