@@ -421,11 +421,11 @@ As you use these guides:
 
 ---
 
-**Last Updated:** 2025-11-21 (Week 7 Class 7.1 Complete!)
-**Course Progress:** Week 1 ✅ | Week 2 ✅ | Week 3 ✅ | Week 4 ✅ | Week 5 ✅ | Week 6 ✅ | Week 7 (Class 7.1 ✅)
+**Last Updated:** 2025-11-21 (Week 7 Classes 7.1-7.2 Complete!)
+**Course Progress:** Week 1 ✅ | Week 2 ✅ | Week 3 ✅ | Week 4 ✅ | Week 5 ✅ | Week 6 ✅ | Week 7 (Classes 7.1-7.2 ✅)
 **Total Learning Guides:** 23 of ~80 planned (Week 1: 3, Week 2: 3, Week 3: 4, Week 4: 0*, Week 5: 4, Week 6: 4, Week 7: 4, Week 27: 1)
-**Current Status:** Week 7, Class 7.1 complete - Backend provider setup and contract queries working!
-**Next:** Week 7, Class 7.2 - Frontend Contract Interaction Review
+**Current Status:** Week 7, Classes 7.1-7.2 complete - Backend providers + Frontend patterns reviewed!
+**Next:** Week 7, Class 7.3 - Backend Blockchain Service (automated transactions!)
 
 *Week 4 guides exist but were completed interactively, not yet formatted as standalone guides
 

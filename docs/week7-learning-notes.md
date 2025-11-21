@@ -153,5 +153,172 @@ const provider = connection.ethers.provider;
 
 ---
 
+## Session 2: Class 7.2 - Frontend Contract Interaction Review
+**Date:** November 21, 2025
+**Duration:** ~1 hour
+**Status:** ✅ Complete
+
+### 🎯 What We Accomplished
+
+**Activities Completed:**
+1. ✅ Reviewed useFamilyWallet hook architecture from Week 6
+2. ✅ Tested complete transaction lifecycle (rejection, success, UI update)
+3. ✅ Compared frontend vs backend patterns (conceptual review)
+4. ✅ Reviewed common frontend Web3 issues and solutions
+
+**Files Created:**
+- None (review class - used existing Week 6 code)
+
+### 💡 Key Insights & Questions
+
+**User Questions:**
+1. **getContract needsSigner parameter:** "I don't know why getContract need a signer... wouldn't it depend on the actions we eventually did?"
+   - **Perfect understanding!** User correctly reasoned that view functions (balance query) don't need signer, but transactions (deposit) do need signer
+   - **Key insight:** `needsSigner` parameter is optimization to avoid unnecessary MetaMask popups for read operations
+   - **Pattern:** `getContract(false)` for reads (free), `getContract(true)` for writes (costs gas)
+
+2. **Why refetch after deposit?** "Because deposit affects the balance"
+   - ✅ Correct! Blockchain doesn't push updates to frontend
+   - **Flow:** Transaction confirmed → refetch data → update state → React re-renders → UI updates
+   - **Without refetch:** User would have to manually refresh page to see new balance
+
+3. **Skipping redundant activity:** Recognized `compare-frontend-backend.ts` would be redundant with Class 7.1's `compare-providers.ts` and `query-contract.ts`
+   - **Good judgment!** Already understood the concepts from previous activities
+
+**Key Concepts Reviewed:**
+- **Provider vs Signer (frontend):** BrowserProvider connects to MetaMask, signer requires user approval
+- **getContract pattern:** Conditional signer based on operation type (optimization)
+- **Transaction lifecycle:** 11 steps from button click to UI update (~20-40 seconds total)
+- **useCallback importance:** Prevents infinite loops when function is useEffect dependency
+- **Error handling:** User rejection (code 4001) vs contract revert (on-chain failure)
+- **Always refetch after transactions:** Blockchain doesn't push updates to frontend
+
+### 📊 Technical Results
+
+**Transaction Testing (Frontend DApp):**
+- ✅ User rejection tested: Friendly error message "Transaction rejected by user"
+- ✅ Successful deposit tested: 0.0001 ETH deposited
+- ✅ Transaction timing: "Some seconds to be confirmed" (~15-30 seconds typical)
+- ✅ UI auto-update: Balance refreshed automatically after confirmation
+- ✅ Loading states: Button disabled during transaction ("Depositing...")
+
+**useFamilyWallet Hook Analysis:**
+- `fetchContractBalance()` calls `getContract(false)` - No signer needed ✅
+- `deposit()` calls `getContract(true)` - Signer required ✅
+- `deposit()` calls `fetchContractBalance()` after `tx.wait()` - Refetch to update UI ✅
+
+### 🔧 Technical Details
+
+**Transaction Lifecycle (11 Steps):**
+```
+1. User clicks "Deposit" button
+2. React calls deposit() function
+3. Get signer from MetaMask
+4. Create contract instance with signer
+5. Call contract function
+6. MetaMask popup appears
+7A. User REJECTS → Error code 4001
+7B. User CONFIRMS → Transaction sent
+8. Transaction pending in mempool
+9. Transaction mined (included in block)
+10. Refetch contract data
+11. UI updates automatically
+```
+
+**Timing Breakdown:**
+- Steps 1-6: Instant (< 1 second)
+- Step 7: User decision (variable)
+- Steps 8-9: Network confirmation (~15-30 seconds on Sepolia)
+- Steps 10-11: Instant (< 1 second)
+
+**useFamilyWallet Pattern:**
+1. **State** - Track data (`contractBalance`, `isMember`, `isLoading`)
+2. **Helpers** - Internal functions (`getContract()`)
+3. **Read functions** - Fetch data (no transactions)
+4. **Write functions** - Send transactions (user pays gas)
+5. **Auto-fetch** - Load data when wallet connects (useEffect)
+6. **Return** - Expose state and functions to components
+
+**Frontend vs Backend Comparison:**
+| Aspect | Frontend (Week 6) | Backend (Week 7) |
+|--------|-------------------|------------------|
+| Provider | `new ethers.BrowserProvider(window.ethereum)` | `connection.ethers.provider` |
+| Signer | `await provider.getSigner()` (MetaMask) | `await connection.ethers.getSigners()` (keystore) |
+| User approval | MetaMask popup for every tx | No popups (automated) |
+| Environment | Browser (React, Next.js) | Node.js (TypeScript scripts) |
+| Private key | In MetaMask (user controls) | In keystore (app controls) |
+
+### ⚠️ Issues Encountered
+
+**No issues encountered!** Everything worked as expected:
+- User rejection handled gracefully
+- Successful transactions completed properly
+- UI updated automatically after confirmation
+
+### ✅ Self-Assessment Results
+
+**Q1:** Why does getContract() have needsSigner parameter?
+- ✅ Perfect: "Wouldn't it depend on the actions we eventually did? If we only wanted to know balance we wouldn't need to sign, but deposit we would certainly need to sign."
+
+**Q2:** When does fetchContractBalance() pass needsSigner: true or false?
+- ✅ Correct: `false` (no signer needed for view function)
+
+**Q3:** When does deposit() pass needsSigner: true or false?
+- ✅ Correct: `true` (signer required for transaction)
+
+**Q4:** Why does deposit() call fetchContractBalance() after tx.wait()?
+- ✅ Correct: "Because deposit affects the balance"
+
+### 📚 Reading Connections
+
+**Bitcoin Book:**
+- Chapter 5: Wallets - Wallet Technology (key management)
+- Chapter 6: Transactions - Transaction Lifecycle
+
+**Ethereum Book:**
+- Chapter 5: Wallets - Wallet Technology
+- Chapter 6: Transactions - Transaction Structure, Nonce, Gas
+- Chapter 12: DApps - Frontend Integration
+
+**Key concepts reinforced:**
+- Wallet connection patterns (MetaMask integration)
+- Transaction signing (ECDSA signatures)
+- Transaction lifecycle (from click to confirmation)
+- UI update patterns (refetch after transaction)
+
+### 🎯 Next Steps
+
+**Class 7.3: Backend Blockchain Service**
+- Build backend service that sends transactions WITHOUT MetaMask
+- Load wallet from Hardhat keystore
+- Create automated backend signer
+- Handle nonce management for multiple pending transactions
+- Set up foundation for Week 7's event listener service
+
+**Preparation needed:**
+- Review Class 7.1 and 7.2 concepts (provider vs signer, transaction lifecycle)
+- Ensure Hardhat keystore has SEPOLIA_PRIVATE_KEY set ✅
+- Verify FamilyWallet contract has ETH deposited: 0.0019 ETH ✅
+- Understand error handling patterns
+
+### 🔑 Key Takeaways
+
+1. **Provider = Read-only, Signer = Can write** (frontend and backend)
+2. **getContract(needsSigner) is optimization** - Avoid MetaMask popup for reads
+3. **Transaction lifecycle takes ~20-40 seconds** (mostly waiting for block confirmation)
+4. **Always refetch after transactions** - Blockchain doesn't push updates
+5. **useCallback prevents infinite loops** when function is useEffect dependency
+6. **Error handling matters:** User rejection (4001) ≠ Contract revert (on-chain)
+7. **Frontend vs Backend:** Same blockchain, different providers (MetaMask vs RPC)
+
+---
+
+**Total Activities Completed:** 2 of 4 (Activities 1-2 completed, Activity 3 skipped as redundant, Activity 4 reviewed conceptually)
+**Frontend Tests:** User rejection ✅, Successful transaction ✅, Auto UI update ✅
+**Understanding Verified:** useFamilyWallet hook patterns, transaction lifecycle, provider vs signer
+**Early Win:** Observed production-grade DApp behavior - exactly how Uniswap/Aave work! 🎉
+
+---
+
 *Last Updated: November 21, 2025*
-*Next Session: Class 7.2 - Frontend Contract Interaction Review*
+*Next Session: Class 7.3 - Backend Blockchain Service*
