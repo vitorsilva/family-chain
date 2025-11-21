@@ -9,7 +9,9 @@
       "WebFetch(domain:github.com)",
       "WebFetch(domain:hardhat.org)",
       "WebFetch(domain:www.npmjs.com)",
-      "WebFetch(domain:docs.metamask.io)"
+      "WebFetch(domain:docs.metamask.io)",
+      "Bash(Get-Content \"C:\\Users\\vitor410rodrigues\\source\\repos\\FamilyChain\\docs\\week7-learning-notes.md\")",
+      "Bash(Measure-Object -Line)"
     ],
     "deny": [],
     "ask": []
