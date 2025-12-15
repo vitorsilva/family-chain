@@ -28,20 +28,36 @@ Migrated to a new computer and need to verify all FamilyChain components work co
    - Node.js: v24.11.1 (exceeds v22.14.0 requirement)
    - npm: 11.6.2 (meets requirement)
 
-### Current Status
+### Completed
 
-**Phase 1: Critical Setup** - In Progress
-- [ ] Migrate Hardhat keystore secrets from old computer
+**Phase 1: Critical Setup** ✅
 - [x] Verify Node.js installed (v24.11.1)
 - [x] Verify npm installed (11.6.2)
-- [ ] Run `npm install` in blockchain directory
-- [ ] Verify Hardhat version (3.0.8+)
+- [x] Verify Hardhat version (3.0.8)
+- [x] Migrate Hardhat keystore secrets from old computer (6 secrets)
 
-### Next Steps
+**Phase 2: Database Infrastructure** ✅
+- [x] Install PostgreSQL 18.1
+- [x] Add PostgreSQL to PATH
+- [x] Export database from old computer (`pg_dump`)
+- [x] Import database to new computer
+- [x] Create RBAC roles (app_readonly, app_readwrite, app_admin)
+- [x] Create service users (api_service, migration_service, analytics_service)
+- [x] Grant permissions and schema access
+- [x] Set up Redis Docker container (redis-familychain)
 
-1. Install dependencies in blockchain directory
-2. Get keystore secrets from old computer OR recreate them
-3. Verify Hardhat keystore is accessible
+**Phase 3: Smart Contract Tests** ✅
+- [x] Build contracts (`npx hardhat build`)
+- [x] Copy `.env` file from old computer (ENCRYPTION_KEY)
+- [x] All 93 tests passing:
+  - 3 Solidity tests (Counter)
+  - 5 HelloFamily tests
+  - 21 FamilyWallet tests
+  - 4 Gas Analysis tests
+  - 15 GDPR Compliance tests
+  - 14 RBAC tests
+  - 18 Double-Entry Bookkeeping tests
+  - 13 Encryption Utility tests
 
 ---
 
